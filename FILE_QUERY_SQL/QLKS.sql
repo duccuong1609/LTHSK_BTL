@@ -75,14 +75,14 @@ CREATE TABLE DichVu(
 
 CREATE TABLE HoaDon(
 	MaHoaDon nvarchar(20) not null PRIMARY KEY,
-	MaPhieu nvarchar(20) not null FOREIGN KEY REFERENCES PhieuNhanPhong(MaPhieuNhan),
-	TongTien int not null
+	NgayTra date not null,
+	GioTra datetime not null,
+	MaPhieu nvarchar(20) not null FOREIGN KEY REFERENCES PhieuNhanPhong(MaPhieuNhan)
 )
 CREATE TABLE ChiTietHoaDon(
 	MaHoaDon nvarchar(20) not null FOREIGN KEY REFERENCES HoaDon(MaHoaDon),
 	MaDV nvarchar(20) not null FOREIGN KEY REFERENCES DichVu(MaDV),
-	NgayTra date not null,
-	GioTra datetime not null
+	
 	CONSTRAINT PK_ChiTietHoaDon PRIMARY KEY (MaHoaDon,MaDV)
 )
 
@@ -125,17 +125,19 @@ VALUES ('DV001',N'Dịch vụ Karaoke',300000),
 	   ('DV002',N'Dịch vụ Trông Trẻ',150000),
 	   ('DV003',N'Dịch vụ Thuê Xe',400000)
 
-INSERT INTO HoaDon(MaHoaDon,MaPhieu,TongTien)
-VALUES ('HD001','PN001',1300000),
-	   ('HD002','PN002',1300000),
-	   ('HD003','PN003',800000)
+INSERT INTO HoaDon(MaHoaDon,MaPhieu,NgayTra,GioTra)
+VALUES ('HD001','PN001','2023-5-14 10:34:09 AM','2023-5-14'),
+	   ('HD002','PN002','2023-5-15 10:34:09 AM','2023-5-15'),
+	   ('HD003','PN003','2023-5-7 10:34:09 AM','2023-5-7')
 
-INSERT INTO ChiTietHoaDon(MaHoaDon,MaDV,NgayTra,GioTra)
-VALUES ('HD001','DV001','2023-5-14 10:34:09 AM','2023-5-14'),
-	   ('HD002','DV001','2023-5-15 10:34:09 AM','2023-5-15'),
-	   ('HD003','DV001','2023-5-7 10:34:09 AM','2023-5-7')
+INSERT INTO ChiTietHoaDon(MaHoaDon,MaDV)
+VALUES ('HD001','DV001'),
+		('HD001','DV002'),
+	   ('HD002','DV001'),
+	   ('HD003','DV001')
 
---select HoaDon.MaHoaDon,MaPhieu,TongTien,ChiTietHoaDon.MaDV,NgayTra,GioTra,TenDV,NgayNhan,GioNhan,KhachHang.CCCD,HoTen,DiaChi,KhachHang.SĐT from HoaDon join ChiTietHoaDon on HoaDon.MaHoaDon = ChiTietHoaDon.MaHoaDon
+--select HoaDon.MaHoaDon,MaPhieu,ChiTietHoaDon.MaDV,NgayTra,GioTra,TenDV,NgayNhan,GioNhan,KhachHang.CCCD,HoTen,DiaChi,KhachHang.SĐT from HoaDon join ChiTietHoaDon on HoaDon.MaHoaDon = ChiTietHoaDon.MaHoaDon
 --join DichVu on ChiTietHoaDon.MaDV = DichVu.MaDV join PhieuNhanPhong on PhieuNhanPhong.MaPhieuNhan = HoaDon.MaPhieu
 --join PhieuDatPhong on PhieuNhanPhong.MaPhieuDat = PhieuDatPhong.MaPhieuDat
 --join KhachHang on KhachHang.CCCD = PhieuDatPhong.CCCD
+--where HoaDon.MaHoaDon = 'HD001'
