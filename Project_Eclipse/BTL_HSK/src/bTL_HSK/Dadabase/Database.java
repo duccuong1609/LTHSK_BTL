@@ -1,15 +1,17 @@
-package bTL_HSK;
+package bTL_HSK.Dadabase;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
-	public static Connection con = null;
-	private static Database insDatabase = new Database();
-	
-	public static Database getinsDatabase() {
-		return insDatabase;
+	private static Connection con = null;
+	private static Database insConnect = new Database();
+	public static Connection getCon() {
+		return con;
+	}
+	public static Database getInsConnect() {
+		return insConnect;
 	}
 	
 	public void connect() {
@@ -26,4 +28,6 @@ public class Database {
 	public static Connection getConnection() {
 		return con;
 	}
-}	
+
+	
+}
