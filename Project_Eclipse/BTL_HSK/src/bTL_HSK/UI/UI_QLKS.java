@@ -2,6 +2,8 @@ package bTL_HSK.UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -9,13 +11,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import javax.management.ValueExp;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.Painter;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -30,6 +39,8 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	//---------------TAB_SODOPHONG---------//
 	private JPanel button_SoDoPhong;
 	private JPanel display_SoDoPhong;
+	private JButton btn_TimPhong = new JButton("Tìm Phòng");
+	private JTextField txt_TimPhong = new JTextField(10);
 	//---------------TAB QUANLI------------//
 	private JPanel button_QuanLi;
 	private JPanel Button_QL_DatPhong;
@@ -38,6 +49,8 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	//--------------TAB_TRACUU------------//
 	private JPanel button_TraCuu;
 	private JPanel button_TraCuu_KH;
+		//------------KH--------------//
+		private JPanel display_KH;
 	private JPanel button_TraCuu_NV;
 	private JPanel button_TraCuu_DV;
 	private JPanel button_TraCuu_HoaDon;
@@ -46,6 +59,7 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	
 	//--------------FONT-----------------//
 	private Font title_font = new Font("Arial",Font.BOLD, 15);
+	private Font tag_font = new Font("Arial",Font.BOLD, 12);
 	private Font big_title_font = new Font("Arial",Font.BOLD, 20);
 	
 	//------------------------------------Main UI-----------------------------------------//
@@ -98,16 +112,102 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	}
 	//--------------------------------DISPLAY--------------------------------//
 	public void Display() {
-		displayPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(0,20,0,20)));
+		displayPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 2),new EmptyBorder(0,0,0,0)));
 		Display_SoDoPhong();
+		Display_KhachHang();
+	}
+	//--------------------------------DISPLAY_KHACHHANG--------------------------------//
+	public void Display_KhachHang() {
+		display_KH = new JPanel();
+		display_KH = new JPanel();
+		display_KH.setLayout(new BorderLayout());
+		
+		JPanel titleJPanel = new JPanel();
+		
+		titleJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
+		
+		JLabel title = new JLabel("DANH SÁCH KHÁCH HÀNG");
+		JPanel center_panel = new JPanel();
+		title.setFont(big_title_font);
+		titleJPanel.add(title);
+		title.setBorder(new EmptyBorder(5,5,5,5));
+		display_KH.add(titleJPanel,BorderLayout.NORTH);
+		
+		JPanel main_pJPanel = new JPanel();
+		main_pJPanel.setLayout(new BorderLayout());
+		JScrollPane jp = new JScrollPane(center_panel);
+		
+		main_pJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
+		
+		//center_panel
+		//--------------------------------------------------------------------------pending
+		
+		jp.setBorder(null);
+		
+		main_pJPanel.add(jp,BorderLayout.CENTER);
+		
+		display_KH.add(main_pJPanel,BorderLayout.CENTER);
 	}
 	//--------------------------------DISPLAY_SoDoPhong--------------------------------//
 	public void Display_SoDoPhong() {
 		display_SoDoPhong = new JPanel();
+		display_SoDoPhong.setLayout(new BorderLayout());
+		
+		JPanel titleJPanel = new JPanel();
+		
+		titleJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
+		
 		JLabel title = new JLabel("SƠ ĐỒ PHÒNG KHÁCH SẠN");
+		JPanel center_panel = new JPanel();
 		title.setFont(big_title_font);
+		titleJPanel.add(title);
 		title.setBorder(new EmptyBorder(5,5,5,5));
-		display_SoDoPhong.add(title,BorderLayout.NORTH);
+		display_SoDoPhong.add(titleJPanel,BorderLayout.NORTH);
+		
+		JPanel main_pJPanel = new JPanel();
+		main_pJPanel.setLayout(new BorderLayout());
+		JScrollPane jp = new JScrollPane(center_panel);
+		
+		main_pJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
+		
+		//custom_lai_thanh_scroll <on going>
+		
+		//tags room
+		JPanel top_panel = new JPanel();
+		top_panel.setLayout(new BorderLayout());
+		JPanel tags_Panel = new JPanel();
+		JPanel search_Panel = new JPanel();
+		
+		tags_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		tags_Panel.add(default_RoomTag("Tất Cả", 40, Color.WHITE,Color.BLACK));
+		tags_Panel.add(default_RoomTag("Phòng Trống", 40, Color.GREEN,Color.WHITE));
+		tags_Panel.add(default_RoomTag("Đã Thuê", 40, Color.ORANGE,Color.WHITE));
+		tags_Panel.add(default_RoomTag("Đã Nhận", 40, Color.RED,Color.WHITE));
+		
+		//search tab
+		search_Panel.add(btn_TimPhong);
+		
+		btn_TimPhong.setBackground(Color.BLACK);
+		btn_TimPhong.setForeground(Color.WHITE);
+		btn_TimPhong.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
+		txt_TimPhong.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(8,10,8,10)));
+		txt_TimPhong.setFont(title_font);
+		
+		search_Panel.add(txt_TimPhong);
+		
+		top_panel.add(tags_Panel,BorderLayout.WEST);
+		top_panel.add(search_Panel,BorderLayout.EAST);
+		
+		//center_panel
+		//--------------------------------------------------------------------------pending
+		
+		jp.setBorder(null);
+		
+		main_pJPanel.add(top_panel,BorderLayout.NORTH);
+		main_pJPanel.add(jp,BorderLayout.CENTER);
+		
+		display_SoDoPhong.add(main_pJPanel,BorderLayout.CENTER);
 	}
 	//--------------------------------TAB-SODOPHONG--------------------------//
 	public void Tab_SodoPhong() {
@@ -178,7 +278,7 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
         
         popupMenu.setBorder(new LineBorder(new Color(204,255,255),2));
         popupMenu.setBackground(new Color(0,25,51));
-        button.setComponentPopupMenu(popupMenu);
+        button_QuanLi.setComponentPopupMenu(popupMenu);
         
         button.addMouseListener(this);
         popupMenu.addMouseListener(this);
@@ -219,7 +319,7 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
         
         popupMenu.setBorder(new LineBorder(new Color(204,255,255),2));
         popupMenu.setBackground(new Color(0,25,51));
-        button.setComponentPopupMenu(popupMenu);
+        button_TraCuu.setComponentPopupMenu(popupMenu);
         
         button.addMouseListener(this);
         popupMenu.addMouseListener(this);
@@ -227,6 +327,24 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
         button_TraCuu.add(button,BorderLayout.EAST);
 	}
 	//-----------------------------------DEFAULT-----------------------------------------//
+	public JPanel default_RoomTag(String tag_name,int number,Color tag_color,Color fore_color) {
+		JPanel default_tag = new JPanel();
+		JLabel tags = new JLabel(tag_name +"(" + number + ")");
+		tags.setFont(tag_font);
+		default_tag.setBackground(tag_color);
+		tags.setForeground(fore_color);
+		default_tag.add(tags);
+		default_tag.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY,2),new EmptyBorder(5,15,5,15)));
+		
+		return default_tag;
+	}
+	//-----------------------------------------------------------------------------pending
+	public JPanel default_ROOM() {
+		JPanel default_Room = new JPanel();
+		
+		return default_Room;
+	}
+	
 	public JLabel default_button(String title) {
 		JLabel defaultButton = new JLabel(title);
 	
@@ -245,13 +363,6 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 		ImageIcon icon = createImageIcon(path);
 		icon = scaleImage(icon, 40, 40);
 		dJPanel.add(new JLabel(icon),BorderLayout.WEST);
-		dJPanel.add(new JPanel() {
-			@Override
-			public void setOpaque(boolean isOpaque) {
-				// TODO Auto-generated method stub
-				super.setOpaque(false);
-			}
-		},BorderLayout.CENTER);
 		dJPanel.add(default_button(title),BorderLayout.EAST);
 		dJPanel.setOpaque(false);
 		return dJPanel;
@@ -306,9 +417,11 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(button_SoDoPhong)) {
 			button_SoDoPhong.setBackground(new Color(0,51,51));
+			
 			displayPanel.removeAll();
 			displayPanel.add(display_SoDoPhong);
 			validate();
+			repaint();
 		}
 		
 		if(e.getSource().equals(Button_QL_DatPhong)) {
@@ -326,6 +439,11 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 		if(e.getSource().equals(button_TraCuu_KH)) {
 			button_TraCuu_KH.setBackground(new Color(0,51,51));
 			button_TraCuu_KH.setOpaque(true);
+			
+			displayPanel.removeAll();
+			displayPanel.add(display_KH);
+			validate();
+			repaint();
 		}
 		if(e.getSource().equals(button_TraCuu_NV)) {
 			button_TraCuu_NV.setBackground(new Color(0,51,51));
@@ -366,7 +484,6 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		Object sourceObject = e.getSource();
 		
 		if(e.getSource().equals(button_QuanLi)) {
 			button_QuanLi.setBorder(new CompoundBorder(new LineBorder(new Color(255,153,153),3),new EmptyBorder(15,15,15,15)));
@@ -388,7 +505,6 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		Object sourceObject = e.getSource();
 		
 		if(e.getSource().equals(button_QuanLi)) {
 			button_QuanLi.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY,3),new EmptyBorder(15,15,15,15)));
