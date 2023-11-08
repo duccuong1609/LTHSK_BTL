@@ -14,6 +14,7 @@ public class Test {
 		// TODO Auto-generated method stub
 
 //		new UI_QLKS();
+		
 		Database b = new Database();
 		b.connect();
 		DanhSachPhieuDat a = new DanhSachPhieuDat();

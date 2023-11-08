@@ -58,7 +58,6 @@ public class DanhSachPhieuDat {
 		return listPDP;
 	}
 
-
 	@Override
 	public String toString() {
 		return "DanhSachPhieuDat [listPDP=" + listPDP ;
