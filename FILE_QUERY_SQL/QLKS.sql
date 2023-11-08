@@ -4,9 +4,9 @@ GO
 /****** Object:  Database [QLKS]    Script Date: 11/5/2023 2:51:19 PM ******/
 CREATE DATABASE [QLKS]
  ON  PRIMARY 
-( NAME = N'QLKS', FILENAME = N'D:\QuanLyKhachSan\LTHSK_BTL\FILE_QUERY_SQL\QLKS.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+( NAME = N'QLKS', FILENAME = N'T:\QuanLyKhachSan\QLKS.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
  LOG ON 
-( NAME = N'QLKS_log', FILENAME = N'D:\QuanLyKhachSan\LTHSK_BTL\FILE_QUERY_SQL\QLKS_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+( NAME = N'QLKS_log', FILENAME = N'T:\QuanLyKhachSan\QLKS_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
  WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
 GO
 
@@ -256,6 +256,9 @@ VALUES
 		('PD050', 'NV008', N'919283940215', '2023-07-20', '2023-07-22');
 INSERT INTO ChiTietDatPhong (MaPhieuDat, SoPhong)
 VALUES
+		('PD001', 05),
+		('PD001', 04),
+		('PD001', 03),
 		('PD001', 01),
 		('PD002', 02),
 		('PD003', 03),
@@ -475,6 +478,15 @@ VALUES
 		('HD049', 'DV003', '2023-07-23 06:28:39 PM', '2023-07-23'),
 		('HD050', 'DV004', '2023-07-22 07:15:49 AM', '2023-07-22');
 
+
+select MaPhieuNhan, PhieuDatPhong.MaPhieuDat,GioNhan,NgayNhan,maN from PhieuNhanPhong join PhieuDatPhong on PhieuDatPhong.MaPhieuDat = PhieuNhanPhong.MaPhieuDat
+
+select CCCD, STK, HoTen, SĐT, DiaChi, Email, MaLoaiKH from KhachHang
+
+select ChiTietDatPhong.SoPhong , TenPhong, LoaiPhong, IsEmpty
+from PhieuDatPhong join ChiTietDatPhong on PhieuDatPhong.MaPhieuDat = ChiTietDatPhong.MaPhieuDat 
+join Phong on ChiTietDatPhong.SoPhong = Phong.SoPhong
+where PhieuDatPhong.MaPhieuDat = 'PD001'
 --select HoaDon.MaHoaDon,MaPhieu,TongTien,ChiTietHoaDon.MaDV,NgayTra,GioTra,TenDV,NgayNhan,GioNhan,KhachHang.CCCD,HoTen,DiaChi,KhachHang.SĐT from HoaDon join ChiTietHoaDon on HoaDon.MaHoaDon = ChiTietHoaDon.MaHoaDon
 --join DichVu on ChiTietHoaDon.MaDV = DichVu.MaDV join PhieuNhanPhong on PhieuNhanPhong.MaPhieuNhan = HoaDon.MaPhieu
 --join PhieuDatPhong on PhieuNhanPhong.MaPhieuDat = PhieuDatPhong.MaPhieuDat

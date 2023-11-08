@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import bTL_HSK.Dadabase.Database;
+import bTL_HSK.NhanVien.NhanVien;
 
 public class DanhSachKhachHang {
 	private ArrayList< KhachHang> listKH;
@@ -30,11 +31,11 @@ public class DanhSachKhachHang {
 				String email = result.getString(6);
 				String maLoai = result.getString(7);
 				if(maLoai.equalsIgnoreCase("V")) {
-					KhachQuen a = new KhachQuen(CCCD, soTK, hoTen, soDT, diaChi, maLoai);
+					KhachQuen a = new KhachQuen(CCCD, soTK, hoTen, soDT, diaChi, email);
 					listKH.add(a);
 				}
 				else {
-					KhachThuong a = new KhachThuong(CCCD, soTK, hoTen, soDT, diaChi, maLoai);
+					KhachThuong a = new KhachThuong(CCCD, soTK, hoTen, soDT, diaChi, email);
 					listKH.add(a);
 				}
 			}
@@ -61,6 +62,7 @@ public class DanhSachKhachHang {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		docDuLieu();
 		return false;
 	}
 	
@@ -82,7 +84,34 @@ public class DanhSachKhachHang {
 		}
 	}
 	
-	
+	public KhachHang getNhanVienByMa(String CCCD) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		try {
+			statement = con.prepareStatement("select CCCD, STK, HoTen, SĐT, DiaChi, Email, MaLoaiKH from KhachHang where CCCD = ?");
+			statement.setString(1, CCCD);
+			ResultSet result = statement.executeQuery();
+			while(result.next()) {
+				String soTK = result.getString(2);
+				String hoTen = result.getString(3);
+				String soDT = result.getString(4);
+				String diaChi = result.getString(5);
+				String email = result.getString(6);
+				String maLoai = result.getString(7);
+				if(maLoai.equalsIgnoreCase("V")) {
+					KhachQuen a = new KhachQuen(CCCD, soTK, hoTen, soDT, diaChi, email);
+					return a;
+				}
+				else {
+					KhachThuong a = new KhachThuong(CCCD, soTK, hoTen, soDT, diaChi, email);
+					return a;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	public boolean delete(String CCCD) {
 		Connection con = Database.getInsConnect().getCon();
@@ -92,8 +121,9 @@ public class DanhSachKhachHang {
 			stmt.setString(1, CCCD);
 			return true;
 		} catch (Exception e) {
-			return false;
+			e.printStackTrace();
 		}
+		return false;
 	}
 	public ArrayList<KhachHang> getListKH() {
 		return listKH;

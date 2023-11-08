@@ -1,6 +1,7 @@
 package bTL_HSK.Phong;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -44,7 +45,38 @@ public class DanhSachPhong {
 	public ArrayList<Phong> getListPhong() {
 		return listPhong;
 	}
-	
+	public ArrayList<Phong> getListPhongByPhieu(String maPhieu) {
+		ArrayList<Phong> a = new ArrayList<Phong>();
+		try {
+			Connection con = Database.getInsConnect().getCon();
+			PreparedStatement statement = con.prepareStatement("select ChiTietDatPhong.SoPhong , TenPhong, LoaiPhong, IsEmpty\r\n"
+					+ "from PhieuDatPhong join ChiTietDatPhong on PhieuDatPhong.MaPhieuDat = ChiTietDatPhong.MaPhieuDat \r\n"
+					+ "join Phong on ChiTietDatPhong.SoPhong = Phong.SoPhong\r\n"
+					+ "where PhieuDatPhong.MaPhieuDat = ?");
+			statement.setString(1,maPhieu);
+			ResultSet result = statement.executeQuery();
+			while(result.next()) {
+				int soPhong = result.getInt(1);
+				String tenPhong = result.getString(2);
+				String loaiPhong = result.getString(3);
+				String isEmpty = result.getString(4);
+				if(loaiPhong.equalsIgnoreCase("PV")) {
+					PhongVip b = new PhongVip(soPhong, tenPhong, isEmpty.equals("1"));
+					a.add(b);
+				}
+				else {
+					PhongThuong b = new PhongThuong(soPhong, tenPhong, isEmpty.equals("1"));
+					a.add(b);
+				}
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return a;
+		
+	}
 	@Override
 	public String toString() {
 		return "DanhSachPhong [listPhong=" + listPhong + "]";

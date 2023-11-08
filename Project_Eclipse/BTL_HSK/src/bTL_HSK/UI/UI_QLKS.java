@@ -46,7 +46,7 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	
 	//--------------FONT-----------------//
 	private Font title_font = new Font("Arial",Font.BOLD, 15);
-	private Font big_title_font = new Font("Arial",Font.BOLD, 20);
+	private Font big_title_font = new Font("Arial",Font.BOLD, 25);
 	
 	//------------------------------------Main UI-----------------------------------------//
 	public UI_QLKS() {
@@ -178,7 +178,7 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
         
         popupMenu.setBorder(new LineBorder(new Color(204,255,255),2));
         popupMenu.setBackground(new Color(0,25,51));
-        button.setComponentPopupMenu(popupMenu);
+        button_QuanLi.setComponentPopupMenu(popupMenu);
         
         button.addMouseListener(this);
         popupMenu.addMouseListener(this);
@@ -219,7 +219,7 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
         
         popupMenu.setBorder(new LineBorder(new Color(204,255,255),2));
         popupMenu.setBackground(new Color(0,25,51));
-        button.setComponentPopupMenu(popupMenu);
+        button_TraCuu.setComponentPopupMenu(popupMenu);
         
         button.addMouseListener(this);
         popupMenu.addMouseListener(this);
@@ -310,6 +310,18 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 			displayPanel.add(display_SoDoPhong);
 			validate();
 		}
+		if(e.getSource().equals(button_TraCuu)) {
+			button_TraCuu.setBackground(new Color(0,51,51));
+
+		}
+		if(e.getSource().equals(button_QuanLi)) {
+			button_QuanLi.setBackground(new Color(0,51,51));
+			
+		}
+		if(e.getSource().equals(button_ThongKe)) {
+			button_ThongKe.setBackground(new Color(0,51,51));
+			
+		}
 		
 		if(e.getSource().equals(Button_QL_DatPhong)) {
 			Button_QL_DatPhong.setBackground(new Color(0,51,51));
@@ -345,6 +357,9 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		button_SoDoPhong.setBackground(new Color(0,25,51));
+		button_TraCuu.setBackground(new Color(0,25,51));
+		button_ThongKe.setBackground(new Color(0,25,51));
+		button_QuanLi.setBackground(new Color(0,25,51));
 		
 		Button_QL_DatPhong.setBackground(Color.BLACK);
 		Button_QL_DatPhong.setOpaque(false);
