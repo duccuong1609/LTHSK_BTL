@@ -1,4 +1,4 @@
-package bTL_HSK.PhieuDatPhong;
+package Control;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,13 +11,11 @@ import java.util.Date;
 
 import javax.print.attribute.standard.MediaSize.NA;
 
-import bTL_HSK.Dadabase.Database;
-import bTL_HSK.KhachHang.DanhSachKhachHang;
-import bTL_HSK.KhachHang.KhachHang;
-import bTL_HSK.NhanVien.DanhSachNhanVien;
-import bTL_HSK.NhanVien.NhanVien;
-import bTL_HSK.Phong.DanhSachPhong;
-import bTL_HSK.Phong.Phong;
+import ConnectDB.Database;
+import entity.KhachHang;
+import entity.NhanVien;
+import entity.PhieuDatPhong;
+import entity.Phong;
 
 public class DanhSachPhieuDat {
 	private ArrayList< PhieuDatPhong> listPDP;
@@ -36,9 +34,10 @@ public class DanhSachPhieuDat {
 	public ArrayList<PhieuDatPhong> docDuLieu(){
 		try {
 			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+			
 			Connection con = Database.getInsConnect().getCon();
 			Statement statement = con.createStatement();
-			String sql = "select MaPhieuDat, MaNV, CCCD,NgayDen, NgayDi from PhieuDatPhong";
+			String sql = "select MaPhieuDat, MaNV, CCCD,NgayDen, NgayDi,soLuong from PhieuDatPhong";
 			ResultSet result = statement.executeQuery(sql);
 			while(result.next()) {
 				String maPD = result.getString(1);
@@ -46,10 +45,11 @@ public class DanhSachPhieuDat {
 				String CCCD = result.getString(3);
 				Date ngayDen = date.parse(result.getString(4));
 				Date ngayDi = date.parse(result.getString(5));
+				int soLuong = result.getInt(6);
 				NhanVien nv = listNV.getNhanVienByMa(maNV);
 				KhachHang kh = listKH.getNhanVienByMa(CCCD);
 				ArrayList<Phong> phongs = listPhong.getListPhongByPhieu(maPD);
-				PhieuDatPhong a = new PhieuDatPhong(maPD, nv, kh, phongs, phongs.size(), ngayDen, ngayDi);
+				PhieuDatPhong a = new PhieuDatPhong(maPD, nv, kh, phongs, soLuong, ngayDen, ngayDi);
 				listPDP.add(a);
 			}
 		} catch (Exception e) {
@@ -58,6 +58,13 @@ public class DanhSachPhieuDat {
 		return listPDP;
 	}
 
+	
+	public PhieuDatPhong getPhieuDat(String maPhieu) {
+		PhieuDatPhong a = new PhieuDatPhong(maPhieu, null, null, null, 0, null, null);
+		int index = listPDP.indexOf(a);
+		return listPDP.get(index);
+	}
+	
 	@Override
 	public String toString() {
 		return "DanhSachPhieuDat [listPDP=" + listPDP ;

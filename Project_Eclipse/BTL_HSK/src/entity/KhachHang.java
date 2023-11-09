@@ -1,4 +1,4 @@
-package bTL_HSK.KhachHang;
+package entity;
 
 public class KhachHang {
 	private String CCCD;;

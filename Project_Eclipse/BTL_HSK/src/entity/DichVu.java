@@ -1,4 +1,4 @@
-package bTL_HSK.DichVu;
+package entity;
 
 public class DichVu {
 	private String maDV;

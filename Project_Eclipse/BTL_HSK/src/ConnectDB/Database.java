@@ -1,4 +1,4 @@
-package bTL_HSK.Dadabase;
+package ConnectDB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

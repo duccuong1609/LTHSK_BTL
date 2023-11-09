@@ -1,8 +1,6 @@
-package bTL_HSK.PhieuNhanPhong;
+package entity;
 
 import java.util.Date;
-
-import bTL_HSK.PhieuDatPhong.PhieuDatPhong;
 
 public class PhieuNhanPhong {
 	private String maPhieuNhan;

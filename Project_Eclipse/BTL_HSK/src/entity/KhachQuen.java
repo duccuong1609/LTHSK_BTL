@@ -1,35 +1,24 @@
-package bTL_HSK.KhachHang;
+package entity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-import bTL_HSK.Dadabase.Database;
+import ConnectDB.Database;
 
-public class KhachThuong extends KhachHang {
+public class KhachQuen extends KhachHang {
 
-	private static String maLoai = "N";
-	private String tenLoai = "Khách Thường";
-	private float khauTru = 0;
 	
+	private static String maLoai = "V";
+	private String tenLoai = "Khách Quen";
+	private float khauTru = 0.3f;
 	
-	public KhachThuong(String cCCD, String soTK, String hoTen, String soDT, String diaChi, String emali) {
+	public KhachQuen(String cCCD, String soTK, String hoTen, String soDT, String diaChi, String emali) {
 		super(cCCD, soTK, hoTen, soDT, diaChi, emali, maLoai);
 		// TODO Auto-generated constructor stub
 	}
 
-
 	public static String getMaLoai() {
 		return maLoai;
-	}
-
-
-	public String getTenLoai() {
-		return tenLoai;
-	}
-
-
-	public float getKhauTru() {
-		return khauTru;
 	}
 	
 	public boolean insert() {
@@ -45,6 +34,14 @@ public class KhachThuong extends KhachHang {
 			return false;
 		}
 		
+	}
+
+	public String getTenLoai() {
+		return tenLoai;
+	}
+
+	public float getKhauTru() {
+		return khauTru;
 	}
 	
 }

@@ -1,4 +1,4 @@
-package bTL_HSK.KhachHang;
+package Control;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,8 +6,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import bTL_HSK.Dadabase.Database;
-import bTL_HSK.NhanVien.NhanVien;
+import ConnectDB.Database;
+import entity.KhachHang;
+import entity.KhachQuen;
+import entity.KhachThuong;
+import entity.NhanVien;
 
 public class DanhSachKhachHang {
 	private ArrayList< KhachHang> listKH;
@@ -49,6 +52,8 @@ public class DanhSachKhachHang {
 	public boolean addKhachHang(KhachHang a) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement stmt = null;
+		listKH.add(a);
+		int n = 0;
 		try {
 			stmt = con.prepareStatement("INSERT INTO KhachHang(CCCD,HoTen,SĐT,STK,DiaChi,Email,MaLoaiKH) VALUES (?,?,?,?,?,?,?)");
 			stmt.setString(1, a.getCCCD());
@@ -58,17 +63,17 @@ public class DanhSachKhachHang {
 			stmt.setString(5, a.getDiaChi());
 			stmt.setString(6, a.getEmali());
 			stmt.setString(7, a.getMaLoaiKH());
-			return true;
+			n = stmt.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		docDuLieu();
-		return false;
+		return n > 0;
 	}
 	
 	public boolean update(KhachHang a) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement stmt = null;
+		int n = 0;
 		try {
 			stmt = con.prepareStatement("update KhachHang set HoTen = (?),SĐT = (?),STK = (?),DiaChi = (?),Email = (?),MaLoaiKH = (?) WHERE CCCD = (?)");
 			stmt.setString(1, a.getHoTen());
@@ -78,10 +83,11 @@ public class DanhSachKhachHang {
 			stmt.setString(5, a.getEmali());
 			stmt.setString(6, a.getMaLoaiKH());
 			stmt.setString(7, a.getCCCD());
-			return true;
+			n = stmt.executeUpdate();
 		} catch (Exception e) {
-			return false;
+			e.printStackTrace();
 		}
+		return n>0;
 	}
 	
 	public KhachHang getNhanVienByMa(String CCCD) {
@@ -116,18 +122,21 @@ public class DanhSachKhachHang {
 	public boolean delete(String CCCD) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement stmt = null;
+		int n = 0;
 		try {
 			stmt = con.prepareStatement("delete from KhachHang where CCCD = ?");
 			stmt.setString(1, CCCD);
-			return true;
+			n = stmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
+		return n > 0;
 	}
 	public ArrayList<KhachHang> getListKH() {
 		return listKH;
 	}
+	
+	
 
 	@Override
 	public String toString() {

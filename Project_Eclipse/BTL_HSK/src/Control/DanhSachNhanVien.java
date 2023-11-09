@@ -1,4 +1,4 @@
-package bTL_HSK.NhanVien;
+package Control;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import bTL_HSK.Dadabase.Database;
+import ConnectDB.Database;
+import entity.NhanVien;
 
 public class DanhSachNhanVien {
 	private ArrayList< NhanVien> listNV;

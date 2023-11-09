@@ -1,4 +1,4 @@
-package bTL_HSK.NhanVien;
+package entity;
 
 public class NhanVien {
 	private String maNV; 

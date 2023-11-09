@@ -1,4 +1,4 @@
-package bTL_HSK.Phong;
+package entity;
 
 public class PhongThuong extends Phong {
 	private static String maLoai = "PN";

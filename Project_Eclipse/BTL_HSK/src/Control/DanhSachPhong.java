@@ -1,4 +1,4 @@
-package bTL_HSK.Phong;
+package Control;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import bTL_HSK.Dadabase.Database;
+import ConnectDB.Database;
+import entity.Phong;
+import entity.PhongThuong;
+import entity.PhongVip;
 
 public class DanhSachPhong {
 	private ArrayList<Phong> listPhong;
@@ -42,6 +45,32 @@ public class DanhSachPhong {
 		return listPhong;
 	}
 
+	
+	public ArrayList<Phong> getListPhongTrong() {
+		
+		ArrayList<Phong> list = new ArrayList<Phong>(); 
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		
+		try {
+			statement = con.prepareStatement("{call getListTrangThaiPhong(?)}");
+			statement.setInt(1, 1);
+			ResultSet result = statement.executeQuery();
+			while(result.next()) {
+				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+//	public ArrayList<Phong> getListPhongDaDat(){
+//		
+//	}
+	
+	
 	public ArrayList<Phong> getListPhong() {
 		return listPhong;
 	}

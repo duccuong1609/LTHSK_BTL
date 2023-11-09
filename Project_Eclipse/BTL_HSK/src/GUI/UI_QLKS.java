@@ -1,4 +1,4 @@
-package bTL_HSK.UI;
+package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -41,6 +42,10 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	private JPanel display_SoDoPhong;
 	private JButton btn_TimPhong = new JButton("Tìm Phòng");
 	private JTextField txt_TimPhong = new JTextField(10);
+	private JPanel button_TatCaPhong;
+	private JPanel button_PhongDaDat;
+	private JPanel button_PhongDaNhan;
+	private JPanel button_PhongTrong;
 	//---------------TAB QUANLI------------//
 	private JPanel button_QuanLi;
 	private JPanel Button_QL_DatPhong;
@@ -112,7 +117,8 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	}
 	//--------------------------------DISPLAY--------------------------------//
 	public void Display() {
-		displayPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 2),new EmptyBorder(0,0,0,0)));
+		displayPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 1),new EmptyBorder(0,0,0,0)));
+		displayPanel.setBackground(Color.LIGHT_GRAY);
 		Display_SoDoPhong();
 		Display_KhachHang();
 	}
@@ -180,10 +186,19 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 		
 		tags_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		tags_Panel.add(default_RoomTag("Tất Cả", 40, Color.WHITE,Color.BLACK));
-		tags_Panel.add(default_RoomTag("Phòng Trống", 40, Color.GREEN,Color.WHITE));
-		tags_Panel.add(default_RoomTag("Đã Thuê", 40, Color.ORANGE,Color.WHITE));
-		tags_Panel.add(default_RoomTag("Đã Nhận", 40, Color.RED,Color.WHITE));
+		button_TatCaPhong = default_RoomTag("Tất Cả", 40, Color.BLACK,Color.BLACK);
+		tags_Panel.add(button_TatCaPhong);
+		button_PhongTrong = default_RoomTag("Phòng Trống", 40, Color.GREEN,Color.WHITE);
+		tags_Panel.add(button_PhongTrong);
+		button_PhongDaDat = default_RoomTag("Đã Thuê", 40, Color.ORANGE,Color.WHITE);
+		tags_Panel.add(button_PhongDaDat);
+		button_PhongDaNhan = default_RoomTag("Đã Nhận", 40, Color.RED,Color.WHITE);
+		tags_Panel.add(button_PhongDaNhan);
+		
+		button_TatCaPhong.addMouseListener(this);
+		button_PhongDaDat.addMouseListener(this);
+		button_PhongDaNhan.addMouseListener(this);
+		button_PhongTrong.addMouseListener(this);
 		
 		//search tab
 		search_Panel.add(btn_TimPhong);
@@ -200,7 +215,9 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 		top_panel.add(search_Panel,BorderLayout.EAST);
 		
 		//center_panel
+		
 		//--------------------------------------------------------------------------pending
+		
 		
 		jp.setBorder(null);
 		
@@ -342,6 +359,7 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	public JPanel default_ROOM() {
 		JPanel default_Room = new JPanel();
 		
+		
 		return default_Room;
 	}
 	
@@ -365,6 +383,7 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 		dJPanel.add(new JLabel(icon),BorderLayout.WEST);
 		dJPanel.add(default_button(title),BorderLayout.EAST);
 		dJPanel.setOpaque(false);
+		
 		return dJPanel;
 	}
 	
@@ -415,62 +434,21 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource().equals(button_SoDoPhong)) {
-			button_SoDoPhong.setBackground(new Color(0,51,51));
-			
-			displayPanel.removeAll();
-			displayPanel.add(display_SoDoPhong);
-			validate();
-			repaint();
+		mousePress_Menu(e.getSource());
+		if(e.getSource().equals(button_TatCaPhong)) {
+			button_TatCaPhong.setBackground(Color.WHITE);
 		}
-		if(e.getSource().equals(button_TraCuu)) {
-			button_TraCuu.setBackground(new Color(0,51,51));
-
+		if(e.getSource().equals(button_PhongTrong)) {
+			button_PhongTrong.setBackground(new Color(0,204,102));
 		}
-		if(e.getSource().equals(button_QuanLi)) {
-			button_QuanLi.setBackground(new Color(0,51,51));
-			
+		if(e.getSource().equals(button_PhongDaDat)) {
+			button_PhongDaDat.setBackground(new Color(205,215,0));
 		}
-		if(e.getSource().equals(button_ThongKe)) {
-			button_ThongKe.setBackground(new Color(0,51,51));
-			
-		}
-		
-		if(e.getSource().equals(Button_QL_DatPhong)) {
-			Button_QL_DatPhong.setBackground(new Color(0,51,51));
-			Button_QL_DatPhong.setOpaque(true);
-		}
-		if(e.getSource().equals(Button_QL_NhanPhong)) {
-			Button_QL_NhanPhong.setBackground(new Color(0,51,51));
-			Button_QL_NhanPhong.setOpaque(true);
-		}
-		if(e.getSource().equals(Button_QL_TraPhong)) {
-			Button_QL_TraPhong.setBackground(new Color(0,51,51));
-			Button_QL_TraPhong.setOpaque(true);
-		}
-		if(e.getSource().equals(button_TraCuu_KH)) {
-			button_TraCuu_KH.setBackground(new Color(0,51,51));
-			button_TraCuu_KH.setOpaque(true);
-			
-			displayPanel.removeAll();
-			displayPanel.add(display_KH);
-			validate();
-			repaint();
-		}
-		if(e.getSource().equals(button_TraCuu_NV)) {
-			button_TraCuu_NV.setBackground(new Color(0,51,51));
-			button_TraCuu_NV.setOpaque(true);
-		}
-		if(e.getSource().equals(button_TraCuu_HoaDon)) {
-			button_TraCuu_HoaDon.setBackground(new Color(0,51,51));
-			button_TraCuu_HoaDon.setOpaque(true);
-		}
-		if(e.getSource().equals(button_TraCuu_DV)) {
-			button_TraCuu_DV.setBackground(new Color(0,51,51));
-			button_TraCuu_DV.setOpaque(true);
+		if(e.getSource().equals(button_PhongDaNhan)) {
+			button_PhongDaNhan.setBackground(new Color(255,102,102));
 		}
 	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -494,6 +472,11 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 		button_TraCuu_NV.setOpaque(false);
 		button_TraCuu_HoaDon.setBackground(Color.BLACK);
 		button_TraCuu_HoaDon.setOpaque(false);
+		button_TatCaPhong.setBackground(new Color(224,224,224));
+		button_PhongTrong.setBackground(new Color(0,102,0));
+		button_PhongDaNhan.setBackground(new Color(204,0,0));
+		
+		button_PhongDaDat.setBackground(Color.ORANGE);
 	}
 
 	@Override
@@ -534,11 +517,67 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 			button_ThongKe.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY,3),new EmptyBorder(15,15,15,15)));
 		}
 	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	//--------------------------------------mouse action menu----------------------------------------/
+	public void mousePress_Menu(Object e) {
+		if(e.equals(button_SoDoPhong)) {
+			button_SoDoPhong.setBackground(new Color(0,51,51));
+			
+			displayPanel.removeAll();
+			displayPanel.add(display_SoDoPhong);
+			validate();
+			repaint();
+		}
+		if(e.equals(button_TraCuu)) {
+			button_TraCuu.setBackground(new Color(0,51,51));
+
+		}
+		if(e.equals(button_QuanLi)) {
+			button_QuanLi.setBackground(new Color(0,51,51));
+			
+		}
+		if(e.equals(button_ThongKe)) {
+			button_ThongKe.setBackground(new Color(0,51,51));
+			
+		}
+		
+		if(e.equals(Button_QL_DatPhong)) {
+			Button_QL_DatPhong.setBackground(new Color(0,51,51));
+			Button_QL_DatPhong.setOpaque(true);
+		}
+		if(e.equals(Button_QL_NhanPhong)) {
+			Button_QL_NhanPhong.setBackground(new Color(0,51,51));
+			Button_QL_NhanPhong.setOpaque(true);
+		}
+		if(e.equals(Button_QL_TraPhong)) {
+			Button_QL_TraPhong.setBackground(new Color(0,51,51));
+			Button_QL_TraPhong.setOpaque(true);
+		}
+		if(e.equals(button_TraCuu_KH)) {
+			button_TraCuu_KH.setBackground(new Color(0,51,51));
+			button_TraCuu_KH.setOpaque(true);
+			
+			displayPanel.removeAll();
+			displayPanel.add(display_KH);
+			validate();
+			repaint();
+		}
+		if(e.equals(button_TraCuu_NV)) {
+			button_TraCuu_NV.setBackground(new Color(0,51,51));
+			button_TraCuu_NV.setOpaque(true);
+		}
+		if(e.equals(button_TraCuu_HoaDon)) {
+			button_TraCuu_HoaDon.setBackground(new Color(0,51,51));
+			button_TraCuu_HoaDon.setOpaque(true);
+		}
+		if(e.equals(button_TraCuu_DV)) {
+			button_TraCuu_DV.setBackground(new Color(0,51,51));
+			button_TraCuu_DV.setOpaque(true);
+		}
 	}
 
 }
