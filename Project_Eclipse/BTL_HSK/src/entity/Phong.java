@@ -3,13 +3,13 @@ package entity;
 public class Phong {
 	private int soPhong;
 	private String tenPhong;
-	private String loaiPhong;
+	
 	private boolean IsEmpty;
-	public Phong(int soPhong, String tenPhong, String loaiPhong, boolean isEmpty) {
+	public Phong(int soPhong, String tenPhong, boolean isEmpty) {
 		super();
 		this.soPhong = soPhong;
 		this.tenPhong = tenPhong;
-		this.loaiPhong = loaiPhong;
+		
 		IsEmpty = isEmpty;
 	}
 	public int getSoPhong() {
@@ -24,12 +24,7 @@ public class Phong {
 	public void setTenPhong(String tenPhong) {
 		this.tenPhong = tenPhong;
 	}
-	public String getLoaiPhong() {
-		return loaiPhong;
-	}
-	public void setLoaiPhong(String loaiPhong) {
-		this.loaiPhong = loaiPhong;
-	}
+	
 	public boolean isIsEmpty() {
 		return IsEmpty;
 	}
@@ -37,7 +32,14 @@ public class Phong {
 		IsEmpty = isEmpty;
 	}
 	
+	public String getTieuDe() {
+		return String.format("%s %s %s ", "So phong","Ten phong","Trang thai");
+	}
 	
-	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return String.format("%s %s %s ", soPhong,tenPhong,IsEmpty ? "Yes":"No");
+	}
 	
 }

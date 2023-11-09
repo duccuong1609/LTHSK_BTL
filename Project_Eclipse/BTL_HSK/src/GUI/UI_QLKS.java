@@ -26,11 +26,12 @@ import javax.swing.Painter;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.text.rtf.RTFEditorKit;
-
 import com.toedter.calendar.JCalendar;
+import ConnectDB.Database;
+import Control.DanhSachPhong;
 
-public class UI_QLKS extends JFrame implements MouseListener,ActionListener{
+public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
+
 //------------------------------------variable/cons-----------------------------------//
 	//---variable for tool bar menu---//
 	private JPanel menuJPanel;
@@ -81,9 +82,21 @@ public class UI_QLKS extends JFrame implements MouseListener,ActionListener{
 	private Font big_title_font = new Font("Arial",Font.BOLD, 25);
 	private Font tag_font = new Font("Arial",Font.BOLD, 12);
 	
+	//--------------Connect---------------//
+	Database connect ;
+	
+	//--------------Data-----------------//
+	DanhSachPhong listPhong ;
+	
 	//------------------------------------Main UI-----------------------------------------//
 	public UI_QLKS() {
 		super("Phầm Mềm Quản Lí Khách Sạn");
+		
+		connect = new Database();
+		connect.connect();
+		
+		listPhong = new DanhSachPhong();
+		
 		//-------------tool bar menu ---------//
 		
 		menuJPanel = new JPanel();
@@ -278,11 +291,12 @@ public class UI_QLKS extends JFrame implements MouseListener,ActionListener{
 		
 		tags_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		button_TatCaPhong = default_RoomTag("Tất Cả", 40, Color.BLACK,Color.BLACK);
+		button_TatCaPhong = default_RoomTag("Tất Cả",listPhong.docDuLieu().size(), Color.BLACK,Color.BLACK);
 		tags_Panel.add(button_TatCaPhong);
-		button_PhongTrong = default_RoomTag("Phòng Trống", 40, Color.GREEN,Color.WHITE);
+		button_PhongTrong = default_RoomTag("Phòng Trống", listPhong.getListTrangThaiPhong(1).getListPhong().size(), Color.GREEN,Color.WHITE);
 		tags_Panel.add(button_PhongTrong);
-		button_PhongDaNhan = default_RoomTag("Đang Bận", 40, Color.RED,Color.WHITE);
+		button_PhongDaNhan = default_RoomTag("Đang Bận", listPhong.getListTrangThaiPhong(0).getListPhong().size(), Color.RED,Color.WHITE);
+
 		tags_Panel.add(button_PhongDaNhan);
 		
 		button_TatCaPhong.addMouseListener(this);
@@ -589,6 +603,7 @@ public class UI_QLKS extends JFrame implements MouseListener,ActionListener{
 		button_TatCaPhong.setBackground(new Color(224,224,224));
 		button_PhongTrong.setBackground(new Color(0,102,0));
 		button_PhongDaNhan.setBackground(new Color(204,0,0));
+
 	}
 
 	@Override

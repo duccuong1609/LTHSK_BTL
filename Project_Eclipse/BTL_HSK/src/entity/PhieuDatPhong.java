@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+import Control.DanhSachPhong;
+
 public class PhieuDatPhong {
 	@Override
 	public int hashCode() {
@@ -25,11 +27,11 @@ public class PhieuDatPhong {
 	private String maPD;
 	private NhanVien nhanVien;
 	private KhachHang khachHang;
-	private ArrayList<Phong> phongs;
+	private DanhSachPhong phongs;
 	private int soLuongPhong;
 	private Date ngayDen;
 	private Date ngayDi;
-	public PhieuDatPhong(String maPD, NhanVien nhanVien, KhachHang khachHang, ArrayList<Phong> phongs, int soLuongPhong,
+	public PhieuDatPhong(String maPD, NhanVien nhanVien, KhachHang khachHang, DanhSachPhong phongs, int soLuongPhong,
 			Date ngayDen, Date ngayDi) {
 		super();
 		this.maPD = maPD;
@@ -58,10 +60,10 @@ public class PhieuDatPhong {
 	public void setKhachHang(KhachHang khachHang) {
 		this.khachHang = khachHang;
 	}
-	public ArrayList<Phong> getPhongs() {
+	public DanhSachPhong getPhongs() {
 		return phongs;
 	}
-	public void setPhongs(ArrayList<Phong> phongs) {
+	public void setPhongs(DanhSachPhong phongs) {
 		this.phongs = phongs;
 	}
 	public int getSoLuongPhong() {
@@ -83,6 +85,8 @@ public class PhieuDatPhong {
 		this.ngayDi = ngayDi;
 	}
 	
+	
+
 	
 	
 	

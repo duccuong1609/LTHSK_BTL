@@ -44,4 +44,13 @@ public class KhachQuen extends KhachHang {
 		return khauTru;
 	}
 	
+	public String getTieuDe() {
+		return String.format("%s %s %s","Ma Loai","Ten Loai","KhauTru" );
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return String.format("%s %s %s %s %s %s",maLoai,tenLoai,khauTru );
+	}
 }
