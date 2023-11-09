@@ -15,13 +15,13 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		new UI_QLKS();
+//		new UI_QLKS();
 		
-//		Database b = new Database();
-//		b.connect();
-//		DanhSachHoaDon a = new DanhSachHoaDon();
-//		a.docDuLieu();
-//		System.out.println(a);
+		Database b = new Database();
+		b.connect();
+		DanhSachHoaDon a = new DanhSachHoaDon();
+		a.docDuLieu();
+		System.out.println(a);
 	}
 
 }
