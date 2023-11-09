@@ -420,16 +420,26 @@ select MaPhieuNhan, PhieuDatPhong.MaPhieuDat,GioNhan,NgayNhan,maN from PhieuNhan
 
 select CCCD, STK, HoTen, SĐT, DiaChi, Email, MaLoaiKH from KhachHang
 
+
+-- Hàm lấy danh sách phiếu phòng bằng mã phiếu
 select ChiTietDatPhong.SoPhong , TenPhong, LoaiPhong, IsEmpty
-from PhieuDatPhong join ChiTietDatPhong on PhieuDatPhong.MaPhieuDat = ChiTietDatPhong.MaPhieuDat 
-join Phong on ChiTietDatPhong.SoPhong = Phong.SoPhong
+from PhieuDatPhong join ChiTietDatPhong 
+	on PhieuDatPhong.MaPhieuDat = ChiTietDatPhong.MaPhieuDat join Phong 
+		on ChiTietDatPhong.SoPhong = Phong.SoPhong
 where PhieuDatPhong.MaPhieuDat = 'PD001'
---select HoaDon.MaHoaDon,MaPhieu,TongTien,ChiTietHoaDon.MaDV,NgayTra,GioTra,TenDV,NgayNhan,GioNhan,KhachHang.CCCD,HoTen,DiaChi,KhachHang.SĐT from HoaDon join ChiTietHoaDon on HoaDon.MaHoaDon = ChiTietHoaDon.MaHoaDon
---join DichVu on ChiTietHoaDon.MaDV = DichVu.MaDV join PhieuNhanPhong on PhieuNhanPhong.MaPhieuNhan = HoaDon.MaPhieu
---join PhieuDatPhong on PhieuNhanPhong.MaPhieuDat = PhieuDatPhong.MaPhieuDat
---join KhachHang on KhachHang.CCCD = PhieuDatPhong.CCCD
 
+EXECUTE getListPhongByMaPhieuDat @maPhieuDat = 'PD001'
 
+--Hàm lấy phòng chưa nhận
 
+EXECUTE getListPhongChuaNhan
 
-select * from getHoaDon('HD001')
+--Hàm Lấy phòng đag đặt chưa trả
+
+select ChiTietDatPhong.MaPhieuDat from Phong join ChiTietDatPhong 
+	on Phong.SoPhong = ChiTietDatPhong.SoPhong JOIN PhieuDatPhong 
+		ON PhieuDatPhong.MaPhieuDat = ChiTietDatPhong.MaPhieuDat join PhieuNhanPhong
+			on PhieuNhanPhong.MaPhieuDat = PhieuDatPhong.MaPhieuDat 
+where MaPhieuNhan not in (select MaPhieu from HoaDon) AND IsEmpty = 0
+
+EXECUTE getListPhongChuaTra

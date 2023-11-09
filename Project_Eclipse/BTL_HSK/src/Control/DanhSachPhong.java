@@ -46,18 +46,37 @@ public class DanhSachPhong {
 	}
 
 	
-	public ArrayList<Phong> getListPhongTrong() {
+//	public DanhSachPhong getPhongNhan() {
+//		
+//	}
+	
+	
+	public  boolean addPhong(Phong a) {
+		return listPhong.add(a);
+	}
+	
+	public DanhSachPhong getListTrangThaiPhong(int index) {
 		
-		ArrayList<Phong> list = new ArrayList<Phong>(); 
+		DanhSachPhong list = new DanhSachPhong(); 
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;
-		
 		try {
 			statement = con.prepareStatement("{call getListTrangThaiPhong(?)}");
-			statement.setInt(1, 1);
+			statement.setInt(1, index);
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
-				
+				int soPhong = result.getInt(1);
+				String tenPhong = result.getString(2);
+				String loaiPhong = result.getString(3);
+				String isEmpty = result.getString(4);
+				if("SUP".equals(loaiPhong)) {
+					PhongVip a = new PhongVip(soPhong, tenPhong, isEmpty.equals("1"));
+					list.addPhong(a);
+				}
+				else {
+					PhongThuong a = new PhongThuong(soPhong, tenPhong, isEmpty.equals("1"));
+					list.addPhong(a);
+				}
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -74,14 +93,11 @@ public class DanhSachPhong {
 	public ArrayList<Phong> getListPhong() {
 		return listPhong;
 	}
-	public ArrayList<Phong> getListPhongByPhieu(String maPhieu) {
-		ArrayList<Phong> a = new ArrayList<Phong>();
+	public DanhSachPhong getListPhongByPhieu(String maPhieu) {
+		DanhSachPhong a = new DanhSachPhong();
 		try {
 			Connection con = Database.getInsConnect().getCon();
-			PreparedStatement statement = con.prepareStatement("select ChiTietDatPhong.SoPhong , TenPhong, LoaiPhong, IsEmpty\r\n"
-					+ "from PhieuDatPhong join ChiTietDatPhong on PhieuDatPhong.MaPhieuDat = ChiTietDatPhong.MaPhieuDat \r\n"
-					+ "join Phong on ChiTietDatPhong.SoPhong = Phong.SoPhong\r\n"
-					+ "where PhieuDatPhong.MaPhieuDat = ?");
+			PreparedStatement statement = con.prepareStatement("{call getListPhongByMaPhieuDat(?)}");
 			statement.setString(1,maPhieu);
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
@@ -91,11 +107,11 @@ public class DanhSachPhong {
 				String isEmpty = result.getString(4);
 				if(loaiPhong.equalsIgnoreCase("PV")) {
 					PhongVip b = new PhongVip(soPhong, tenPhong, isEmpty.equals("1"));
-					a.add(b);
+					a.addPhong(b);
 				}
 				else {
 					PhongThuong b = new PhongThuong(soPhong, tenPhong, isEmpty.equals("1"));
-					a.add(b);
+					a.addPhong(b);
 				}
 			}
 			
@@ -108,7 +124,12 @@ public class DanhSachPhong {
 	}
 	@Override
 	public String toString() {
-		return "DanhSachPhong [listPhong=" + listPhong + "]";
+		String result = listPhong.get(0).getTieuDe();
+		String a = "";
+		for(int i = 0; i< listPhong.size();i++) {
+			a+= "\n" + listPhong.get(i).toString();
+		}
+		return result+a;
 	}
 
 	

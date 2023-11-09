@@ -31,6 +31,9 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import ConnectDB.Database;
+import Control.DanhSachPhong;
+
 public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 //------------------------------------variable/cons-----------------------------------//
 	//---variable for tool bar menu---//
@@ -43,7 +46,6 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	private JButton btn_TimPhong = new JButton("Tìm Phòng");
 	private JTextField txt_TimPhong = new JTextField(10);
 	private JPanel button_TatCaPhong;
-	private JPanel button_PhongDaDat;
 	private JPanel button_PhongDaNhan;
 	private JPanel button_PhongTrong;
 	//---------------TAB QUANLI------------//
@@ -67,9 +69,21 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	private Font big_title_font = new Font("Arial",Font.BOLD, 25);
 	private Font tag_font = new Font("Arial",Font.BOLD, 12);
 	
+	//--------------Connect---------------//
+	Database connect ;
+	
+	//--------------Data-----------------//
+	DanhSachPhong listPhong ;
+	
 	//------------------------------------Main UI-----------------------------------------//
 	public UI_QLKS() {
 		super("Phầm Mềm Quản Lí Khách Sạn");
+		
+		connect = new Database();
+		connect.connect();
+		
+		listPhong = new DanhSachPhong();
+		
 		//-------------tool bar menu ---------//
 		
 		menuJPanel = new JPanel();
@@ -186,17 +200,14 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 		
 		tags_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		button_TatCaPhong = default_RoomTag("Tất Cả", 40, Color.BLACK,Color.BLACK);
+		button_TatCaPhong = default_RoomTag("Tất Cả",listPhong.docDuLieu().size(), Color.BLACK,Color.BLACK);
 		tags_Panel.add(button_TatCaPhong);
-		button_PhongTrong = default_RoomTag("Phòng Trống", 40, Color.GREEN,Color.WHITE);
+		button_PhongTrong = default_RoomTag("Phòng Trống", listPhong.getListTrangThaiPhong(1).getListPhong().size(), Color.GREEN,Color.WHITE);
 		tags_Panel.add(button_PhongTrong);
-		button_PhongDaDat = default_RoomTag("Đã Thuê", 40, Color.ORANGE,Color.WHITE);
-		tags_Panel.add(button_PhongDaDat);
-		button_PhongDaNhan = default_RoomTag("Đã Nhận", 40, Color.RED,Color.WHITE);
+		button_PhongDaNhan = default_RoomTag("Đang Bận", listPhong.getListTrangThaiPhong(0).getListPhong().size(), Color.RED,Color.WHITE);
 		tags_Panel.add(button_PhongDaNhan);
 		
 		button_TatCaPhong.addMouseListener(this);
-		button_PhongDaDat.addMouseListener(this);
 		button_PhongDaNhan.addMouseListener(this);
 		button_PhongTrong.addMouseListener(this);
 		
@@ -441,9 +452,6 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 		if(e.getSource().equals(button_PhongTrong)) {
 			button_PhongTrong.setBackground(new Color(0,204,102));
 		}
-		if(e.getSource().equals(button_PhongDaDat)) {
-			button_PhongDaDat.setBackground(new Color(205,215,0));
-		}
 		if(e.getSource().equals(button_PhongDaNhan)) {
 			button_PhongDaNhan.setBackground(new Color(255,102,102));
 		}
@@ -476,7 +484,6 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 		button_PhongTrong.setBackground(new Color(0,102,0));
 		button_PhongDaNhan.setBackground(new Color(204,0,0));
 		
-		button_PhongDaDat.setBackground(Color.ORANGE);
 	}
 
 	@Override

@@ -1,14 +1,6 @@
 package GUI;
 
-import ConnectDB.Database;
-import Control.DanhSachDichVu;
-import Control.DanhSachHoaDon;
-import Control.DanhSachKhachHang;
-import Control.DanhSachNhanVien;
 import Control.DanhSachPhieuDat;
-import Control.DanhSachPhieuNhan;
-import Control.DanhSachPhong;
-import entity.DichVu;
 
 public class Test {
 
@@ -16,12 +8,10 @@ public class Test {
 		// TODO Auto-generated method stub
 
 		new UI_QLKS();
+		DanhSachPhieuDat a = new DanhSachPhieuDat();
+		System.out.println(a.getListPhongChuaTra().toString());
 		
-//		Database b = new Database();
-//		b.connect();
-//		DanhSachHoaDon a = new DanhSachHoaDon();
-//		a.docDuLieu();
-//		System.out.println(a);
+		
 	}
 
 }
