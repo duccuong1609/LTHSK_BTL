@@ -54,6 +54,11 @@ public class DanhSachNhanVien {
 		return false;
 	}
 	
+	public ArrayList<NhanVien> get_listNV(){
+		return listNV;
+	}
+	
+	
 	public NhanVien getNhanVienByMa(String ma) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;

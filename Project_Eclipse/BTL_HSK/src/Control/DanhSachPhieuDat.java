@@ -81,7 +81,6 @@ public class DanhSachPhieuDat {
 				PhieuDatPhong a1 = getPhieuDatPhongByMa(maPhieu);
 				if(a1 != null)
 					a.addPhieuDat(a1);
-				
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
