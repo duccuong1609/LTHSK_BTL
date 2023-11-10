@@ -2,53 +2,67 @@ package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.EventObject;
+
 import javax.swing.BoxLayout;
+import javax.swing.CellEditor;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.CellEditorListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellEditor;
+
+import org.junit.runners.model.FrameworkMethod;
+
 import com.toedter.calendar.JDateChooser;
 
 public class UI_QL_TraPhong implements MouseListener{
 	
 	//--------DatPhong-----------//
 	public JPanel display_TraPhong;
-	private JButton datPhong_Then;
-	private JButton DatPhong_Xoa;
-	private JButton DatPhong_Sua;
-	private JButton DatPhong_TaoLai;
+	private JButton Them;
+	private JButton Xoa;
+	private JButton TaoLai;
 	
-	private JComboBox<String> datPhong_cb_SoPhong;
-	private JComboBox<String> DatPhong_cb_MaNV;
-	private JTextField DatPhong_txt_CCCD;
-	private JDateChooser DatPhong_NgayDen;
-	private JDateChooser DatPhong_NgayDi;
+	private JDateChooser TraPhong_NgayTra;
+	private JDateChooser TraPhong_GioTra;
 	
 //	private DanhSachPhieuDat phieuDat;
 	
 	
-	String[] cols_name = {"MÃ PHIẾU THUÊ","MÃ NHÂN VIÊN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","NGÀY ĐẾN","NGÀY ĐI"};
+	String[] cols_name = {"MÃ PHIẾU NHẬN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","NGÀY NHẬN"};
 	private Object[][] data = {
-            {"1", "Alice", "Smith"},
-            {"2", "Bob", "Johnson"},
-            {"3", "Charlie", "Williams"}
+            {"1", "Alice"},
+            {"2", "Bob"},
+            {"3", "Charlie"}
         };
-	
+	String[] cols_dv_name = {"MÃ DỊCH VỤ","TÊN DỊCH VỤ","SỬ DỤNG"};
+	private Object[][] data_dv = {
+            {"1", "Alice"},
+            {"2", "Bob"},
+            {"3", "Charlie"}
+        };
 	@SuppressWarnings("serial")
-	private DefaultTableModel model = new DefaultTableModel(data,cols_name) {
+	private DefaultTableModel model = new DefaultTableModel(data_dv,cols_name) {
 		public boolean isCellEditable(int row, int column) {
 			if(column==0) {
 				return false;
@@ -56,11 +70,22 @@ public class UI_QL_TraPhong implements MouseListener{
 			return true;
 		};
 	};
+	@SuppressWarnings("serial")
+	private DefaultTableModel model_dv = new DefaultTableModel(data,cols_dv_name) {
+		public boolean isCellEditable(int row, int column) {
+			if(column==0) {
+				return false;
+			}
+			return true;
+		};
+	};
+	
 	private JTable table = new JTable(model);
+	private JTable table_dv = new JTable(model_dv);
 	
 	public UI_QL_TraPhong() {
 		
-//		table
+		//--------------------------------------table-----------------------------//
 		table.getTableHeader().setFont(Default_Custom_UI.title_font);
 		table.getTableHeader().setPreferredSize(new Dimension(100, 50));
 		table.setBorder(null);
@@ -74,8 +99,22 @@ public class UI_QL_TraPhong implements MouseListener{
 		table.setShowVerticalLines(false);
 		table.setRowHeight(30);
 		table.addMouseListener(this);
+		//---------------------------------------------------------------------//
+		table_dv.getTableHeader().setFont(Default_Custom_UI.title_font);
+		table_dv.getTableHeader().setPreferredSize(new Dimension(100, 50));
+		table_dv.setBorder(null);
 		
+		table_dv.setFont(new Font("Arial",Font.TRUETYPE_FONT,15));
 		
+		JTableHeader header_dv = table_dv.getTableHeader();
+		
+		header_dv.setDefaultRenderer(new CustomHeaderRenderer());
+		table_dv.setDefaultRenderer(Object.class,new CustomRenderer());
+		table_dv.setShowVerticalLines(false);
+		table_dv.setRowHeight(30);
+		table_dv.addMouseListener(this);
+		
+		//------------------------------------------------------------------------=//
 		display_TraPhong = new JPanel();
 		display_TraPhong = new JPanel();
 		display_TraPhong.setLayout(new BorderLayout());
@@ -93,6 +132,7 @@ public class UI_QL_TraPhong implements MouseListener{
 		display_TraPhong.add(titleJPanel,BorderLayout.NORTH);
 		
 		JPanel main_pJPanel = new JPanel();
+		
 		main_pJPanel.setLayout(new BorderLayout());
 		
 		main_pJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
@@ -103,36 +143,39 @@ public class UI_QL_TraPhong implements MouseListener{
 		
 		JPanel left_addfield = new JPanel();
 		
+		left_addfield.setLayout(new BorderLayout());
+		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
-		datPhong_cb_SoPhong = Default_Custom_UI.add_data_ds_combo("Phong");
-		DatPhong_cb_MaNV = Default_Custom_UI.add_data_ds_combo("NV");
-		DatPhong_txt_CCCD = Default_Custom_UI.default_textfield();
-		DatPhong_NgayDen = Default_Custom_UI.defaultDateChooser();
-		DatPhong_NgayDi = Default_Custom_UI.defaultDateChooser();
+		left_addfield.setPreferredSize(new Dimension(350,800));
 		
-		JPanel txt_panel = new JPanel();
-		txt_panel.setLayout(new BoxLayout(txt_panel, BoxLayout.X_AXIS));
-		txt_panel.setPreferredSize(new Dimension(220,35));
-		txt_panel.add(DatPhong_txt_CCCD);
+		JScrollPane jp_dv = new JScrollPane(table_dv);
+		jp_dv.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
 		
+		TraPhong_GioTra = Default_Custom_UI.defaultDateChooser();
+		TraPhong_GioTra.setPreferredSize(new Dimension(320,35));
+		TraPhong_NgayTra = Default_Custom_UI.defaultDateChooser();
+		TraPhong_NgayTra.setPreferredSize(new Dimension(320,35));
+		left_addfield.add(jp_dv,BorderLayout.CENTER);
 		
-		left_addfield.setPreferredSize(new Dimension(250,800));
+		JLabel lb1 = Default_Custom_UI.default_label("NGÀY TRẢ");
+		lb1.setPreferredSize(new Dimension(300,25));
+		JLabel lb2 = Default_Custom_UI.default_label("GIỜ TRẢ");
+		lb2.setPreferredSize(new Dimension(300,25));
+		JLabel lb3 = Default_Custom_UI.default_label("DỊCH VỤ ĐÃ SỬ DỤNG");
+		lb3.setPreferredSize(new Dimension(300,25));
 		
-		left_addfield.add(Default_Custom_UI.default_label("MÃ PHÒNG"));
-		left_addfield.add(datPhong_cb_SoPhong); 
-		left_addfield.add(Default_Custom_UI.default_label("MÃ NHÂN VIÊN"));
-		left_addfield.add(DatPhong_cb_MaNV);
-		left_addfield.add(Default_Custom_UI.default_label("CCCD"));
-		left_addfield.add(txt_panel);
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐẾN"));
-		left_addfield.add(DatPhong_NgayDen);
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐI"));
-		left_addfield.add(DatPhong_NgayDi);
+		JPanel other_field = new JPanel();
+		other_field.add(lb1);
+		other_field.add(TraPhong_NgayTra);
+		other_field.add(lb2);
+		other_field.add(TraPhong_GioTra);
+		other_field.add(lb3);
+		other_field.setPreferredSize(new Dimension(180,180));
+		
+		left_addfield.add(other_field,BorderLayout.NORTH);
 		
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
-		
-		
 		
 		JPanel content_panel = new JPanel(new BorderLayout());
 		JPanel button_panel = new JPanel();
@@ -144,15 +187,17 @@ public class UI_QL_TraPhong implements MouseListener{
 		JScrollPane jp = new JScrollPane(table);
 		jp.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
 		
-		datPhong_Then = Default_Custom_UI.default_Action_Button("Thêm", "Media/Icon/them.gif");
-		DatPhong_Sua = Default_Custom_UI.default_Action_Button("Sửa", "Media/Icon/chinhsua.gif");
-		DatPhong_Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
-		DatPhong_TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
+		Them = Default_Custom_UI.default_Action_Button("TRẢ PHÒNG", "Media/Icon/them.gif");
+		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
+		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
 		
-		button_panel.add(DatPhong_TaoLai);
-		button_panel.add(datPhong_Then);
-		button_panel.add(DatPhong_Xoa);
-		button_panel.add(DatPhong_Sua);
+		button_panel.add(TaoLai);
+		button_panel.add(Them);
+		button_panel.add(Xoa);
+		
+		data_dv = Default_Custom_UI.cast_data("DichVu");
+		model_dv.setDataVector(data_dv, cols_dv_name);
+		table_dv.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JCheckBox()));
 		
 		content_panel.add(jp,BorderLayout.CENTER);
 		

@@ -30,6 +30,7 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 	private JButton Xoa;
 	private JButton Sua;
 	private JButton TaoLai;
+	private JButton Tim;
 	
 	private JComboBox<String> KH_cb_LoaiKhach;
 	private JTextField KH_txt_CCCD;
@@ -164,17 +165,19 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 		Sua = Default_Custom_UI.default_Action_Button("Sửa", "Media/Icon/chinhsua.gif");
 		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
 		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
+		Tim = Default_Custom_UI.default_Action_Button("Tìm", "Media/Icon/tim.gif");
 		
 		Then.addActionListener(this);
 		Sua.addActionListener(this);
 		Xoa.addActionListener(this);
 		TaoLai.addActionListener(this);
-		
+		Tim.addActionListener(this);
 		
 		button_panel.add(TaoLai);
 		button_panel.add(Then);
 		button_panel.add(Xoa);
 		button_panel.add(Sua);
+		button_panel.add(Tim);
 		
 		content_panel.add(jp,BorderLayout.CENTER);
 		

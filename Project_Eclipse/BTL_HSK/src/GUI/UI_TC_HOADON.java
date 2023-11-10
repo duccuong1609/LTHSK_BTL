@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BoxLayout;
@@ -22,29 +24,34 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import com.toedter.calendar.JDateChooser;
 
-public class UI_TC_HOADON implements MouseListener{
+public class UI_TC_HOADON implements MouseListener,ActionListener{
 	
 	//--------DatPhong-----------//
 	public JPanel display_HoaDon;
-	private JButton datPhong_Then;
-	private JButton DatPhong_Xoa;
-	private JButton DatPhong_Sua;
-	private JButton DatPhong_TaoLai;
+	private JButton Tim;
+	private JButton Xoa;
+	private JButton Sua;
+	private JButton TaoLai;
 	
-	private JComboBox<String> datPhong_cb_SoPhong;
-	private JComboBox<String> DatPhong_cb_MaNV;
-	private JTextField DatPhong_txt_CCCD;
-	private JDateChooser DatPhong_NgayDen;
-	private JDateChooser DatPhong_NgayDi;
+	private JTextField HoaDon_txt_MaHoaDon;
+	private JTextField HoaDon_txt_MaNhanVien;
+	private JTextField HoaDon_txt_CCCD;
+	private JTextField HoaDon_txt_MaSoPhong;
 	
 //	private DanhSachPhieuDat phieuDat;
 	
 	
-	String[] cols_name = {"MÃ PHIẾU THUÊ","MÃ NHÂN VIÊN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","NGÀY ĐẾN","NGÀY ĐI"};
+	String[] cols_name = {"MÃ HÓA ĐƠN","MÃ NHÂN VIÊN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","TỔNG TIỀN"};
+	String[] cols_name_dv = {"MÃ DỊCH VỤ","TÊN DỊCH VỤ","GIÁ DỊCH VỤ"};
 	private Object[][] data = {
             {"1", "Alice", "Smith"},
             {"2", "Bob", "Johnson"},
             {"3", "Charlie", "Williams"}
+        };
+	private Object[][] data_dv = {
+            {"1", "Alice",200},
+            {"2", "Bob",200},
+            {"3", "Charlie",200}
         };
 	
 	@SuppressWarnings("serial")
@@ -56,11 +63,22 @@ public class UI_TC_HOADON implements MouseListener{
 			return true;
 		};
 	};
+	@SuppressWarnings("serial")
+	private DefaultTableModel model_dv = new DefaultTableModel(data_dv,cols_name_dv) {
+		public boolean isCellEditable(int row, int column) {
+			if(column==0) {
+				return false;
+			}
+			return true;
+		};
+	};
+	
 	private JTable table = new JTable(model);
+	private JTable table_dv = new JTable(model_dv);
 	
 	public UI_TC_HOADON() {
 		
-//		table
+		//--------------------------------table--------------------------------//
 		table.getTableHeader().setFont(Default_Custom_UI.title_font);
 		table.getTableHeader().setPreferredSize(new Dimension(100, 50));
 		table.setBorder(null);
@@ -74,6 +92,21 @@ public class UI_TC_HOADON implements MouseListener{
 		table.setShowVerticalLines(false);
 		table.setRowHeight(30);
 		table.addMouseListener(this);
+		//--------------------------------------------------------------------//
+		table_dv.getTableHeader().setFont(Default_Custom_UI.title_font);
+		table_dv.getTableHeader().setPreferredSize(new Dimension(100, 50));
+		table_dv.setBorder(null);
+		
+		table_dv.setFont(new Font("Arial",Font.TRUETYPE_FONT,15));
+		
+		JTableHeader header_dv = table_dv.getTableHeader();
+		
+		header_dv.setDefaultRenderer(new CustomHeaderRenderer());
+		table_dv.setDefaultRenderer(Object.class,new CustomRenderer());
+		table_dv.setShowVerticalLines(false);
+		table_dv.setRowHeight(30);
+		table_dv.addMouseListener(this);
+		//--------------------------------------------------------------------//
 		
 		
 		display_HoaDon = new JPanel();
@@ -105,30 +138,51 @@ public class UI_TC_HOADON implements MouseListener{
 		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
-		datPhong_cb_SoPhong = Default_Custom_UI.add_data_ds_combo("Phong");
-		DatPhong_cb_MaNV = Default_Custom_UI.add_data_ds_combo("NV");
-		DatPhong_txt_CCCD = Default_Custom_UI.default_textfield();
-		DatPhong_NgayDen = Default_Custom_UI.defaultDateChooser();
-		DatPhong_NgayDi = Default_Custom_UI.defaultDateChooser();
-		
-		JPanel txt_panel = new JPanel();
-		txt_panel.setLayout(new BoxLayout(txt_panel, BoxLayout.X_AXIS));
-		txt_panel.setPreferredSize(new Dimension(220,35));
-		txt_panel.add(DatPhong_txt_CCCD);
 		
 		
-		left_addfield.setPreferredSize(new Dimension(250,800));
+		left_addfield.setPreferredSize(new Dimension(380,800));
+		left_addfield.setLayout(new BorderLayout());
 		
-		left_addfield.add(Default_Custom_UI.default_label("MÃ PHÒNG"));
-		left_addfield.add(datPhong_cb_SoPhong); 
-		left_addfield.add(Default_Custom_UI.default_label("MÃ NHÂN VIÊN"));
-		left_addfield.add(DatPhong_cb_MaNV);
-		left_addfield.add(Default_Custom_UI.default_label("CCCD"));
-		left_addfield.add(txt_panel);
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐẾN"));
-		left_addfield.add(DatPhong_NgayDen);
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐI"));
-		left_addfield.add(DatPhong_NgayDi);
+		JPanel other_field = new JPanel();
+		
+		JLabel lb1 = Default_Custom_UI.default_label("MÃ HÓA ĐƠN");
+		lb1.setPreferredSize(new Dimension(330,20));
+		JLabel lb2 = Default_Custom_UI.default_label("MÃ NHÂN VIÊN");
+		lb2.setPreferredSize(new Dimension(330,20));
+		JLabel lb3 = Default_Custom_UI.default_label("CCCD");
+		lb3.setPreferredSize(new Dimension(330,20));
+		JLabel lb4 = Default_Custom_UI.default_label("MÃ SỐ PHÒNG");
+		lb4.setPreferredSize(new Dimension(330,20));
+		JLabel lb5 = Default_Custom_UI.default_label("DỊCH VỤ ĐÃ DÙNG");
+		lb5.setPreferredSize(new Dimension(330,20));
+		
+		HoaDon_txt_MaNhanVien = Default_Custom_UI.default_textfield();
+		HoaDon_txt_CCCD = Default_Custom_UI.default_textfield();
+		HoaDon_txt_MaSoPhong = Default_Custom_UI.default_textfield();
+		HoaDon_txt_MaHoaDon = Default_Custom_UI.default_textfield();
+		
+		JPanel jp0 = Default_Custom_UI.default_text_panel(HoaDon_txt_MaHoaDon);
+		jp0.setPreferredSize(new Dimension(350,35));
+		JPanel jp1 = Default_Custom_UI.default_text_panel(HoaDon_txt_MaNhanVien);
+		jp1.setPreferredSize(new Dimension(350,35));
+		JPanel jp2 = Default_Custom_UI.default_text_panel(HoaDon_txt_CCCD);
+		jp2.setPreferredSize(new Dimension(350,35));
+		JPanel jp3 = Default_Custom_UI.default_text_panel(HoaDon_txt_MaSoPhong);
+		jp3.setPreferredSize(new Dimension(350,35));
+		
+		other_field.add(lb1);
+		other_field.add(jp0);
+		other_field.add(lb2);
+		other_field.add(jp1);
+		other_field.add(lb3);
+		other_field.add(jp2);
+		other_field.add(lb4);
+		other_field.add(jp3);
+		other_field.add(lb5);
+		
+		other_field.setPreferredSize(new Dimension(180,290));
+		
+		left_addfield.add(other_field,BorderLayout.NORTH);
 		
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
@@ -142,17 +196,21 @@ public class UI_TC_HOADON implements MouseListener{
 		//table
 		
 		JScrollPane jp = new JScrollPane(table);
+		JScrollPane jp_dv = new JScrollPane(table_dv);
 		jp.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
+		jp_dv.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
 		
-		datPhong_Then = Default_Custom_UI.default_Action_Button("Thêm", "Media/Icon/them.gif");
-		DatPhong_Sua = Default_Custom_UI.default_Action_Button("Sửa", "Media/Icon/chinhsua.gif");
-		DatPhong_Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
-		DatPhong_TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
+		left_addfield.add(jp_dv,BorderLayout.CENTER);
 		
-		button_panel.add(DatPhong_TaoLai);
-		button_panel.add(datPhong_Then);
-		button_panel.add(DatPhong_Xoa);
-		button_panel.add(DatPhong_Sua);
+		Tim = Default_Custom_UI.default_Action_Button("Tìm", "Media/Icon/tim.gif");
+		Sua = Default_Custom_UI.default_Action_Button("Sửa", "Media/Icon/chinhsua.gif");
+		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
+		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
+		
+		button_panel.add(TaoLai);
+		button_panel.add(Tim);
+		button_panel.add(Xoa);
+		button_panel.add(Sua);
 		
 		content_panel.add(jp,BorderLayout.CENTER);
 		
@@ -196,6 +254,13 @@ public class UI_TC_HOADON implements MouseListener{
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

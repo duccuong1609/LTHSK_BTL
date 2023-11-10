@@ -93,7 +93,6 @@ public class DanhSachPhong {
 		}
 		return null;
 	}
-	
 //	public ArrayList<Phong> getListPhongDaDat(){
 //		
 //	}

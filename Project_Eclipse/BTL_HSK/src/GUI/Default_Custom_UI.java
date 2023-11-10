@@ -32,6 +32,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import com.toedter.calendar.JDateChooser;
 
+import Control.DanhSachDichVu;
 import Control.DanhSachKhachHang;
 import Control.DanhSachNhanVien;
 import Control.DanhSachPhong;
@@ -43,6 +44,7 @@ public class Default_Custom_UI {
 	private static DanhSachPhong listPhong ;
 	private static DanhSachNhanVien listNhanVien;
 	private static DanhSachKhachHang listKhachHang;
+	private static DanhSachDichVu listDichVu;
 //	private static DanhSachPhieuDat list_phieuDat;
 	//-----------------------------------DEFAULT-----------------------------------------//
 	
@@ -189,8 +191,8 @@ public class Default_Custom_UI {
 			if(type.equals("Phong")) {
 				listPhong = new DanhSachPhong();
 				listPhong.docDuLieu();
-				for(int i=0;i<listPhong.getListPhong().size();i++) {
-					cb.addItem(Integer.toString(listPhong.getListPhong().get(i).getSoPhong()));
+				for(int i=0;i<listPhong.getListTrangThaiPhong(1).getListPhong().size();i++) {
+					cb.addItem(Integer.toString(listPhong.getListTrangThaiPhong(1).getListPhong().get(i).getSoPhong()));
 				}
 			}
 			
@@ -233,6 +235,42 @@ public class Default_Custom_UI {
 				}
 				return data;
 			}
+			if(type.equals("DichVu")) {
+				listDichVu = new DanhSachDichVu();
+				listDichVu.docDuLieu();
+				String[][] data = new String[listDichVu.getDichVu().size()][2];
+				for(int i=0;i<listDichVu.getDichVu().size();i++) {
+					data[i][0] = listDichVu.getDichVu().get(i).getMaDV();
+					data[i][1] = listDichVu.getDichVu().get(i).getTenDV();
+				}
+				return data;
+			}
+			if(type.equals("DichVu_FULL")) {
+				listDichVu = new DanhSachDichVu();
+				listDichVu.docDuLieu();
+				String[][] data = new String[listDichVu.getDichVu().size()][3];
+				for(int i=0;i<listDichVu.getDichVu().size();i++) {
+					data[i][0] = listDichVu.getDichVu().get(i).getMaDV();
+					data[i][1] = listDichVu.getDichVu().get(i).getTenDV();
+					data[i][2] = Float.toString(listDichVu.getDichVu().get(i).getGia());
+				}
+				return data;
+			}
+			if(type.equals("NhanVien")) {
+				listNhanVien = new DanhSachNhanVien();
+				listNhanVien.docDuLieu();
+				String[][] data = new String[listNhanVien.get_listNV().size()][5];
+				for(int i=0;i<listNhanVien.get_listNV().size();i++) {
+					data[i][0] = listNhanVien.get_listNV().get(i).getMaNV();
+					data[i][1] = listNhanVien.get_listNV().get(i).getTenNV();
+					data[i][2] = listNhanVien.get_listNV().get(i).getDiaChi();
+					data[i][3] = listNhanVien.get_listNV().get(i).getEmail();
+					data[i][4] = listNhanVien.get_listNV().get(i).getSoDT();
+				}
+				return data;
+			}
+			
+			
 			return null;
 		}
 }
@@ -410,8 +448,15 @@ class CustomRenderer extends DefaultTableCellRenderer {
         }
         
         table.getColumnModel().getColumn(column).setPreferredWidth(90); 
-        table.getColumnModel().getColumn(2).setPreferredWidth(150);
-		table.getColumnModel().getColumn(3).setPreferredWidth(80);
+        if(table.getColumnCount()>3) {
+        	table.getColumnModel().getColumn(2).setPreferredWidth(150);
+    		table.getColumnModel().getColumn(3).setPreferredWidth(80);
+        }
+        else {
+        	table.getColumnModel().getColumn(0).setPreferredWidth(80);
+        	table.getColumnModel().getColumn(1).setPreferredWidth(140);
+    		table.getColumnModel().getColumn(2).setPreferredWidth(60);
+        }
         table.getColumnModel().getColumn(column).setCellRenderer(new DefaultTableCellRenderer() {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component cellComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);

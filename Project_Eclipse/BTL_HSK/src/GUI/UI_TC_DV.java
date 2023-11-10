@@ -5,11 +5,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -20,27 +20,25 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import com.toedter.calendar.JDateChooser;
 
-public class UI_TC_DV implements MouseListener{
+public class UI_TC_DV implements MouseListener,ActionListener{
 	
 	//--------DatPhong-----------//
 	public JPanel display_DV;
-	private JButton datPhong_Then;
-	private JButton DatPhong_Xoa;
-	private JButton DatPhong_Sua;
-	private JButton DatPhong_TaoLai;
-	
-	private JComboBox<String> datPhong_cb_SoPhong;
-	private JComboBox<String> DatPhong_cb_MaNV;
-	private JTextField DatPhong_txt_CCCD;
-	private JDateChooser DatPhong_NgayDen;
-	private JDateChooser DatPhong_NgayDi;
+	private JButton Then;
+	private JButton Xoa;
+	private JButton Sua;
+	private JButton TaoLai;
+	private JButton Tim;
+
+	private JTextField DV_txt_MADV;
+	private JTextField DV_txt_TENDV;
+	private JTextField DV_txt_GIADV;
 	
 //	private DanhSachPhieuDat phieuDat;
 	
 	
-	String[] cols_name = {"MÃ PHIẾU THUÊ","MÃ NHÂN VIÊN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","NGÀY ĐẾN","NGÀY ĐI"};
+	String[] cols_name = {"MÃ DỊCH VỤ","TÊN DỊCH VỤ","GIÁ DỊCH VỤ"};
 	private Object[][] data = {
             {"1", "Alice", "Smith"},
             {"2", "Bob", "Johnson"},
@@ -59,6 +57,9 @@ public class UI_TC_DV implements MouseListener{
 	private JTable table = new JTable(model);
 	
 	public UI_TC_DV() {
+		//setup data
+		data = Default_Custom_UI.cast_data("DichVu_FULL");
+		model.setDataVector(data, cols_name);
 		
 //		table
 		table.getTableHeader().setFont(Default_Custom_UI.title_font);
@@ -105,34 +106,22 @@ public class UI_TC_DV implements MouseListener{
 		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
-		datPhong_cb_SoPhong = Default_Custom_UI.add_data_ds_combo("Phong");
-		DatPhong_cb_MaNV = Default_Custom_UI.add_data_ds_combo("NV");
-		DatPhong_txt_CCCD = Default_Custom_UI.default_textfield();
-		DatPhong_NgayDen = Default_Custom_UI.defaultDateChooser();
-		DatPhong_NgayDi = Default_Custom_UI.defaultDateChooser();
-		
-		JPanel txt_panel = new JPanel();
-		txt_panel.setLayout(new BoxLayout(txt_panel, BoxLayout.X_AXIS));
-		txt_panel.setPreferredSize(new Dimension(220,35));
-		txt_panel.add(DatPhong_txt_CCCD);
-		
+		DV_txt_MADV = Default_Custom_UI.default_textfield();
+		DV_txt_TENDV = Default_Custom_UI.default_textfield();
+		DV_txt_GIADV = Default_Custom_UI.default_textfield();
 		
 		left_addfield.setPreferredSize(new Dimension(250,800));
 		
-		left_addfield.add(Default_Custom_UI.default_label("MÃ PHÒNG"));
-		left_addfield.add(datPhong_cb_SoPhong); 
-		left_addfield.add(Default_Custom_UI.default_label("MÃ NHÂN VIÊN"));
-		left_addfield.add(DatPhong_cb_MaNV);
-		left_addfield.add(Default_Custom_UI.default_label("CCCD"));
-		left_addfield.add(txt_panel);
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐẾN"));
-		left_addfield.add(DatPhong_NgayDen);
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐI"));
-		left_addfield.add(DatPhong_NgayDi);
+		left_addfield.add(Default_Custom_UI.default_label("MÃ DỊCH VỤ"));
+		left_addfield.add(Default_Custom_UI.default_text_panel(DV_txt_MADV)); 
+		
+		left_addfield.add(Default_Custom_UI.default_label("TÊN DỊCH VỤ"));
+		left_addfield.add(Default_Custom_UI.default_text_panel(DV_txt_TENDV)); 
+		
+		left_addfield.add(Default_Custom_UI.default_label("GIÁ DỊCH VỤ"));
+		left_addfield.add(Default_Custom_UI.default_text_panel(DV_txt_GIADV)); 
 		
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
-		
-		
 		
 		JPanel content_panel = new JPanel(new BorderLayout());
 		JPanel button_panel = new JPanel();
@@ -142,17 +131,28 @@ public class UI_TC_DV implements MouseListener{
 		//table
 		
 		JScrollPane jp = new JScrollPane(table);
+		
+		jp.setBackground(new Color(0,25,51));
+		
 		jp.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
 		
-		datPhong_Then = Default_Custom_UI.default_Action_Button("Thêm", "Media/Icon/them.gif");
-		DatPhong_Sua = Default_Custom_UI.default_Action_Button("Sửa", "Media/Icon/chinhsua.gif");
-		DatPhong_Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
-		DatPhong_TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
+		Then = Default_Custom_UI.default_Action_Button("Thêm", "Media/Icon/them.gif");
+		Sua = Default_Custom_UI.default_Action_Button("Sửa", "Media/Icon/chinhsua.gif");
+		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
+		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
+		Tim = Default_Custom_UI.default_Action_Button("Tìm", "Media/Icon/tim.gif");
 		
-		button_panel.add(DatPhong_TaoLai);
-		button_panel.add(datPhong_Then);
-		button_panel.add(DatPhong_Xoa);
-		button_panel.add(DatPhong_Sua);
+		Then.addActionListener(this);
+		Sua.addActionListener(this);
+		Xoa.addActionListener(this);
+		TaoLai.addActionListener(this);
+		Tim.addActionListener(this);
+		
+		button_panel.add(TaoLai);
+		button_panel.add(Then);
+		button_panel.add(Xoa);
+		button_panel.add(Sua);
+		button_panel.add(Tim);
 		
 		content_panel.add(jp,BorderLayout.CENTER);
 		
@@ -172,7 +172,10 @@ public class UI_TC_DV implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(table)) {
-			
+			int row = table.getSelectedRow();
+			DV_txt_MADV.setText(model.getValueAt(row, 0).toString());
+			DV_txt_TENDV.setText(model.getValueAt(row, 1).toString());
+			DV_txt_GIADV.setText(model.getValueAt(row, 2).toString());
 		}
 	}
 
@@ -198,6 +201,18 @@ public class UI_TC_DV implements MouseListener{
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource().equals(TaoLai)) {
+			DV_txt_MADV.setText("");
+			DV_txt_TENDV.setText("");
+			DV_txt_GIADV.setText("");
+			DV_txt_MADV.requestFocus();
+		}
 	}
 }
 
