@@ -25,6 +25,7 @@ public class DanhSachHoaDon {
 	
 	public ArrayList<HoaDon> docDuLieu(){
 		try {
+			listHD = new ArrayList<HoaDon>();
 			Connection con = Database.getInsConnect().getCon();
 			SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");

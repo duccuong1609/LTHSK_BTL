@@ -85,6 +85,12 @@ public class DanhSachPhong {
 		return list;
 	}
 	
+	public Phong getPhongBySoPhong(int soPhong) {
+		Phong a = new Phong(soPhong, null, false);
+		int index  = listPhong.indexOf(a);
+		return listPhong.get(index);
+	}
+	
 //	public ArrayList<Phong> getListPhongDaDat(){
 //		
 //	}

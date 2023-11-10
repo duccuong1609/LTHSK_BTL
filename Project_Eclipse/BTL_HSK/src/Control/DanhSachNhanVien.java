@@ -18,6 +18,7 @@ public class DanhSachNhanVien {
 	
 	public ArrayList<NhanVien> docDuLieu(){
 		try {
+			listNV = new ArrayList<NhanVien>();
 			Connection con = Database.getInsConnect().getCon();
 			String sql = "select * from NhanVien";
 			Statement statement = con.createStatement();

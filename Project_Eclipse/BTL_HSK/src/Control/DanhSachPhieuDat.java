@@ -30,8 +30,8 @@ public class DanhSachPhieuDat {
 	
 	public ArrayList<PhieuDatPhong> docDuLieu(){
 		try {
+			listPDP = new ArrayList<PhieuDatPhong>();
 			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-			
 			Connection con = Database.getInsConnect().getCon();
 			Statement statement = con.createStatement();
 			String sql = "select MaPhieuDat, MaNV, CCCD,NgayDen, NgayDi,soLuong from PhieuDatPhong";
@@ -44,7 +44,7 @@ public class DanhSachPhieuDat {
 				Date ngayDi = date.parse(result.getString(5));
 				int soLuong = result.getInt(6);
 				NhanVien nv = listNV.getNhanVienByMa(maNV);
-				KhachHang kh = listKH.getNhanVienByMa(CCCD);
+				KhachHang kh = listKH.getKhachHangByMa(CCCD);
 				DanhSachPhong phongs = listPhong.getListPhongByPhieu(maPD);
 				PhieuDatPhong a = new PhieuDatPhong(maPD, nv, kh, phongs, soLuong, ngayDen, ngayDi);
 				listPDP.add(a);
@@ -60,7 +60,7 @@ public class DanhSachPhieuDat {
 	}
 	
 	public PhieuDatPhong getPhieuDatPhongByMa(String maPhieu) {
-		PhieuDatPhong a = new PhieuDatPhong(maPhieu, null, null, listPhong, 0, null, null);
+		PhieuDatPhong a = new PhieuDatPhong(maPhieu, null, null, null, 0, null, null);
 		int index = listPDP.indexOf(a);
 		if(index == -1)
 			return null;
@@ -69,13 +69,13 @@ public class DanhSachPhieuDat {
 	
 //	Hàm lấy dữ liệu Những phiếu chưa trả phòng
 	
-	public DanhSachPhieuDat getListPhongChuaTra() {
+	public DanhSachPhieuDat getPhieuDatPhongChuaNhan() {
 		DanhSachPhieuDat a = new DanhSachPhieuDat();
 		Connection con = Database.getInsConnect().getCon();
 		docDuLieu();
 		try {
 			Statement statement  = con.createStatement();
-			ResultSet result = statement.executeQuery("{call getListPhongChuaTra}");
+			ResultSet result = statement.executeQuery("{call getListPhongChuaNhan}");
 			while(result.next()) {
 				String maPhieu = result.getString(1);
 				PhieuDatPhong a1 = getPhieuDatPhongByMa(maPhieu);
@@ -84,17 +84,13 @@ public class DanhSachPhieuDat {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return a;
 		
 	}
 	
-//	Hàm này lấy Phiếu đtặ phòng theo maPhieu
-	public PhieuDatPhong getPhieuDat(String maPhieu) {
-		PhieuDatPhong a = new PhieuDatPhong(maPhieu, null, null, null, 0, null, null);
-		int index = listPDP.indexOf(a);
-		return listPDP.get(index);
-	}
+	
 	
 	@Override
 	public String toString() {

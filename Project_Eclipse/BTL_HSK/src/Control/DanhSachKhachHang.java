@@ -90,7 +90,7 @@ public class DanhSachKhachHang {
 		return n>0;
 	}
 	
-	public KhachHang getNhanVienByMa(String CCCD) {
+	public KhachHang getKhachHangByMa(String CCCD) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;
 		try {

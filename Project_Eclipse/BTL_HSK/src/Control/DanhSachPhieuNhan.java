@@ -1,11 +1,14 @@
 package Control;
 
+import static org.junit.Assert.isArray;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import ConnectDB.Database;
 import entity.PhieuDatPhong;
@@ -33,7 +36,7 @@ public class DanhSachPhieuNhan {
 				String maDat = result.getString(2);
 				Date gioNhan = dateTime.parse(result.getString(3));
 				Date ngayNhan = date.parse(result.getString(4));
-				PhieuDatPhong a = lisDat.getPhieuDat(maDat);
+				PhieuDatPhong a = lisDat.getPhieuDatPhongByMa(maDat);
 				PhieuNhanPhong b = new PhieuNhanPhong(maNhan, a, gioNhan, ngayNhan);
 				listPN.add(b);
 			}
@@ -43,9 +46,47 @@ public class DanhSachPhieuNhan {
 		return listPN;
 	}
 
+	public DanhSachPhieuNhan getListPhongChuaTra() {
+		DanhSachPhieuNhan a = new DanhSachPhieuNhan();
+		Connection con = Database.getInsConnect().getCon();
+		docDuLieu();
+		try {
+			Statement statement  = con.createStatement();
+			ResultSet result = statement.executeQuery("{call getListPhongChuaTra}");
+			while(result.next()) {
+				String maPhieu = result.getString(1);
+				PhieuNhanPhong a1 = getPhieuNhanByMa(maPhieu);
+				if(a1 != null)
+					a.addPhieuNhan(a1);
+				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return a;
+		
+	}
+	
+	public boolean traPhong(String CCCD,int soPhong) {
+		DanhSachPhieuNhan a = new DanhSachPhieuNhan();
+		a = a.getListPhongChuaTra();
+		for(PhieuNhanPhong phieuNhan : a.listPN) {
+			if(phieuNhan.getpDP().getKhachHang().getCCCD().equals(CCCD)) {
+				phieuNhan.getpDP().getPhongs().getPhongBySoPhong(soPhong).setIsEmpty(false);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean addPhieuNhan(PhieuNhanPhong a) {
+		return listPN.add(a);
+	}
+	
 	public PhieuNhanPhong getPhieuNhanByMa(String ma) {
 		PhieuNhanPhong a = new PhieuNhanPhong(ma, null, null, null);
-		int index = listPN.lastIndexOf(a);
+		int index = listPN.indexOf(a);
 		if(index == -1)
 			return null;
 		return listPN.get(index);
