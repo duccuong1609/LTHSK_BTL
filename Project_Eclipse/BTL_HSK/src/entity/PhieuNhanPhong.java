@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class PhieuNhanPhong {
 	private String maPhieuNhan;
@@ -40,6 +41,21 @@ public class PhieuNhanPhong {
 	}
 	public void setNgayNhan(Date ngayNhan) {
 		this.ngayNhan = ngayNhan;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(maPhieuNhan);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PhieuNhanPhong other = (PhieuNhanPhong) obj;
+		return Objects.equals(maPhieuNhan, other.maPhieuNhan);
 	}
 	
 	

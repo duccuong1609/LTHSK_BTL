@@ -135,6 +135,7 @@ public class DanhSachPhong {
 		for(int i = 0; i< listPhong.size();i++) {
 			a+= "\n" + listPhong.get(i).toString();
 		}
+		
 		return result+a;
 	}
 

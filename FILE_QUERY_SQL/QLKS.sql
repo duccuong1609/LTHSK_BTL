@@ -204,7 +204,13 @@ VALUES  (01,'T1.01','STD',1),
         (39,'T4.39','SUP',1),
         (40,'T5.40','SUP',0);
 INSERT INTO PhieuDatPhong(MaPhieuDat, MaNV, CCCD, NgayDen, NgayDi,soLuong)
-VALUES
+VALUES	
+		('PD0054', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
+		('PD0055', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
+		('PD0056', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
+		('PD053', 'NV008', N'919283940215', '2023-07-20', '2023-07-22',1),
+		('PD052', 'NV008', N'919283940215', '2023-07-20', '2023-07-22',1),
+		('PD0051', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',1),
 		('PD001', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
 		('PD002', 'NV002', N'219233940122', '2023-05-12', '2023-05-14',1),
 		('PD003', 'NV001', N'362233213322', '2023-05-04', '2023-05-09',1),
@@ -256,7 +262,14 @@ VALUES
 		('PD049', 'NV007', N'919233940220', '2023-07-19', '2023-07-23',1),
 		('PD050', 'NV008', N'919283940215', '2023-07-20', '2023-07-22',1);
 INSERT INTO ChiTietDatPhong (MaPhieuDat, SoPhong)
-VALUES
+VALUES	
+		('PD0055',05),
+		('PD0056',07),
+		('PD0055',02),
+		('PD0054',08),
+		('PD053',09),
+		('PD052',03),
+		('PD0051',01),
 		('PD001', 05),
 		('PD001', 04),
 		('PD001', 03),
@@ -416,7 +429,7 @@ VALUES
 		('HD016', 'DV003')
 
 
-select MaPhieuNhan, PhieuDatPhong.MaPhieuDat,GioNhan,NgayNhan,maN from PhieuNhanPhong join PhieuDatPhong on PhieuDatPhong.MaPhieuDat = PhieuNhanPhong.MaPhieuDat
+select MaPhieuNhan, PhieuDatPhong.MaPhieuDat,GioNhan,NgayNhan from PhieuNhanPhong join PhieuDatPhong on PhieuDatPhong.MaPhieuDat = PhieuNhanPhong.MaPhieuDat
 
 select CCCD, STK, HoTen, SĐT, DiaChi, Email, MaLoaiKH from KhachHang
 
@@ -436,6 +449,14 @@ EXECUTE getListPhongChuaNhan
 
 --Hàm Lấy phòng đag đặt chưa trả
 
+select * from Phong join ChiTietDatPhong 
+	on Phong.SoPhong = ChiTietDatPhong.SoPhong join PhieuDatPhong 
+		on PhieuDatPhong.MaPhieuDat = ChiTietDatPhong.MaPhieuDat join PhieuNhanPhong 
+			on PhieuNhanPhong.MaPhieuDat = PhieuDatPhong.MaPhieuDat
+
+where MaPhieuNhan NOT IN(select MaPhieu from HoaDon) AND IsEmpty = 0
+
+
 select ChiTietDatPhong.MaPhieuDat from Phong join ChiTietDatPhong 
 	on Phong.SoPhong = ChiTietDatPhong.SoPhong JOIN PhieuDatPhong 
 		ON PhieuDatPhong.MaPhieuDat = ChiTietDatPhong.MaPhieuDat join PhieuNhanPhong
@@ -443,3 +464,8 @@ select ChiTietDatPhong.MaPhieuDat from Phong join ChiTietDatPhong
 where MaPhieuNhan not in (select MaPhieu from HoaDon) AND IsEmpty = 0
 
 EXECUTE getListPhongChuaTra
+
+
+
+EXECUTE getListTrangThaiPhong @trangThai = 0
+select * from Phong

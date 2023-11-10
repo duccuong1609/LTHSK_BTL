@@ -20,6 +20,8 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import Control.DanhSachPhong;
+import entity.Phong;
+import entity.PhongVip;
 
 public class UI_SoDoPhong implements MouseListener,ActionListener{
 	//--------------------------------DISPLAY_SoDoPhong--------------------------------//
@@ -186,17 +188,31 @@ public class UI_SoDoPhong implements MouseListener,ActionListener{
 		get_PhongBan(container, listPhong);
 	}
 	public void get_PhongTrong(JPanel container,DanhSachPhong list) {
-		for(int i=0;i<listPhong.getListTrangThaiPhong(1).getListPhong().size();i++) {
-			String tenPhong = listPhong.getListTrangThaiPhong(1).getListPhong().get(i).getTenPhong();
-			boolean trangThai = listPhong.getListTrangThaiPhong(1).getListPhong().get(i).isIsEmpty();
-			container.add(Create_tab_Phong(trangThai, tenPhong, true));
+		DanhSachPhong listPhong = list.getListTrangThaiPhong(1);
+		
+		for(int i=0;i<listPhong.getListPhong().size();i++) {
+			String tenPhong = listPhong.getListPhong().get(i).getTenPhong();
+			boolean trangThai = listPhong.getListPhong().get(i).isIsEmpty();
+			if(listPhong.getListPhong().get(i) instanceof PhongVip) {
+				container.add(Create_tab_Phong(trangThai, tenPhong, true));
+			}
+			else {
+				container.add(Create_tab_Phong(trangThai, tenPhong, false));
+			}
 		}
 	}
 	public void get_PhongBan(JPanel container,DanhSachPhong list) {
-		for(int i=0;i<listPhong.getListTrangThaiPhong(0).getListPhong().size();i++) {
-			String tenPhong = listPhong.getListTrangThaiPhong(0).getListPhong().get(i).getTenPhong();
-			boolean trangThai = listPhong.getListTrangThaiPhong(0).getListPhong().get(i).isIsEmpty();
-			container.add(Create_tab_Phong(trangThai, tenPhong, true));
+		DanhSachPhong listPhong = list.getListTrangThaiPhong(0);
+		for(int i=0;i<listPhong.getListPhong().size();i++) {
+			String tenPhong = listPhong.getListPhong().get(i).getTenPhong();
+			boolean trangThai = listPhong.getListPhong().get(i).isIsEmpty();
+			
+			if(listPhong.getListPhong().get(i) instanceof PhongVip) {
+				container.add(Create_tab_Phong(trangThai, tenPhong, true));
+			}
+			else {
+				container.add(Create_tab_Phong(trangThai, tenPhong, false));
+			}
 		}
 	}
 	public JPanel timPhong(JPanel container,DanhSachPhong list,int ma) {

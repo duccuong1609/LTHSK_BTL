@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Objects;
+
 public class KhachHang {
 	private String CCCD;;
 	private String soTK;
@@ -65,6 +67,23 @@ public class KhachHang {
 		this.maLoaiKH = maLoaiKH;
 	}
 	
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(CCCD);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KhachHang other = (KhachHang) obj;
+		return Objects.equals(CCCD, other.CCCD);
+	}
 	@Override
 	public String toString() {
 		return "KhachHang [CCCD=" + CCCD + ", soTK=" + soTK + ", hoTen=" + hoTen + ", soDT=" + soDT + ", diaChi="

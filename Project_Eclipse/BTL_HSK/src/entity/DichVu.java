@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Objects;
+
 public class DichVu {
 	private String maDV;
 	private String tenDV;
@@ -30,6 +32,21 @@ public class DichVu {
 	}
 	public void setGia(float gia) {
 		this.gia = gia;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(maDV);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DichVu other = (DichVu) obj;
+		return Objects.equals(maDV, other.maDV);
 	}
 	
 	

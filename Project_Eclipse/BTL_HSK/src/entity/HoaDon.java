@@ -2,6 +2,7 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class HoaDon {
 	private String maHD;
@@ -45,6 +46,21 @@ public class HoaDon {
 	}
 	public void setGioTra(Date gioTra) {
 		this.gioTra = gioTra;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(maHD);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HoaDon other = (HoaDon) obj;
+		return Objects.equals(maHD, other.maHD);
 	}
 	
 	

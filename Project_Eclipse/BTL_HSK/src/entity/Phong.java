@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Objects;
+
 public class Phong {
 	private int soPhong;
 	private String tenPhong;
@@ -41,5 +43,22 @@ public class Phong {
 		// TODO Auto-generated method stub
 		return String.format("%s %s %s ", soPhong,tenPhong,IsEmpty ? "Yes":"No");
 	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(soPhong);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Phong other = (Phong) obj;
+		return soPhong == other.soPhong;
+	}
+	
+	
 	
 }
