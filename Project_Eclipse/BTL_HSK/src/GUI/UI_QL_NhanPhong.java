@@ -26,16 +26,13 @@ public class UI_QL_NhanPhong implements MouseListener{
 	
 	//--------DatPhong-----------//
 	public JPanel display_NhanPhong;
-	private JButton datPhong_Then;
-	private JButton DatPhong_Xoa;
-	private JButton DatPhong_Sua;
-	private JButton DatPhong_TaoLai;
+	private JButton Them;
+	private JButton Xoa;
+	private JButton TaoLai;
 	
-	private JComboBox<String> datPhong_cb_SoPhong;
-	private JComboBox<String> DatPhong_cb_MaNV;
-	private JTextField DatPhong_txt_CCCD;
-	private JDateChooser DatPhong_NgayDen;
-	private JDateChooser DatPhong_NgayDi;
+	private JComboBox<String> NhanPhong_MaPhieuDat;
+	private JDateChooser NhanPhong_NgayNhan;
+	private JDateChooser NhanPhong_GioNhan;
 	
 //	private DanhSachPhieuDat phieuDat;
 	
@@ -105,34 +102,20 @@ public class UI_QL_NhanPhong implements MouseListener{
 		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
-		datPhong_cb_SoPhong = Default_Custom_UI.add_data_ds_combo("Phong");
-		DatPhong_cb_MaNV = Default_Custom_UI.add_data_ds_combo("NV");
-		DatPhong_txt_CCCD = Default_Custom_UI.default_textfield();
-		DatPhong_NgayDen = Default_Custom_UI.defaultDateChooser();
-		DatPhong_NgayDi = Default_Custom_UI.defaultDateChooser();
-		
-		JPanel txt_panel = new JPanel();
-		txt_panel.setLayout(new BoxLayout(txt_panel, BoxLayout.X_AXIS));
-		txt_panel.setPreferredSize(new Dimension(220,35));
-		txt_panel.add(DatPhong_txt_CCCD);
-		
+		NhanPhong_MaPhieuDat = Default_Custom_UI.add_data_ds_combo("");
+		NhanPhong_NgayNhan = Default_Custom_UI.defaultDateChooser();
+		NhanPhong_GioNhan = Default_Custom_UI.defaultDateChooser();
 		
 		left_addfield.setPreferredSize(new Dimension(250,800));
 		
-		left_addfield.add(Default_Custom_UI.default_label("MÃ PHÒNG"));
-		left_addfield.add(datPhong_cb_SoPhong); 
-		left_addfield.add(Default_Custom_UI.default_label("MÃ NHÂN VIÊN"));
-		left_addfield.add(DatPhong_cb_MaNV);
-		left_addfield.add(Default_Custom_UI.default_label("CCCD"));
-		left_addfield.add(txt_panel);
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐẾN"));
-		left_addfield.add(DatPhong_NgayDen);
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐI"));
-		left_addfield.add(DatPhong_NgayDi);
+		left_addfield.add(Default_Custom_UI.default_label("MÃ PHIẾU ĐẶT"));
+		left_addfield.add(NhanPhong_MaPhieuDat); 
+		left_addfield.add(Default_Custom_UI.default_label("GIỜ NHẬN"));
+		left_addfield.add(NhanPhong_GioNhan);
+		left_addfield.add(Default_Custom_UI.default_label("NGÀY NHẬN"));
+		left_addfield.add(NhanPhong_NgayNhan);
 		
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
-		
-		
 		
 		JPanel content_panel = new JPanel(new BorderLayout());
 		JPanel button_panel = new JPanel();
@@ -144,15 +127,14 @@ public class UI_QL_NhanPhong implements MouseListener{
 		JScrollPane jp = new JScrollPane(table);
 		jp.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
 		
-		datPhong_Then = Default_Custom_UI.default_Action_Button("Thêm", "Media/Icon/them.gif");
-		DatPhong_Sua = Default_Custom_UI.default_Action_Button("Sửa", "Media/Icon/chinhsua.gif");
-		DatPhong_Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
-		DatPhong_TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
+		Them = Default_Custom_UI.default_Action_Button("Nhận Phòng", "Media/Icon/them.gif");
+		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
+		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
 		
-		button_panel.add(DatPhong_TaoLai);
-		button_panel.add(datPhong_Then);
-		button_panel.add(DatPhong_Xoa);
-		button_panel.add(DatPhong_Sua);
+		button_panel.add(TaoLai);
+		button_panel.add(Them);
+		button_panel.add(Xoa);
+
 		
 		content_panel.add(jp,BorderLayout.CENTER);
 		

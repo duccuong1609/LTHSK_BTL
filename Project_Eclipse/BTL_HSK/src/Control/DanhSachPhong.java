@@ -90,7 +90,6 @@ public class DanhSachPhong {
 		int index  = listPhong.indexOf(a);
 		return listPhong.get(index);
 	}
-	
 //	public ArrayList<Phong> getListPhongDaDat(){
 //		
 //	}

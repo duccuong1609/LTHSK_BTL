@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BoxLayout;
@@ -22,7 +24,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import com.toedter.calendar.JDateChooser;
 
-public class UI_QL_DatPhong implements MouseListener{
+import Control.DanhSachPhong;
+import entity.Phong;
+import entity.PhongThuong;
+import entity.PhongVip;
+
+public class UI_QL_DatPhong implements MouseListener,ActionListener{
 	
 	//--------DatPhong-----------//
 	public JPanel display_DatPhong;
@@ -36,6 +43,7 @@ public class UI_QL_DatPhong implements MouseListener{
 	private JTextField DatPhong_txt_CCCD;
 	private JDateChooser DatPhong_NgayDen;
 	private JDateChooser DatPhong_NgayDi;
+	private JTextField DatPhong_GiaPhong;
 	
 //	private DanhSachPhieuDat phieuDat;
 	
@@ -109,6 +117,8 @@ public class UI_QL_DatPhong implements MouseListener{
 		DatPhong_txt_CCCD = Default_Custom_UI.default_textfield();
 		DatPhong_NgayDen = Default_Custom_UI.defaultDateChooser();
 		DatPhong_NgayDi = Default_Custom_UI.defaultDateChooser();
+		DatPhong_GiaPhong = Default_Custom_UI.default_textfield();
+		DatPhong_GiaPhong.setEditable(false);
 		
 		JPanel txt_panel = new JPanel();
 		txt_panel.setLayout(new BoxLayout(txt_panel, BoxLayout.X_AXIS));
@@ -128,6 +138,8 @@ public class UI_QL_DatPhong implements MouseListener{
 		left_addfield.add(DatPhong_NgayDen);
 		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐI"));
 		left_addfield.add(DatPhong_NgayDi);
+		left_addfield.add(Default_Custom_UI.default_label("GIÁ PHÒNG / 1 NGÀY"));
+		left_addfield.add(Default_Custom_UI.default_text_panel(DatPhong_GiaPhong));
 		
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
@@ -164,6 +176,7 @@ public class UI_QL_DatPhong implements MouseListener{
 		
 		display_DatPhong.add(main_pJPanel,BorderLayout.CENTER);
 		
+		datPhong_cb_SoPhong.addActionListener(this);
 	}
 	
 
@@ -197,6 +210,28 @@ public class UI_QL_DatPhong implements MouseListener{
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource().equals(datPhong_cb_SoPhong)) {
+			DanhSachPhong ds = new DanhSachPhong();
+			ds.docDuLieu();
+			int sophong = Integer.parseInt(datPhong_cb_SoPhong.getSelectedItem().toString());
+			
+			if(ds.getListPhong().get(sophong-1)!= null) {
+				
+				if(ds.getListPhong().get(sophong-1) instanceof PhongVip) {
+					DatPhong_GiaPhong.setText("300000");
+				}
+				else {
+					DatPhong_GiaPhong.setText("150000");
+				}
+				
+			}
+		}
 	}
 }
 

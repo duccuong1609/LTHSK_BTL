@@ -38,6 +38,11 @@ public class Phong {
 		return String.format("%s %s %s ", "So phong","Ten phong","Trang thai");
 	}
 	
+	
+	public Phong(int soPhong) {
+		super();
+		this.soPhong = soPhong;
+	}
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
