@@ -7,8 +7,6 @@ public class NhanVien {
 	private String diaChi;
 	private String email;
 	
-	
-	
 	public NhanVien(String maNV, String tenNV, String soDT, String diaChi, String email) {
 		super();
 		this.maNV = maNV;

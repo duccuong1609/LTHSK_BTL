@@ -65,7 +65,9 @@ public class KhachHang {
 		this.maLoaiKH = maLoaiKH;
 	}
 	
-	
-	
-	
+	@Override
+	public String toString() {
+		return "KhachHang [CCCD=" + CCCD + ", soTK=" + soTK + ", hoTen=" + hoTen + ", soDT=" + soDT + ", diaChi="
+				+ diaChi + ", emali=" + emali + ", maLoaiKH=" + maLoaiKH + "]";
+	}
 }

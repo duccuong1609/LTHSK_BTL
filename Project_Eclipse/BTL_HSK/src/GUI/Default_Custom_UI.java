@@ -13,6 +13,7 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -30,6 +31,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import com.toedter.calendar.JDateChooser;
+
+import Control.DanhSachKhachHang;
 import Control.DanhSachNhanVien;
 import Control.DanhSachPhong;
 
@@ -39,6 +42,7 @@ public class Default_Custom_UI {
 	public static Font tag_font = new Font("Arial",Font.BOLD, 12);
 	private static DanhSachPhong listPhong ;
 	private static DanhSachNhanVien listNhanVien;
+	private static DanhSachKhachHang listKhachHang;
 //	private static DanhSachPhieuDat list_phieuDat;
 	//-----------------------------------DEFAULT-----------------------------------------//
 	
@@ -49,6 +53,14 @@ public class Default_Custom_UI {
 		public static JScrollPane default_scrollpane_fortable(JTable content) {
 			JScrollPane jp = new ModernScrollPane(content);
 			return jp;
+		}
+		
+		public static JPanel default_text_panel(JTextField txt) {
+			JPanel txt_panel = new JPanel();
+			txt_panel.setLayout(new BoxLayout(txt_panel, BoxLayout.X_AXIS));
+			txt_panel.setPreferredSize(new Dimension(220,35));
+			txt_panel.add(txt);
+			return txt_panel;
 		}
 	
 		public static JPanel default_RoomTag(String tag_name,int number,Color tag_color,Color fore_color) {
@@ -196,12 +208,33 @@ public class Default_Custom_UI {
 			return cb;
 		}
 		//-----------------------------------------------------------------pending
-//		public static Object[][] cast_data(String type){
+		public static String[][] cast_data(String type){
 //			if(type.equals("PhieuDat")) {
 //				list_phieuDat = new DanhSachPhieuDat();
 //			}
-//			return null;
-//		}
+			if(type.equals("KhachHang")) {
+				listKhachHang = new DanhSachKhachHang();
+				listKhachHang.docDuLieu();
+				String[][] data = new String[listKhachHang.getListKH().size()][7];
+				for(int i=0;i<listKhachHang.getListKH().size();i++) {
+					data[i][0] = listKhachHang.getListKH().get(i).getCCCD();
+					data[i][1] = listKhachHang.getListKH().get(i).getSoTK();
+					data[i][2] = listKhachHang.getListKH().get(i).getHoTen();
+					data[i][3] = listKhachHang.getListKH().get(i).getDiaChi();
+					data[i][4] = listKhachHang.getListKH().get(i).getEmali();
+					data[i][5] = listKhachHang.getListKH().get(i).getSoDT();
+					if(listKhachHang.getListKH().get(i).getMaLoaiKH().equals("V")) {
+						data[i][6] = "VIP";
+					}
+					else {
+						data[i][6] = "Normal";
+					}
+					
+				}
+				return data;
+			}
+			return null;
+		}
 }
 class ModernScrollPane extends JScrollPane {
 
