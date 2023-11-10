@@ -21,6 +21,7 @@ public class DanhSachKhachHang {
 	
 	public ArrayList<KhachHang> docDuLieu() {
 		try {
+			listKH = new ArrayList<KhachHang>();
 			Connection con = Database.getInsConnect().getCon();
 			String sql = "select * from KhachHang";
 			Statement statement = con.createStatement();

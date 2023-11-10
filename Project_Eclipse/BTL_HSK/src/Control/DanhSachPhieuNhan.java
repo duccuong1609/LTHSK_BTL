@@ -3,6 +3,7 @@ package Control;
 import static org.junit.Assert.isArray;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
@@ -20,11 +21,11 @@ public class DanhSachPhieuNhan {
 	
 	public DanhSachPhieuNhan() {
 		listPN = new ArrayList<PhieuNhanPhong>();
-		lisDat.docDuLieu();
 	}
 	
 	public ArrayList<PhieuNhanPhong> docDuLieu(){
 		try {
+			listPN = new ArrayList<PhieuNhanPhong>();
 			Connection con = Database.getInsConnect().getCon();
 			SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
@@ -82,6 +83,20 @@ public class DanhSachPhieuNhan {
 	
 	public boolean addPhieuNhan(PhieuNhanPhong a) {
 		return listPN.add(a);
+	}
+	
+	public boolean insertPhieuNhan(PhieuNhanPhong a) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+			statement = con.prepareStatement(null);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return n >0;
 	}
 	
 	public PhieuNhanPhong getPhieuNhanByMa(String ma) {

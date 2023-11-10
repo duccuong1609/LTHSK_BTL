@@ -4,9 +4,9 @@ GO
 /****** Object:  Database [QLKS]    Script Date: 11/5/2023 2:51:19 PM ******/
 CREATE DATABASE [QLKS]
  ON  PRIMARY 
-( NAME = N'QLKS', FILENAME = N'T:\QuanLyKhachSan\QLKS.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+( NAME = N'QLKS', FILENAME = N'D:\QuanLyKhachSan\QLKS.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
  LOG ON 
-( NAME = N'QLKS_log', FILENAME = N'T:\QuanLyKhachSan\QLKS_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+( NAME = N'QLKS_log', FILENAME = N'D:\QuanLyKhachSan\QLKS_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
  WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
 GO
 
@@ -449,12 +449,9 @@ EXECUTE getListPhongChuaNhan
 
 --Hàm Lấy phòng đag đặt chưa trả
 
-select * from Phong join ChiTietDatPhong 
-	on Phong.SoPhong = ChiTietDatPhong.SoPhong join PhieuDatPhong 
-		on PhieuDatPhong.MaPhieuDat = ChiTietDatPhong.MaPhieuDat join PhieuNhanPhong 
-			on PhieuNhanPhong.MaPhieuDat = PhieuDatPhong.MaPhieuDat
 
-where MaPhieuNhan NOT IN(select MaPhieu from HoaDon) AND IsEmpty = 0
+select * from PhieuDatPhong
+where CCCD = '719233940127' 
 
 
 select ChiTietDatPhong.MaPhieuDat from Phong join ChiTietDatPhong 
@@ -468,4 +465,20 @@ EXECUTE getListPhongChuaTra
 
 
 EXECUTE getListTrangThaiPhong @trangThai = 0
-select * from Phong
+
+
+-- Ham insert PhieuDatPhong
+
+('PD0058', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',1)
+EXECUTE insertPhieuDat @maPhieuDat = 'PD0058', @maNV  = 'NV001' , @CCCD =  N'019283940112' , @soLuong = 1, @ngayDen = '2023-05-11' , @ngayDi = '2023-05-18'
+
+--Ham insert ChiTietDatPhong
+EXECUTE insertChiTietDatPhong @maPhieuDat = 'PD0058', @soPhong = 04
+
+-- Ham updatePhieuDat
+
+select * from PhieuDatPhong
+where MaPhieuDat = 'PD001'
+
+
+

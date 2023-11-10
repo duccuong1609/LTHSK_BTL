@@ -88,8 +88,43 @@ END
 GO
 
 
+CREATE PROCEDURE insertPhieuDat @maPhieuDat nvarchar(20), @maNV nvarchar(20) , @CCCD nvarchar(13), @soLuong int, @ngayDen date, @ngayDi date
+AS
+BEGIN
+	INSERT INTO PhieuDatPhong(MaPhieuDat, MaNV, CCCD, NgayDen, NgayDi,soLuong)
+VALUES	
+		(@maPhieuDat, @maNV, @CCCD, @ngayDen, @ngayDi,@soLuong)
+END
+GO
 
 
+CREATE PROCEDURE insertChiTietDatPhong @maPhieuDat nvarchar(20), @soPhong int
+AS
+BEGIN
+	INSERT INTO ChiTietDatPhong (MaPhieuDat, SoPhong)
+	VALUES	
+			(@maPhieuDat,@soPhong)
+END
+GO
 
+CREATE PROCEDURE updateNgayDi @maPhieuDat nvarchar(20), @ngayDi date
+AS
+BEGIN
+	UPDATE PhieuDatPhong 
+	SET NgayDi = @ngayDi
+	where MaPhieuDat = @maPhieuDat
+END
+GO
 
-
+CREATE PROCEDURE updatePhieuDat @maPhieuDat nvarchar(20), @maNV nvarchar(20) , @CCCD nvarchar(13), @soLuong int, @ngayDen date, @ngayDi date
+AS
+BEGIN
+	UPDATE PhieuDatPhong 
+	SET NgayDi = @ngayDi,
+		MaNV = @maNV, 
+		CCCD = @CCCD, 
+		NgayDen = @ngayDen, 
+		soLuong = @soLuong
+	where MaPhieuDat = @maPhieuDat
+END
+GO

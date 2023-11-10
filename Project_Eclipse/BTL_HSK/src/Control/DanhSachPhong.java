@@ -21,6 +21,7 @@ public class DanhSachPhong {
 	
 	public ArrayList<Phong> docDuLieu(){
 		try {
+			listPhong = new ArrayList<Phong>();
 			Connection con = Database.getInsConnect().getCon();
 			String sql = "select * from Phong";
 			Statement statement = con.createStatement();
@@ -30,7 +31,7 @@ public class DanhSachPhong {
 				String tenPhong = result.getString(2);
 				String loaiPhong = result.getString(3);
 				String isEmpty = result.getString(4);
-				if(loaiPhong.equalsIgnoreCase("PV")) {
+				if(loaiPhong.equalsIgnoreCase("SUP")) {
 					PhongVip a = new PhongVip(soPhong, tenPhong, isEmpty.equals("1"));
 					listPhong.add(a);
 				}
@@ -56,7 +57,6 @@ public class DanhSachPhong {
 	}
 	
 	public DanhSachPhong getListTrangThaiPhong(int index) {
-		
 		DanhSachPhong list = new DanhSachPhong(); 
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;
@@ -86,9 +86,12 @@ public class DanhSachPhong {
 	}
 	
 	public Phong getPhongBySoPhong(int soPhong) {
-		Phong a = new Phong(soPhong, null, false);
-		int index  = listPhong.indexOf(a);
-		return listPhong.get(index);
+		for(Phong phong : listPhong) {
+			if(phong.getSoPhong()== soPhong) {
+				return phong;
+			}
+		}
+		return null;
 	}
 	
 //	public ArrayList<Phong> getListPhongDaDat(){
