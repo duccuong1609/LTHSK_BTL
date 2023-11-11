@@ -2,7 +2,7 @@ package entity;
 
 public class PhongVip extends Phong {
 
-	private static String maLoai = "PV";
+	private static String maLoai = "SUP";
 	private String tenLoai = "Phòng Vip";
 	private float gia = 500;
 	public PhongVip(int soPhong, String tenPhong, boolean isEmpty) {

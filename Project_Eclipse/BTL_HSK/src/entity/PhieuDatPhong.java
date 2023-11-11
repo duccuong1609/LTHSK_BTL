@@ -1,29 +1,14 @@
 package entity;
 
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.Objects;
 
 import Control.DanhSachPhong;
 
 public class PhieuDatPhong {
-	@Override
-	public int hashCode() {
-		return Objects.hash(maPD);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PhieuDatPhong other = (PhieuDatPhong) obj;
-		return Objects.equals(maPD, other.maPD);
-	}
+	
 	private String maPD;
 	private NhanVien nhanVien;
 	private KhachHang khachHang;
@@ -83,6 +68,21 @@ public class PhieuDatPhong {
 	}
 	public void setNgayDi(Date ngayDi) {
 		this.ngayDi = ngayDi;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(khachHang, maPD);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PhieuDatPhong other = (PhieuDatPhong) obj;
+		return Objects.equals(khachHang, other.khachHang) && Objects.equals(maPD, other.maPD);
 	}
 	
 	

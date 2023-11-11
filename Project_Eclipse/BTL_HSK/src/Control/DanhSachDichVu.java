@@ -18,6 +18,7 @@ public class DanhSachDichVu {
 	
 	public ArrayList<DichVu> docDuLieu() {
 		try {
+			listDV = new ArrayList<DichVu>();
 			Connection con = Database.getInsConnect().getCon();
 			String sql = "select * from DichVu";
 			Statement statement = con.createStatement();
@@ -39,16 +40,20 @@ public class DanhSachDichVu {
 	public ArrayList<DichVu> getDichVu(){
 		return listDV;
 	}
+	
+	public boolean insertDichVu() {
+		
+	}
 
 	public ArrayList<DichVu> getDichVuByMaHD(String maHD){
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;
 		ArrayList<DichVu> list = new ArrayList<DichVu>();
 		try {
-			statement = con.prepareStatement("select DichVu.MaDV, TenDV, GiaDV \r\n"
-					+ "from HoaDon join ChiTietHoaDon \r\n"
-					+ "	on HoaDon.MaHoaDon = ChiTietHoaDon.MaHoaDon join DichVu \r\n"
-					+ "	on DichVu.MaDV = ChiTietHoaDon.MaDV\r\n"
+			statement = con.prepareStatement("select DichVu.MaDV, TenDV, GiaDV"
+					+ "from HoaDon join ChiTietHoaDon"
+					+ "	on HoaDon.MaHoaDon = ChiTietHoaDon.MaHoaDon join DichVu "
+					+ "	on DichVu.MaDV = ChiTietHoaDon.MaDV"
 					+ "where HoaDon.MaHoaDon = ?");
 			statement.setString(1, maHD);
 			ResultSet result = statement.executeQuery();

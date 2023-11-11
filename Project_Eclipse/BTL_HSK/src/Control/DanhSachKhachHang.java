@@ -21,6 +21,7 @@ public class DanhSachKhachHang {
 	
 	public ArrayList<KhachHang> docDuLieu() {
 		try {
+			listKH = new ArrayList<KhachHang>();
 			Connection con = Database.getInsConnect().getCon();
 			String sql = "select * from KhachHang";
 			Statement statement = con.createStatement();
@@ -55,11 +56,11 @@ public class DanhSachKhachHang {
 		listKH.add(a);
 		int n = 0;
 		try {
-			stmt = con.prepareStatement("INSERT INTO KhachHang(CCCD,HoTen,SĐT,STK,DiaChi,Email,MaLoaiKH) VALUES (?,?,?,?,?,?,?)");
+			stmt = con.prepareStatement("{call insertKhachHang(?,?,?,?,?,?,?)}");
 			stmt.setString(1, a.getCCCD());
-			stmt.setString(2, a.getHoTen());
-			stmt.setString(3, a.getSoDT());
-			stmt.setString(4, a.getSoTK());
+			stmt.setString(2, a.getSoTK());
+			stmt.setString(3, a.getHoTen());
+			stmt.setString(4, a.getSoDT());
 			stmt.setString(5, a.getDiaChi());
 			stmt.setString(6, a.getEmali());
 			stmt.setString(7, a.getMaLoaiKH());
@@ -75,14 +76,14 @@ public class DanhSachKhachHang {
 		PreparedStatement stmt = null;
 		int n = 0;
 		try {
-			stmt = con.prepareStatement("update KhachHang set HoTen = (?),SĐT = (?),STK = (?),DiaChi = (?),Email = (?),MaLoaiKH = (?) WHERE CCCD = (?)");
-			stmt.setString(1, a.getHoTen());
-			stmt.setString(2, a.getSoDT());
-			stmt.setString(3, a.getSoTK());
-			stmt.setString(4, a.getDiaChi());
-			stmt.setString(5, a.getEmali());
-			stmt.setString(6, a.getMaLoaiKH());
-			stmt.setString(7, a.getCCCD());
+			stmt = con.prepareStatement("{call updateKhachHang(?,?,?,?,?,?,?)}");
+			stmt.setString(1, a.getCCCD());
+			stmt.setString(2, a.getSoTK());
+			stmt.setString(3, a.getHoTen());
+			stmt.setString(4, a.getSoDT());
+			stmt.setString(5, a.getDiaChi());
+			stmt.setString(6, a.getEmali());
+			stmt.setString(7, a.getMaLoaiKH());
 			n = stmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -4,11 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.Iterator;
 
 import ConnectDB.Database;
 import entity.KhachHang;
@@ -27,6 +28,7 @@ public class DanhSachPhieuDat {
 		
 	}
 	
+	// doc du lieu
 	
 	public ArrayList<PhieuDatPhong> docDuLieu(){
 		try {
@@ -45,7 +47,7 @@ public class DanhSachPhieuDat {
 				int soLuong = result.getInt(6);
 				NhanVien nv = listNV.getNhanVienByMa(maNV);
 				KhachHang kh = listKH.getKhachHangByMa(CCCD);
-				DanhSachPhong phongs = listPhong.getListPhongByPhieu(maPD);
+				DanhSachPhong phongs = listPhong.getListPhongByPhieuDat(maPD);
 				PhieuDatPhong a = new PhieuDatPhong(maPD, nv, kh, phongs, soLuong, ngayDen, ngayDi);
 				listPDP.add(a);
 			}
@@ -54,10 +56,121 @@ public class DanhSachPhieuDat {
 		}
 		return listPDP;
 	}
-
+	
+	// insert phieu dat phong va update trang thai phong
+	
+	public boolean insertPhieuDatSQL(PhieuDatPhong a) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+		int n = 0;
+		try {
+			statement = con.prepareStatement("{call insertPhieuDat(?,?,?,?,?,?)}");
+			statement.setString(1, a.getMaPD());
+			statement.setString(2, a.getNhanVien().getMaNV());
+			statement.setString(3, a.getKhachHang().getCCCD());
+			statement.setInt(4, a.getSoLuongPhong());
+			statement.setString(5, date.format(a.getNgayDen()));
+			statement.setString(6, date.format(a.getNgayDi()));
+			n = statement.executeUpdate();
+			if(n > 0) {
+				DanhSachPhong phongs = a.getPhongs();
+				for(int i = 0; i < phongs.getListPhong().size();i++ ) {
+					phongs.updateTrangThaiPhong(phongs.getListPhong().get(i).getSoPhong(), 1);
+				}
+				n = insertChiTietDatPhong(a) ? 1 : 0;
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return n > 0;
+	}
+	
+	// update phieuu dat
+	public boolean updatePhieuDat(PhieuDatPhong a) {
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+			statement = con.prepareStatement("{call updatePhieuDat(?,?,?,?,?,?)}");
+			statement.setString(1, a.getMaPD());
+			statement.setString(2, a.getNhanVien().getMaNV());
+			statement.setString(3, a.getKhachHang().getCCCD());
+			statement.setInt(4, a.getSoLuongPhong());
+			statement.setString(5, date.format(a.getNgayDen()));
+			statement.setString(6, date.format(a.getNgayDi()));
+			n = statement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return n > 0;
+	}
+	
+// 	insert chi tiet dat phong
+	public boolean insertChiTietDatPhong(PhieuDatPhong a) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+			DanhSachPhong p = a.getPhongs();
+			for(int i = 0; i < p.getListPhong().size();i++) {
+				statement = con.prepareStatement("{call insertChiTietDatPhong(?,?)}");
+				statement.setString(1,a.getMaPD());
+				statement.setInt(2, p.getListPhong().get(i).getSoPhong());
+			}
+			n = statement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return n > 0;
+	}
+	
+//	tthem phieu dat vao list
+	
 	public boolean addPhieuDat(PhieuDatPhong a) {
 		return listPDP.add(a);
 	}
+	
+	// Ham lay phieu dat bang CCCD va ngay den
+	
+	public PhieuDatPhong getPhieuDatByCCCD_NgayDen(String CCCD, String ngayDen) {
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+		Date d = null;
+		try {
+			d = date.parse(ngayDen);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DanhSachPhieuDat pdCCCD = getPhieuDatByCCCD(CCCD);
+		for(int i = 0; i < pdCCCD.getListPDP().size();i++) {
+			PhieuDatPhong a = pdCCCD.getListPDP().get(i);
+			if(a.getNgayDen().compareTo(d) == 0) {
+				return a;
+			}
+		}
+		return null;
+	}
+	
+	// hham lay danh sach phieu dat bang CCCD
+	
+	public DanhSachPhieuDat getPhieuDatByCCCD(String CCCD) {
+		DanhSachPhieuDat a = new DanhSachPhieuDat();
+		for(PhieuDatPhong pd : listPDP) {
+			if(pd.getKhachHang().getCCCD().equalsIgnoreCase(CCCD))
+				a.addPhieuDat(pd);
+		}
+		return a;
+	}
+	
+//	Ham lay Phieu dat theo phieu
+	
+	
 	
 	public PhieuDatPhong getPhieuDatPhongByMa(String maPhieu) {
 		PhieuDatPhong a = new PhieuDatPhong(maPhieu, null, null, null, 0, null, null);
@@ -90,7 +203,11 @@ public class DanhSachPhieuDat {
 		
 	}
 	
+//	Ham lay list Phieu datt
 	
+	public ArrayList<PhieuDatPhong> getListPDP() {
+		return listPDP;
+	}
 	
 	@Override
 	public String toString() {
