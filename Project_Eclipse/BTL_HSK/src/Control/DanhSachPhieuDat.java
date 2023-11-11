@@ -47,7 +47,7 @@ public class DanhSachPhieuDat {
 				int soLuong = result.getInt(6);
 				NhanVien nv = listNV.getNhanVienByMa(maNV);
 				KhachHang kh = listKH.getKhachHangByMa(CCCD);
-				DanhSachPhong phongs = listPhong.getListPhongByPhieu(maPD);
+				DanhSachPhong phongs = listPhong.getListPhongByPhieuDat(maPD);
 				PhieuDatPhong a = new PhieuDatPhong(maPD, nv, kh, phongs, soLuong, ngayDen, ngayDi);
 				listPDP.add(a);
 			}
@@ -57,7 +57,7 @@ public class DanhSachPhieuDat {
 		return listPDP;
 	}
 	
-	// insert phieu dat phong
+	// insert phieu dat phong va update trang thai phong
 	
 	public boolean insertPhieuDatSQL(PhieuDatPhong a) {
 		Connection con = Database.getInsConnect().getCon();
@@ -74,6 +74,10 @@ public class DanhSachPhieuDat {
 			statement.setString(6, date.format(a.getNgayDi()));
 			n = statement.executeUpdate();
 			if(n > 0) {
+				DanhSachPhong phongs = a.getPhongs();
+				for(int i = 0; i < phongs.getListPhong().size();i++ ) {
+					phongs.updateTrangThaiPhong(phongs.getListPhong().get(i).getSoPhong(), 1);
+				}
 				n = insertChiTietDatPhong(a) ? 1 : 0;
 			}
 			
@@ -165,6 +169,8 @@ public class DanhSachPhieuDat {
 	}
 	
 //	Ham lay Phieu dat theo phieu
+	
+	
 	
 	public PhieuDatPhong getPhieuDatPhongByMa(String maPhieu) {
 		PhieuDatPhong a = new PhieuDatPhong(maPhieu, null, null, null, 0, null, null);

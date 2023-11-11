@@ -1,6 +1,5 @@
 package Control;
 
-import static org.junit.Assert.isArray;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +8,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
+
 
 import ConnectDB.Database;
 import entity.PhieuDatPhong;
@@ -74,7 +73,7 @@ public class DanhSachPhieuNhan {
 		a = a.getListPhongChuaTra();
 		for(PhieuNhanPhong phieuNhan : a.listPN) {
 			if(phieuNhan.getpDP().getKhachHang().getCCCD().equals(CCCD)) {
-				phieuNhan.getpDP().getPhongs().getPhongBySoPhong(soPhong).setIsEmpty(false);
+				phieuNhan.getpDP().getPhongs().updateTrangThaiPhong(soPhong, 0);
 				return true;
 			}
 		}
@@ -85,12 +84,41 @@ public class DanhSachPhieuNhan {
 		return listPN.add(a);
 	}
 	
+	public boolean updatePhieuNhan(PhieuNhanPhong a) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+		int n = 0;
+		try {
+			statement = con.prepareStatement("{call updatePhieuNhan(?,?,?,?)}");
+			statement.setString(1, a.getMaPhieuNhan());
+			statement.setString(2, a.getpDP().getMaPD());
+			statement.setString(3, dateTime.format(a.getGioNhan()));
+			statement.setString(4, date.format(a.getNgayNhan()));
+			n = statement.executeUpdate();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return n >0;
+	}
+	
+	
 	public boolean insertPhieuNhan(PhieuNhanPhong a) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;
+		SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 		int n = 0;
 		try {
-			statement = con.prepareStatement(null);
+			statement = con.prepareStatement("{call insertPhieuNhan(?,?,?,?)}");
+			statement.setString(1, a.getMaPhieuNhan());
+			statement.setString(2, a.getpDP().getMaPD());
+			statement.setString(3, dateTime.format(a.getGioNhan()));
+			statement.setString(4, date.format(a.getNgayNhan()));
+			n = statement.executeUpdate();
 			
 		} catch (Exception e) {
 			// TODO: handle exception

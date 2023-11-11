@@ -38,21 +38,41 @@ public class DanhSachNhanVien {
 		return listNV;
 	}
 	
+	public boolean insertNhanVien(NhanVien a) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+			statement = con.prepareStatement("{call insertNhanVien(?,?,?,?,?)}");
+			statement.setString(1, a.getMaNV());
+			statement.setString(2, a.getTenNV());
+			statement.setString(3, a.getSoDT());
+			statement.setString(4, a.getDiaChi());
+			statement.setString(5, a.getEmail());
+			n = statement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return n > 0;
+	}
+	
 	public boolean updateNV(NhanVien a) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;
+		int n = 0;
 		try {
-			statement = con.prepareStatement("update NhanVien set TenNV = ?, SĐT = ?, DiaChi = ?, Email = ?");
-			statement.setString(1, a.getTenNV());
-			statement.setString(2, a.getSoDT());
-			statement.setString(3, a.getDiaChi());
-			statement.setString(4, a.getEmail());
-			return true;
+			statement = con.prepareStatement("{call updateNhanVien(?,?,?,?,?)}");
+			statement.setString(1, a.getMaNV());
+			statement.setString(2, a.getTenNV());
+			statement.setString(3, a.getSoDT());
+			statement.setString(4, a.getDiaChi());
+			statement.setString(5, a.getEmail());
+			n =statement.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		return false;
+		return n > 0;
 	}
 	
 	public ArrayList<NhanVien> get_listNV(){
@@ -85,15 +105,16 @@ public class DanhSachNhanVien {
 	public boolean removeNV(String ma) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;
+		int n= 0;
 		try {
 			statement = con.prepareStatement("delete from NhanVien where MaNV = ?");
 			statement.setString(1, ma);
-			return true;
+			n = statement.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		return false;
+		return n > 0;
 	}
 
 	@Override

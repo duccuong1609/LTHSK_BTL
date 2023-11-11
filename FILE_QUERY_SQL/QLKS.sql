@@ -463,7 +463,6 @@ where MaPhieuNhan not in (select MaPhieu from HoaDon) AND IsEmpty = 0
 EXECUTE getListPhongChuaTra
 
 
-
 EXECUTE getListTrangThaiPhong @trangThai = 0
 
 
@@ -480,5 +479,11 @@ EXECUTE insertChiTietDatPhong @maPhieuDat = 'PD0058', @soPhong = 04
 select * from PhieuDatPhong
 where MaPhieuDat = 'PD001'
 
+select * from Phong 
+
+--Ham insertPhieuNhan
+--EXECUTE insertPhieuNhan @maPhieuNhan nvarchar(20) ,@maPhieuDat nvarchar(20) ,	@gioNhan datetime ,	@ngayNhan datetime 
 
 
+--Ham update Phieu Nhan
+--EXECUTE updatePhieuNhan @maPhieuNhan nvarchar(20) ,@maPhieuDat nvarchar(20) ,	@gioNhan datetime ,	@ngayNhan datetime 

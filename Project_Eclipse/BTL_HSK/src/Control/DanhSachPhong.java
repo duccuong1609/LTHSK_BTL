@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.print.attribute.standard.MediaSize.NA;
+
 import ConnectDB.Database;
 import entity.Phong;
 import entity.PhongThuong;
@@ -47,9 +49,21 @@ public class DanhSachPhong {
 	}
 
 	
-//	public DanhSachPhong getPhongNhan() {
-//		
-//	}
+	public boolean updateTrangThaiPhong(int soPhong, int trangThai) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+			statement = con.prepareStatement("{call updatePhong(?)(?)}");
+			statement.setInt(1, soPhong);
+			statement.setInt(2, trangThai);
+			n = statement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return n > 0;
+	}
 	
 	
 	public  boolean addPhong(Phong a) {
@@ -101,7 +115,7 @@ public class DanhSachPhong {
 	public ArrayList<Phong> getListPhong() {
 		return listPhong;
 	}
-	public DanhSachPhong getListPhongByPhieu(String maPhieu) {
+	public DanhSachPhong getListPhongByPhieuDat(String maPhieu) {
 		DanhSachPhong a = new DanhSachPhong();
 		try {
 			Connection con = Database.getInsConnect().getCon();
