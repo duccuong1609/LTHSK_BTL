@@ -42,9 +42,10 @@ public class UI_QL_TraPhong implements MouseListener{
 	private JButton Them;
 	private JButton Xoa;
 	private JButton TaoLai;
+	private JButton Tim;
 	
-	private JDateChooser TraPhong_NgayTra;
-	private JDateChooser TraPhong_GioTra;
+	private JTextField CCCD;
+	private JTextField MAPHONG;
 	
 //	private DanhSachPhieuDat phieuDat;
 	
@@ -152,24 +153,26 @@ public class UI_QL_TraPhong implements MouseListener{
 		JScrollPane jp_dv = new JScrollPane(table_dv);
 		jp_dv.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
 		
-		TraPhong_GioTra = Default_Custom_UI.defaultDateChooser();
-		TraPhong_GioTra.setPreferredSize(new Dimension(320,35));
-		TraPhong_NgayTra = Default_Custom_UI.defaultDateChooser();
-		TraPhong_NgayTra.setPreferredSize(new Dimension(320,35));
+		CCCD = Default_Custom_UI.default_textfield();
+		JPanel cccd_panel = Default_Custom_UI.default_text_panel(CCCD);
+		cccd_panel.setPreferredSize(new Dimension(320,35));
+		MAPHONG = Default_Custom_UI.default_textfield();
+		JPanel ma_panel = Default_Custom_UI.default_text_panel(MAPHONG);
+		ma_panel.setPreferredSize(new Dimension(320,35));
 		left_addfield.add(jp_dv,BorderLayout.CENTER);
 		
-		JLabel lb1 = Default_Custom_UI.default_label("NGÀY TRẢ");
+		JLabel lb1 = Default_Custom_UI.default_label("CĂN CƯỚC CÔNG DÂN");
 		lb1.setPreferredSize(new Dimension(300,25));
-		JLabel lb2 = Default_Custom_UI.default_label("GIỜ TRẢ");
+		JLabel lb2 = Default_Custom_UI.default_label("MÃ SỐ PHÒNG");
 		lb2.setPreferredSize(new Dimension(300,25));
 		JLabel lb3 = Default_Custom_UI.default_label("DỊCH VỤ ĐÃ SỬ DỤNG");
 		lb3.setPreferredSize(new Dimension(300,25));
 		
 		JPanel other_field = new JPanel();
 		other_field.add(lb1);
-		other_field.add(TraPhong_NgayTra);
+		other_field.add(cccd_panel);
 		other_field.add(lb2);
-		other_field.add(TraPhong_GioTra);
+		other_field.add(ma_panel);
 		other_field.add(lb3);
 		other_field.setPreferredSize(new Dimension(180,180));
 		
@@ -190,10 +193,12 @@ public class UI_QL_TraPhong implements MouseListener{
 		Them = Default_Custom_UI.default_Action_Button("TRẢ PHÒNG", "Media/Icon/them.gif");
 		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
 		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
+		Tim = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/tim.gif");
 		
 		button_panel.add(TaoLai);
 		button_panel.add(Them);
 		button_panel.add(Xoa);
+		button_panel.add(Tim);
 		
 		data_dv = Default_Custom_UI.cast_data("DichVu");
 		model_dv.setDataVector(data_dv, cols_dv_name);

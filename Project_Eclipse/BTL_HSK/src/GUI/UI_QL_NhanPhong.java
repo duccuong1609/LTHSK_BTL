@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BoxLayout;
@@ -22,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import com.toedter.calendar.JDateChooser;
 
-public class UI_QL_NhanPhong implements MouseListener{
+public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 	
 	//--------DatPhong-----------//
 	public JPanel display_NhanPhong;
@@ -152,6 +154,7 @@ public class UI_QL_NhanPhong implements MouseListener{
 		
 		display_NhanPhong.add(main_pJPanel,BorderLayout.CENTER);
 		
+		Them.addActionListener(this);
 	}
 	
 
@@ -183,6 +186,13 @@ public class UI_QL_NhanPhong implements MouseListener{
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
