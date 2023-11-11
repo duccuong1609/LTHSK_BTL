@@ -162,10 +162,8 @@ public class DanhSachPhieuDat {
 	public boolean deletePhieuDat(PhieuDatPhong pd) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;
-		System.out.println(pd.getMaPD());
 		int n = 0;
 		try {
-			System.out.println(deleteChiTietPhieuDat(pd));
 			statement = con.prepareStatement("delete from PhieuDatPhong where MaPhieuDat = ?");
 			statement.setString(1, pd.getMaPD());
 			n = statement.executeUpdate();
@@ -183,6 +181,8 @@ public class DanhSachPhieuDat {
 	}
 	
 	// Ham lay phieu dat bang CCCD va ngay den
+	
+
 	
 	public PhieuDatPhong getPhieuDatByCCCD_NgayDen(String CCCD, String ngayDen) {
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");

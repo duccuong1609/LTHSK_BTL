@@ -11,9 +11,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
+
 import java.util.Date;
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -39,7 +42,9 @@ import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.PhongVip;
 
+
 public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListener{
+
 	//--------DatPhong-----------//
 	public JPanel display_DatPhong;
 	private JButton datPhong_Then;
@@ -185,7 +190,11 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		datPhong_cb_SoPhong.addActionListener(this);
 		datPhong_Then.addActionListener(this);
 		DatPhong_Xoa.addActionListener(this);
+
+		DatPhong_Sua.addActionListener(this);
+
 		DatPhong_TaoLai.addActionListener(this);
+
 	}
 	
 
@@ -198,12 +207,14 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 			DatPhong_cb_MaNV.setSelectedItem(model.getValueAt(row, 1));
 			DatPhong_txt_CCCD.setText(model.getValueAt(row,2).toString());
 			try {
-			DatPhong_NgayDen.getDateEditor().setDate(date.parse(model.getValueAt(row, 4).toString()));
-			DatPhong_NgayDi.getDateEditor().setDate(date.parse(model.getValueAt(row, 5).toString()));
+				DatPhong_NgayDen.getDateEditor().setDate(date.parse(model.getValueAt(row, 4).toString()));
+				DatPhong_NgayDi.getDateEditor().setDate(date.parse(model.getValueAt(row, 5).toString()));
+
 			} catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+
 		}
 	}
 
@@ -283,6 +294,39 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 			listPhong.docDuLieu();
 			
 			datPhong_cb_SoPhong.addItem(sophong);
+			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+			
+		}
+		if(source.equals(DatPhong_Sua)) {
+			int row = table.getSelectedRow();
+			String maPD = table.getValueAt(row, 0).toString();
+			String CCCD = DatPhong_txt_CCCD.getText();
+			Date ngayDen = DatPhong_NgayDen.getDate();
+			Date ngayDi = DatPhong_NgayDi.getDate();
+			String maNV = DatPhong_cb_MaNV.getSelectedItem().toString();
+			int soPhong = Integer.parseInt(datPhong_cb_SoPhong.getSelectedItem().toString());
+			DanhSachPhieuDat list = new DanhSachPhieuDat();
+			NhanVien nv = new DanhSachNhanVien().getNhanVienByMa(maNV);
+			KhachHang kh = new DanhSachKhachHang().getKhachHangByMa(CCCD);
+			DanhSachPhong phongs = new DanhSachPhong();
+			phongs.docDuLieu();
+			if(kh == null) {
+				JOptionPane.showMessageDialog(display_DatPhong,"Khách hàng không tồn tại!");
+			}
+			Phong phong = phongs.getPhongBySoPhong(soPhong);
+			DanhSachPhong a = new DanhSachPhong();
+			a.addPhong(phong);
+			list.docDuLieu();
+			PhieuDatPhong setpd = list.getPhieuDatPhongByMa(maPD);
+			setpd.setKhachHang(kh);
+			setpd.setNhanVien(nv);
+			setpd.setPhongs(a);
+			setpd.setNgayDen(ngayDen);
+			setpd.setNgayDi(ngayDi);
+			System.out.println(list.updatePhieuDat(setpd));
+
 			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
 			model.setDataVector(data, cols_name);
 			table.setModel(model);

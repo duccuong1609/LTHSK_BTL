@@ -1,5 +1,7 @@
 package GUI;
 
+import static org.junit.Assert.isArray;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,7 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.BoxLayout;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -22,7 +25,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import com.toedter.calendar.JDateChooser;
+import Control.DanhSachPhieuDat;
+import Control.DanhSachPhieuNhan;
+import entity.PhieuDatPhong;
+import entity.PhieuNhanPhong;
 
 public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 	
@@ -38,10 +44,15 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 	private JTextField NgayDen;
 	private JTextField NgayDi;
 	
+	private static SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	private static SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+	
 //	private DanhSachPhieuDat phieuDat;
 	
 	String[] cols_name = {"MÃ PHIẾU THUÊ","MÃ NHÂN VIÊN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","NGÀY ĐẾN","NGÀY ĐI"};
-	private String [][] data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+
+	private Object[][] data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+
 	
 	@SuppressWarnings("serial")
 	private DefaultTableModel model = new DefaultTableModel(data,cols_name) {
@@ -101,12 +112,14 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
+
 		NhanPhong_MaPhieuDat = Default_Custom_UI.add_data_ds_combo("PhieuDatPhongChuaNhan");
 		CCCD = Default_Custom_UI.default_textfield();
 		NgayDen = Default_Custom_UI.default_textfield();
 		NgayDi = Default_Custom_UI.default_textfield();
 		NgayDen.setEditable(false);
 		NgayDi.setEditable(false);
+
 		
 		left_addfield.setPreferredSize(new Dimension(250,800));
 		
@@ -135,8 +148,10 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 		
 		Them = Default_Custom_UI.default_Action_Button("Nhận Phòng", "Media/Icon/them.gif");
 		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
+
 		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
 		Tim = Default_Custom_UI.default_Action_Button("Tìm", "Media/Icon/tim.gif");
+
 		
 		button_panel.add(TaoLai);
 		button_panel.add(Them);
@@ -155,6 +170,8 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 		display_NhanPhong.add(main_pJPanel,BorderLayout.CENTER);
 		
 		Them.addActionListener(this);
+		Tim.addActionListener(this);
+		
 	}
 	
 
@@ -162,6 +179,8 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(table)) {
+			int row = table.getSelectedRow();
+			
 			
 		}
 	}
@@ -194,7 +213,40 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+
+		Object source = e.getSource();
+		if(source.equals(Them)) {
+			String maPhieu = NhanPhong_MaPhieuDat.getSelectedItem().toString();
+			DanhSachPhieuDat listPD = new DanhSachPhieuDat();
+			DanhSachPhieuNhan listPhieuNhan = new DanhSachPhieuNhan();
+			
+			listPD.docDuLieu();
+			listPhieuNhan.docDuLieu();
+			PhieuDatPhong pd = listPD.getPhieuDatPhongByMa(maPhieu);
+			Date ngayNhan = new Date();
+			Date gioNhan = new Date();
+			int size = listPhieuNhan.getListPN().size();
+			String maPN = listPhieuNhan.getListPN().get(size-1).getMaPhieuNhan();
+			int number = Integer.parseInt(maPN.substring(2, maPN.length()))+1;
+			System.out.println(number);
+			PhieuNhanPhong pn = new PhieuNhanPhong("PN0"+number, pd, gioNhan, ngayNhan);
+			listPhieuNhan.insertPhieuNhan(pn);
+			
+			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+		}
+		if(source.equals(Tim)) {
+			String cCCD = CCCD.getText();
+			for(int i = 0; i < data.length;i++) {
+				String temp = table.getValueAt(i, 2).toString();
+				if(temp.equals(cCCD)) {
+					System.out.println(temp.equals(cCCD));
+					table.setRowSelectionInterval(i, i);
+				}
+			}
+			
+		}
 	}
 }
 
