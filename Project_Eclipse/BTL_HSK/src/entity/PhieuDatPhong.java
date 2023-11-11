@@ -2,6 +2,7 @@ package entity;
 
 
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -69,9 +70,13 @@ public class PhieuDatPhong {
 	public void setNgayDi(Date ngayDi) {
 		this.ngayDi = ngayDi;
 	}
+	
+	
+	
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(khachHang, maPD);
+		return Objects.hash(maPD);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -82,10 +87,19 @@ public class PhieuDatPhong {
 		if (getClass() != obj.getClass())
 			return false;
 		PhieuDatPhong other = (PhieuDatPhong) obj;
-		return Objects.equals(khachHang, other.khachHang) && Objects.equals(maPD, other.maPD);
+		return Objects.equals(maPD, other.maPD);
 	}
-	
-	
+	public Object[] getDataTable() {
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+		Object[] data = new Object[6];
+		data[0] = maPD;
+		data[1] = nhanVien.getMaNV();
+		data[2] = khachHang.getCCCD();
+		data[3] = phongs.getListPhong().get(0).getSoPhong();
+		data[4] = date.format(ngayDen);
+		data[5] = date.format(ngayDi);
+		return data;
+	}
 
 	
 	

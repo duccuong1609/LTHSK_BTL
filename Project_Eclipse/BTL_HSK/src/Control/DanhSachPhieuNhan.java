@@ -73,7 +73,7 @@ public class DanhSachPhieuNhan {
 		a = a.getListPhongChuaTra();
 		for(PhieuNhanPhong phieuNhan : a.listPN) {
 			if(phieuNhan.getpDP().getKhachHang().getCCCD().equals(CCCD)) {
-				phieuNhan.getpDP().getPhongs().updateTrangThaiPhong(soPhong, 0);
+				phieuNhan.getpDP().getPhongs().updateTrangThaiPhong(soPhong, 1);
 				return true;
 			}
 		}

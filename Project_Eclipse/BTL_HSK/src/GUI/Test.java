@@ -29,10 +29,7 @@ public class Test {
 //		b.setNgayDi(date.parse("2023-06-25"));
 //		System.out.println(a.updatePhieuDat(b));
 		
-
-//		DanhSachHoaDon a = new DanhSachHoaDon();
-//		a.docDuLieu();
-//		System.out.println(a);
+		
 		
 	}
 

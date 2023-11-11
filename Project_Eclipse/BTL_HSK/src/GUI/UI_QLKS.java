@@ -34,6 +34,7 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	private JPanel menuJPanel;
 	private JPanel displayPanel;
 	
+	
 	//---------------TAB_SODOPHONG---------//
 	private JPanel button_SoDoPhong;
 	
@@ -60,6 +61,8 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	
 	//------------------------------------Main UI-----------------------------------------//
 	public UI_QLKS() {
+		
+		
 		super("Phầm Mềm Quản Lí Khách Sạn");
 		
 		connect = new Database();

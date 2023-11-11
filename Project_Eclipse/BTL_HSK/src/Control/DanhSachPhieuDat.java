@@ -25,7 +25,9 @@ public class DanhSachPhieuDat {
 	
 	public DanhSachPhieuDat() {
 		listPDP = new ArrayList<PhieuDatPhong>();
-		
+		listNV.docDuLieu();
+		listKH.docDuLieu();
+		listPhong.docDuLieu();
 	}
 	
 	// doc du lieu
@@ -76,7 +78,7 @@ public class DanhSachPhieuDat {
 			if(n > 0) {
 				DanhSachPhong phongs = a.getPhongs();
 				for(int i = 0; i < phongs.getListPhong().size();i++ ) {
-					phongs.updateTrangThaiPhong(phongs.getListPhong().get(i).getSoPhong(), 1);
+					phongs.updateTrangThaiPhong(phongs.getListPhong().get(i).getSoPhong(), 0);
 				}
 				n = insertChiTietDatPhong(a) ? 1 : 0;
 			}
@@ -87,6 +89,8 @@ public class DanhSachPhieuDat {
 		}
 		return n > 0;
 	}
+	
+	
 	
 	// update phieuu dat
 	public boolean updatePhieuDat(PhieuDatPhong a) {
@@ -136,6 +140,38 @@ public class DanhSachPhieuDat {
 		return listPDP.add(a);
 	}
 	
+	public boolean deleteChiTietPhieuDat(PhieuDatPhong a) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+			statement = con.prepareStatement("delete ChiTietDatPhong where MaPhieuDat = ? AND SoPhong = ?");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	public boolean deletePhieuDat(PhieuDatPhong pd) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+			statement = con.prepareStatement("delete from PhieuDatPhong where MaPhieuDat = ?");
+			statement.setString(1, pd.getMaPD());
+			n = statement.executeUpdate();
+			if(n > 0) {
+				DanhSachPhong phongs = pd.getPhongs();
+				for(int i = 0; i < phongs.getListPhong().size();i++ ) {
+					phongs.updateTrangThaiPhong(phongs.getListPhong().get(i).getSoPhong(), 1);
+				}
+				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return n > 0;
+	}
+	
 	// Ham lay phieu dat bang CCCD va ngay den
 	
 	public PhieuDatPhong getPhieuDatByCCCD_NgayDen(String CCCD, String ngayDen) {
@@ -173,11 +209,13 @@ public class DanhSachPhieuDat {
 	
 	
 	public PhieuDatPhong getPhieuDatPhongByMa(String maPhieu) {
-		PhieuDatPhong a = new PhieuDatPhong(maPhieu, null, null, null, 0, null, null);
-		int index = listPDP.indexOf(a);
-		if(index == -1)
-			return null;
-		return a;
+		for(int i = 0; i < listPDP.size();i++) {
+			if(listPDP.get(i).getMaPD().equals(maPhieu)) {
+				return listPDP.get(i);
+			}
+		}
+		return null;
+		
 	}
 	
 //	Hàm lấy dữ liệu Những phiếu chưa trả phòng
@@ -202,6 +240,9 @@ public class DanhSachPhieuDat {
 		return a;
 		
 	}
+	
+	
+	
 	
 //	Ham lay list Phieu datt
 	

@@ -479,7 +479,9 @@ EXECUTE insertChiTietDatPhong @maPhieuDat = 'PD0058', @soPhong = 04
 select * from PhieuDatPhong
 where MaPhieuDat = 'PD001'
 
-select * from Phong 
+select * from PhieuDatPhong
+
+EXECUTE getListPhongChuaNhan
 
 --Ham insertPhieuNhan
 --EXECUTE insertPhieuNhan @maPhieuNhan nvarchar(20) ,@maPhieuDat nvarchar(20) ,	@gioNhan datetime ,	@ngayNhan datetime 
@@ -487,3 +489,13 @@ select * from Phong
 
 --Ham update Phieu Nhan
 --EXECUTE updatePhieuNhan @maPhieuNhan nvarchar(20) ,@maPhieuDat nvarchar(20) ,	@gioNhan datetime ,	@ngayNhan datetime 
+
+SELECT *
+	FROM PhieuDatPhong join ChiTietDatPhong 
+			on PhieuDatPhong.MaPhieuDat = ChiTietDatPhong.MaPhieuDat join Phong 
+				on Phong.SoPhong = ChiTietDatPhong.SoPhong
+	WHERE NOT EXISTS (
+		SELECT 1
+		FROM PhieuNhanPhong
+		WHERE PhieuDatPhong.MaPhieuDat = PhieuNhanPhong.MaPhieuDat
+	)AND Phong.IsEmpty = 0

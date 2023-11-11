@@ -9,10 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Date;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -24,12 +27,19 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import com.toedter.calendar.JDateChooser;
 
+import Control.DanhSachKhachHang;
+import Control.DanhSachNhanVien;
+import Control.DanhSachPhieuDat;
 import Control.DanhSachPhong;
+import entity.KhachHang;
+import entity.NhanVien;
+import entity.PhieuDatPhong;
 import entity.Phong;
 import entity.PhongThuong;
 import entity.PhongVip;
 
 public class UI_QL_DatPhong implements MouseListener,ActionListener{
+	
 	
 	//--------DatPhong-----------//
 	public JPanel display_DatPhong;
@@ -49,11 +59,7 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 	
 	
 	String[] cols_name = {"MÃ PHIẾU THUÊ","MÃ NHÂN VIÊN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","NGÀY ĐẾN","NGÀY ĐI"};
-	private Object[][] data = {
-            {"1", "Alice", "Smith"},
-            {"2", "Bob", "Johnson"},
-            {"3", "Charlie", "Williams"}
-        };
+	private String [][] data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
 	
 	@SuppressWarnings("serial")
 	private DefaultTableModel model = new DefaultTableModel(data,cols_name) {
@@ -64,6 +70,7 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 			return true;
 		};
 	};
+	
 	private JTable table = new JTable(model);
 	
 	public UI_QL_DatPhong() {
@@ -177,6 +184,8 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 		display_DatPhong.add(main_pJPanel,BorderLayout.CENTER);
 		
 		datPhong_cb_SoPhong.addActionListener(this);
+		datPhong_Then.addActionListener(this);
+		DatPhong_Xoa.addActionListener(this);
 	}
 	
 
@@ -184,6 +193,8 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(table)) {
+			int row = table.getSelectedRow();
+			String ma_PhieuDat = model.getValueAt(row, 0).toString();
 			
 		}
 	}
@@ -216,11 +227,12 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource().equals(datPhong_cb_SoPhong)) {
+		Object source = e.getSource();
+		
+		if(source.equals(datPhong_cb_SoPhong)) {
 			DanhSachPhong ds = new DanhSachPhong();
 			ds.docDuLieu();
 			int sophong = Integer.parseInt(datPhong_cb_SoPhong.getSelectedItem().toString());
-			
 			if(ds.getListPhong().get(sophong-1)!= null) {
 				
 				if(ds.getListPhong().get(sophong-1) instanceof PhongVip) {
@@ -232,7 +244,47 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 				
 			}
 		}
+		
+		if(source.equals(datPhong_Then)){
+			String CCCD = DatPhong_txt_CCCD.getText();
+			Date ngayDen = DatPhong_NgayDen.getDate();
+			Date ngayDi = DatPhong_NgayDi.getDate();
+			String maNV = DatPhong_cb_MaNV.getSelectedItem().toString();
+			int soPhong = Integer.parseInt(datPhong_cb_SoPhong.getSelectedItem().toString());
+			DanhSachPhieuDat list = new DanhSachPhieuDat();
+			NhanVien nv = new DanhSachNhanVien().getNhanVienByMa(maNV);
+			KhachHang kh = new DanhSachKhachHang().getKhachHangByMa(CCCD);
+			DanhSachPhong phongs = new DanhSachPhong();
+			phongs.docDuLieu();
+			if(kh == null) {
+				JOptionPane.showMessageDialog(display_DatPhong,"Khách hàng không tồn tại!");
+			}
+			Phong phong = phongs.getPhongBySoPhong(soPhong);
+			System.out.println(phong.getSoPhong());
+			DanhSachPhong a = new DanhSachPhong();
+			a.addPhong(phong);
+			list.docDuLieu();
+			PhieuDatPhong pd = new PhieuDatPhong("PD"+(list.getListPDP().size()+100), nv, kh, a, 1, ngayDen, ngayDi);
+			
+			
+			new DanhSachPhieuDat().insertPhieuDatSQL(pd);
+			
+			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+			
+		}
+		if(source.equals(DatPhong_Xoa)) {
+			int row = table.getSelectedRow();
+			String ma_PhieuDat = model.getValueAt(row, 0).toString();
+			DanhSachPhieuDat listPD = new DanhSachPhieuDat();
+			listPD.docDuLieu();
+			PhieuDatPhong pd = listPD.getPhieuDatPhongByMa(ma_PhieuDat);
+			
+		}
 	}
+	
+	
 }
 
 

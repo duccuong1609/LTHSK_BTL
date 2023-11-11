@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -35,6 +36,7 @@ import com.toedter.calendar.JDateChooser;
 import Control.DanhSachDichVu;
 import Control.DanhSachKhachHang;
 import Control.DanhSachNhanVien;
+import Control.DanhSachPhieuDat;
 import Control.DanhSachPhong;
 
 public class Default_Custom_UI {
@@ -45,6 +47,8 @@ public class Default_Custom_UI {
 	private static DanhSachNhanVien listNhanVien;
 	private static DanhSachKhachHang listKhachHang;
 	private static DanhSachDichVu listDichVu;
+	private static DanhSachPhieuDat listPhieuDat;
+	private static SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 //	private static DanhSachPhieuDat list_phieuDat;
 	//-----------------------------------DEFAULT-----------------------------------------//
 	
@@ -239,6 +243,23 @@ public class Default_Custom_UI {
 						data[i][6] = "Normal";
 					}
 					
+				}
+				return data;
+			}
+			
+			
+			if(type.equals("LayPhieuDatChuaNhan")) {
+				listPhieuDat = new DanhSachPhieuDat();
+				DanhSachPhieuDat a = listPhieuDat.getPhieuDatPhongChuaNhan();
+				int size = a.getListPDP().size();
+				String [][] data = new String[size][6];
+				for(int  i = 0; i < size; i++) {
+					data[i][0] = a.getListPDP().get(i).getMaPD();
+					data[i][1] = a.getListPDP().get(i).getNhanVien().getMaNV();
+					data[i][2] = a.getListPDP().get(i).getKhachHang().getCCCD();
+					data[i][3] = Integer.toString(a.getListPDP().get(i).getPhongs().getListPhong().get(0).getSoPhong());
+					data[i][4] = date.format(a.getListPDP().get(i).getNgayDen());
+					data[i][5] = date.format(a.getListPDP().get(i).getNgayDi());
 				}
 				return data;
 			}

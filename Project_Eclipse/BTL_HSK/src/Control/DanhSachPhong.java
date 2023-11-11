@@ -54,7 +54,7 @@ public class DanhSachPhong {
 		PreparedStatement statement = null;
 		int n = 0;
 		try {
-			statement = con.prepareStatement("{call updatePhong(?)(?)}");
+			statement = con.prepareStatement("{call updateTrangThaiPhong(?,?)}");
 			statement.setInt(1, soPhong);
 			statement.setInt(2, trangThai);
 			n = statement.executeUpdate();
