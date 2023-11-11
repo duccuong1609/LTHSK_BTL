@@ -30,7 +30,7 @@ public class UI_TC_HOADON implements MouseListener,ActionListener{
 	public JPanel display_HoaDon;
 	private JButton Tim;
 	private JButton Xoa;
-	private JButton Sua;
+//	private JButton Sua;
 	private JButton TaoLai;
 	
 	private JTextField HoaDon_txt_MaHoaDon;
@@ -203,14 +203,14 @@ public class UI_TC_HOADON implements MouseListener,ActionListener{
 		left_addfield.add(jp_dv,BorderLayout.CENTER);
 		
 		Tim = Default_Custom_UI.default_Action_Button("Tìm", "Media/Icon/tim.gif");
-		Sua = Default_Custom_UI.default_Action_Button("Sửa", "Media/Icon/chinhsua.gif");
+//		Sua = Default_Custom_UI.default_Action_Button("Sửa", "Media/Icon/chinhsua.gif");
 		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
 		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
 		
 		button_panel.add(TaoLai);
 		button_panel.add(Tim);
 		button_panel.add(Xoa);
-		button_panel.add(Sua);
+//		button_panel.add(Sua);
 		
 		content_panel.add(jp,BorderLayout.CENTER);
 		

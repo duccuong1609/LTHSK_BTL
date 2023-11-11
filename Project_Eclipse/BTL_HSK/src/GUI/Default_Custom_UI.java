@@ -64,6 +64,13 @@ public class Default_Custom_UI {
 			txt_panel.add(txt);
 			return txt_panel;
 		}
+		
+		public static ImagePanel default_first_panel() {
+			ImagePanel panel = new ImagePanel(
+		    new ImageIcon("Media/Icon/background.png").getImage());
+			
+			return panel;
+		}
 	
 		public static JPanel default_RoomTag(String tag_name,int number,Color tag_color,Color fore_color) {
 			JPanel default_tag = new JPanel();
@@ -487,3 +494,27 @@ class CustomHeaderRenderer extends DefaultTableCellRenderer {
     }
 }
 
+@SuppressWarnings("serial")
+class ImagePanel extends JPanel {
+
+	  private Image img;
+
+	  public ImagePanel(String img) {
+	    this(new ImageIcon(img).getImage());
+	  }
+
+	  public ImagePanel(Image img) {
+	    this.img = img;
+	    Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
+	    setPreferredSize(size);
+	    setMinimumSize(size);
+	    setMaximumSize(size);
+	    setSize(size);
+	    setLayout(null);
+	  }
+
+	  public void paintComponent(Graphics g) {
+	    g.drawImage(img, 0, 0, null);
+	  }
+
+	}

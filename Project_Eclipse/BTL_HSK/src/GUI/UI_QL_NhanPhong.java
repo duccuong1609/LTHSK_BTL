@@ -108,7 +108,7 @@ public class UI_QL_NhanPhong implements MouseListener{
 		
 		left_addfield.setPreferredSize(new Dimension(250,800));
 		
-		left_addfield.add(Default_Custom_UI.default_label("MÃ PHIẾU ĐẶT"));
+		left_addfield.add(Default_Custom_UI.default_label("MÃ PHIẾU THUÊ"));
 		left_addfield.add(NhanPhong_MaPhieuDat); 
 		left_addfield.add(Default_Custom_UI.default_label("GIỜ NHẬN"));
 		left_addfield.add(NhanPhong_GioNhan);

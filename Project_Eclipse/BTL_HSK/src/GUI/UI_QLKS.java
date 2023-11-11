@@ -116,6 +116,7 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 	public void Display() {
 		displayPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 1),new EmptyBorder(0,0,0,0)));
 		displayPanel.setBackground(Color.LIGHT_GRAY);
+		displayPanel.add(Default_Custom_UI.default_first_panel());
 	}
 	
 	//--------------------------------TAB-SODOPHONG--------------------------//
@@ -433,6 +434,14 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 			Database db = new Database();
 			db.connect();
 			
+			validate();
+			repaint();
+		}
+		if(e.equals(button_ThongKe)) {
+			displayPanel.removeAll();
+			
+			UI_THONGKE thongke = new UI_THONGKE(); 
+			displayPanel.add(thongke.display_ThongKe);
 			validate();
 			repaint();
 		}

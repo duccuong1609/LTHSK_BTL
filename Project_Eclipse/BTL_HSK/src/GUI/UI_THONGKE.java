@@ -9,9 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,33 +20,25 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import com.toedter.calendar.JDateChooser;
 
-import Control.DanhSachPhong;
-import entity.Phong;
-import entity.PhongThuong;
-import entity.PhongVip;
-
-public class UI_QL_DatPhong implements MouseListener,ActionListener{
+public class UI_THONGKE implements MouseListener,ActionListener{
 	
 	//--------DatPhong-----------//
-	public JPanel display_DatPhong;
-	private JButton datPhong_Then;
-	private JButton DatPhong_Xoa;
-	private JButton DatPhong_Sua;
-	private JButton DatPhong_TaoLai;
-	
-	private JComboBox<String> datPhong_cb_SoPhong;
-	private JComboBox<String> DatPhong_cb_MaNV;
-	private JTextField DatPhong_txt_CCCD;
-	private JDateChooser DatPhong_NgayDen;
-	private JDateChooser DatPhong_NgayDi;
-	private JTextField DatPhong_GiaPhong;
+	public JPanel display_ThongKe;
+	private JButton Then;
+	private JButton Xoa;
+	private JButton Sua;
+	private JButton TaoLai;
+	private JButton Tim;
+
+	private JTextField DV_txt_MADV;
+	private JTextField DV_txt_TENDV;
+	private JTextField DV_txt_GIADV;
 	
 //	private DanhSachPhieuDat phieuDat;
 	
 	
-	String[] cols_name = {"MÃ PHIẾU THUÊ","MÃ NHÂN VIÊN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","NGÀY ĐẾN","NGÀY ĐI"};
+	String[] cols_name = {"MÃ DỊCH VỤ","TÊN DỊCH VỤ","GIÁ DỊCH VỤ"};
 	private Object[][] data = {
             {"1", "Alice", "Smith"},
             {"2", "Bob", "Johnson"},
@@ -66,7 +56,10 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 	};
 	private JTable table = new JTable(model);
 	
-	public UI_QL_DatPhong() {
+	public UI_THONGKE() {
+		//setup data
+		data = Default_Custom_UI.cast_data("DichVu_FULL");
+		model.setDataVector(data, cols_name);
 		
 //		table
 		table.getTableHeader().setFont(Default_Custom_UI.title_font);
@@ -84,20 +77,21 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 		table.addMouseListener(this);
 		
 		
-		display_DatPhong = new JPanel();
-		display_DatPhong = new JPanel();
-		display_DatPhong.setLayout(new BorderLayout());
+		display_ThongKe = new JPanel();
+		display_ThongKe = new JPanel();
+		display_ThongKe.setLayout(new BorderLayout());
 		
 		JPanel titleJPanel = new JPanel();
 		
 		titleJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
-		JLabel title = new JLabel("QUẢN LÍ ĐẶT PHÒNG");
+		JLabel title = new JLabel("THỐNG KÊ KHÁCH SẠN");
+		
 		JPanel center_panel = new JPanel();
 		title.setFont(Default_Custom_UI.big_title_font);
 		titleJPanel.add(title);
 		title.setBorder(new EmptyBorder(5,5,5,5));
-		display_DatPhong.add(titleJPanel,BorderLayout.NORTH);
+		display_ThongKe.add(titleJPanel,BorderLayout.NORTH);
 		
 		JPanel main_pJPanel = new JPanel();
 		main_pJPanel.setLayout(new BorderLayout());
@@ -112,38 +106,22 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
-		datPhong_cb_SoPhong = Default_Custom_UI.add_data_ds_combo("Phong");
-		DatPhong_cb_MaNV = Default_Custom_UI.add_data_ds_combo("NV");
-		DatPhong_txt_CCCD = Default_Custom_UI.default_textfield();
-		DatPhong_NgayDen = Default_Custom_UI.defaultDateChooser();
-		DatPhong_NgayDi = Default_Custom_UI.defaultDateChooser();
-		DatPhong_GiaPhong = Default_Custom_UI.default_textfield();
-		DatPhong_GiaPhong.setEditable(false);
-		
-		JPanel txt_panel = new JPanel();
-		txt_panel.setLayout(new BoxLayout(txt_panel, BoxLayout.X_AXIS));
-		txt_panel.setPreferredSize(new Dimension(220,35));
-		txt_panel.add(DatPhong_txt_CCCD);
-		
+		DV_txt_MADV = Default_Custom_UI.default_textfield();
+		DV_txt_TENDV = Default_Custom_UI.default_textfield();
+		DV_txt_GIADV = Default_Custom_UI.default_textfield();
 		
 		left_addfield.setPreferredSize(new Dimension(250,800));
 		
-		left_addfield.add(Default_Custom_UI.default_label("MÃ PHÒNG"));
-		left_addfield.add(datPhong_cb_SoPhong); 
-		left_addfield.add(Default_Custom_UI.default_label("MÃ NHÂN VIÊN"));
-		left_addfield.add(DatPhong_cb_MaNV);
-		left_addfield.add(Default_Custom_UI.default_label("CCCD"));
-		left_addfield.add(txt_panel);
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐẾN"));
-		left_addfield.add(DatPhong_NgayDen);
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐI"));
-		left_addfield.add(DatPhong_NgayDi);
-		left_addfield.add(Default_Custom_UI.default_label("GIÁ PHÒNG / 1 NGÀY"));
-		left_addfield.add(Default_Custom_UI.default_text_panel(DatPhong_GiaPhong));
+		left_addfield.add(Default_Custom_UI.default_label("MÃ DỊCH VỤ"));
+		left_addfield.add(Default_Custom_UI.default_text_panel(DV_txt_MADV)); 
+		
+		left_addfield.add(Default_Custom_UI.default_label("TÊN DỊCH VỤ"));
+		left_addfield.add(Default_Custom_UI.default_text_panel(DV_txt_TENDV)); 
+		
+		left_addfield.add(Default_Custom_UI.default_label("GIÁ DỊCH VỤ"));
+		left_addfield.add(Default_Custom_UI.default_text_panel(DV_txt_GIADV)); 
 		
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
-		
-		
 		
 		JPanel content_panel = new JPanel(new BorderLayout());
 		JPanel button_panel = new JPanel();
@@ -153,30 +131,21 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 		//table
 		
 		JScrollPane jp = new JScrollPane(table);
+		
+		jp.setBackground(new Color(0,25,51));
+		
 		jp.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
-		
-		datPhong_Then = Default_Custom_UI.default_Action_Button("Đặt Phòng", "Media/Icon/them.gif");
-		DatPhong_Sua = Default_Custom_UI.default_Action_Button("Sửa", "Media/Icon/chinhsua.gif");
-		DatPhong_Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
-		DatPhong_TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
-		
-		button_panel.add(DatPhong_TaoLai);
-		button_panel.add(datPhong_Then);
-		button_panel.add(DatPhong_Xoa);
-		button_panel.add(DatPhong_Sua);
 		
 		content_panel.add(jp,BorderLayout.CENTER);
 		
-		content_panel.add(button_panel,BorderLayout.SOUTH);
 		content_panel.setBorder(new EmptyBorder(0,10,0,0));
 		
 		center_panel.add(content_panel,BorderLayout.CENTER);
 		
 		main_pJPanel.add(center_panel,BorderLayout.CENTER);
 		
-		display_DatPhong.add(main_pJPanel,BorderLayout.CENTER);
+		display_ThongKe.add(main_pJPanel,BorderLayout.CENTER);
 		
-		datPhong_cb_SoPhong.addActionListener(this);
 	}
 	
 
@@ -184,7 +153,10 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(table)) {
-			
+			int row = table.getSelectedRow();
+			DV_txt_MADV.setText(model.getValueAt(row, 0).toString());
+			DV_txt_TENDV.setText(model.getValueAt(row, 1).toString());
+			DV_txt_GIADV.setText(model.getValueAt(row, 2).toString());
 		}
 	}
 
@@ -216,21 +188,11 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource().equals(datPhong_cb_SoPhong)) {
-			DanhSachPhong ds = new DanhSachPhong();
-			ds.docDuLieu();
-			int sophong = Integer.parseInt(datPhong_cb_SoPhong.getSelectedItem().toString());
-			
-			if(ds.getListPhong().get(sophong-1)!= null) {
-				
-				if(ds.getListPhong().get(sophong-1) instanceof PhongVip) {
-					DatPhong_GiaPhong.setText("300000");
-				}
-				else {
-					DatPhong_GiaPhong.setText("150000");
-				}
-				
-			}
+		if(e.getSource().equals(TaoLai)) {
+			DV_txt_MADV.setText("");
+			DV_txt_TENDV.setText("");
+			DV_txt_GIADV.setText("");
+			DV_txt_MADV.requestFocus();
 		}
 	}
 }
