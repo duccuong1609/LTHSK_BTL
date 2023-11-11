@@ -1,12 +1,19 @@
 package GUI;
 
+import static org.junit.Assert.isArray;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -22,7 +29,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import com.toedter.calendar.JDateChooser;
 
-public class UI_QL_NhanPhong implements MouseListener{
+import Control.DanhSachPhieuDat;
+import Control.DanhSachPhieuNhan;
+import entity.PhieuDatPhong;
+import entity.PhieuNhanPhong;
+
+public class UI_QL_NhanPhong implements MouseListener,ActionListener{
+	
 	
 	//--------DatPhong-----------//
 	public JPanel display_NhanPhong;
@@ -35,6 +48,9 @@ public class UI_QL_NhanPhong implements MouseListener{
 	private JTextField CCCD;
 	private JTextField NgayDen;
 	private JTextField NgayDi;
+	
+	private static SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	private static SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 	
 //	private DanhSachPhieuDat phieuDat;
 	
@@ -158,6 +174,10 @@ public class UI_QL_NhanPhong implements MouseListener{
 		
 		display_NhanPhong.add(main_pJPanel,BorderLayout.CENTER);
 		
+		Them.addActionListener(this);
+		Tim.addActionListener(this);
+		
+		
 	}
 	
 
@@ -193,6 +213,45 @@ public class UI_QL_NhanPhong implements MouseListener{
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object source = e.getSource();
+		if(source.equals(Them)) {
+			String maPhieu = NhanPhong_MaPhieuDat.getSelectedItem().toString();
+			DanhSachPhieuDat listPD = new DanhSachPhieuDat();
+			DanhSachPhieuNhan listPhieuNhan = new DanhSachPhieuNhan();
+			
+			listPD.docDuLieu();
+			listPhieuNhan.docDuLieu();
+			PhieuDatPhong pd = listPD.getPhieuDatPhongByMa(maPhieu);
+			Date ngayNhan = new Date();
+			Date gioNhan = new Date();
+			int size = listPhieuNhan.getListPN().size();
+			String maPN = listPhieuNhan.getListPN().get(size-1).getMaPhieuNhan();
+			int number = Integer.parseInt(maPN.substring(2, maPN.length()))+1;
+			System.out.println(number);
+			PhieuNhanPhong pn = new PhieuNhanPhong("PN0"+number, pd, gioNhan, ngayNhan);
+			listPhieuNhan.insertPhieuNhan(pn);
+			
+			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+		}
+		if(source.equals(Tim)) {
+			String cCCD = CCCD.getText();
+			for(int i = 0; i < data.length;i++) {
+				String temp = table.getValueAt(i, 2).toString();
+				if(temp.equals(cCCD)) {
+					System.out.println(temp.equals(cCCD));
+					table.setRowSelectionInterval(i, i);
+				}
+			}
+			
+		}
 	}
 }
 

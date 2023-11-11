@@ -67,6 +67,9 @@ public class DanhSachPhieuNhan {
 		return a;
 		
 	}
+	public ArrayList<PhieuNhanPhong> getListPN() {
+		return listPN;
+	}
 	
 	public boolean traPhong(String CCCD,int soPhong) {
 		DanhSachPhieuNhan a = new DanhSachPhieuNhan();
