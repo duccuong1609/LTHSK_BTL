@@ -1,5 +1,7 @@
 package GUI;
 
+import static org.junit.Assert.isArray;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -212,6 +214,14 @@ public class Default_Custom_UI {
 				listNhanVien.docDuLieu();
 				for(int i=0;i<listNhanVien.get_listNV().size();i++) {
 					cb.addItem(listNhanVien.get_listNV().get(i).getMaNV());
+				}
+			}
+			if(type.equals("MaPhieuChuaNhan")) {
+				listPhieuDat = new DanhSachPhieuDat();
+				listPhieuDat.docDuLieu();
+				DanhSachPhieuDat pds = listPhieuDat.getPhieuDatPhongChuaNhan();
+				for(int i = 0; i < pds.getListPDP().size();i++) {
+					cb.addItem(pds.getListPDP().get(i).getMaPD());
 				}
 			}
 			cb.setPreferredSize(new Dimension(220,35));

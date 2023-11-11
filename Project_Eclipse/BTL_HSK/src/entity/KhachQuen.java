@@ -51,6 +51,6 @@ public class KhachQuen extends KhachHang {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return String.format("%s %s %s %s %s %s",maLoai,tenLoai,khauTru );
+		return String.format("%s %s %s",maLoai,tenLoai,khauTru );
 	}
 }

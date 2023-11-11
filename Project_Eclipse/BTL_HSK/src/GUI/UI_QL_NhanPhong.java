@@ -38,11 +38,7 @@ public class UI_QL_NhanPhong implements MouseListener{
 	
 	
 	String[] cols_name = {"MÃ PHIẾU THUÊ","MÃ NHÂN VIÊN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","NGÀY ĐẾN","NGÀY ĐI"};
-	private Object[][] data = {
-            {"1", "Alice", "Smith"},
-            {"2", "Bob", "Johnson"},
-            {"3", "Charlie", "Williams"}
-        };
+	private Object[][] data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
 	
 	@SuppressWarnings("serial")
 	private DefaultTableModel model = new DefaultTableModel(data,cols_name) {
@@ -102,7 +98,7 @@ public class UI_QL_NhanPhong implements MouseListener{
 		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
-		NhanPhong_MaPhieuDat = Default_Custom_UI.add_data_ds_combo("");
+		NhanPhong_MaPhieuDat = Default_Custom_UI.add_data_ds_combo("MaPhieuChuaNhan");
 		NhanPhong_NgayNhan = Default_Custom_UI.defaultDateChooser();
 		NhanPhong_GioNhan = Default_Custom_UI.defaultDateChooser();
 		
@@ -129,7 +125,7 @@ public class UI_QL_NhanPhong implements MouseListener{
 		
 		Them = Default_Custom_UI.default_Action_Button("Nhận Phòng", "Media/Icon/them.gif");
 		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
-		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
+		TaoLai = Default_Custom_UI.default_Action_Button("Tìm", "Media/Icon/taolai.gif");
 		
 		button_panel.add(TaoLai);
 		button_panel.add(Them);
@@ -154,6 +150,8 @@ public class UI_QL_NhanPhong implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(table)) {
+			int row = table.getSelectedRow();
+			
 			
 		}
 	}
