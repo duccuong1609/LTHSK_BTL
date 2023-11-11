@@ -260,7 +260,6 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 				JOptionPane.showMessageDialog(display_DatPhong,"Khách hàng không tồn tại!");
 			}
 			Phong phong = phongs.getPhongBySoPhong(soPhong);
-			System.out.println(phong.getSoPhong());
 			DanhSachPhong a = new DanhSachPhong();
 			a.addPhong(phong);
 			list.docDuLieu();
@@ -280,7 +279,10 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 			DanhSachPhieuDat listPD = new DanhSachPhieuDat();
 			listPD.docDuLieu();
 			PhieuDatPhong pd = listPD.getPhieuDatPhongByMa(ma_PhieuDat);
-			
+			listPD.deletePhieuDat(pd);
+			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
 		}
 	}
 	
