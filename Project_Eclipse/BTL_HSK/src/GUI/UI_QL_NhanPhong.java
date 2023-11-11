@@ -13,8 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -27,15 +25,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import com.toedter.calendar.JDateChooser;
-
 import Control.DanhSachPhieuDat;
 import Control.DanhSachPhieuNhan;
 import entity.PhieuDatPhong;
 import entity.PhieuNhanPhong;
 
 public class UI_QL_NhanPhong implements MouseListener,ActionListener{
-	
 	
 	//--------DatPhong-----------//
 	public JPanel display_NhanPhong;
@@ -177,7 +172,6 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 		Them.addActionListener(this);
 		Tim.addActionListener(this);
 		
-		
 	}
 	
 
@@ -219,6 +213,7 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+
 		Object source = e.getSource();
 		if(source.equals(Them)) {
 			String maPhieu = NhanPhong_MaPhieuDat.getSelectedItem().toString();

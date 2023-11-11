@@ -9,9 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.regex.Pattern;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,6 +24,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import Control.DanhSachKhachHang;
+import entity.KhachHang;
 
 public class UI_TC_KH implements MouseListener,ActionListener{
 	
@@ -40,8 +46,11 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 	private JTextField KH_txt_Email;
 	private JTextField KH_txt_SĐT;
 	
-//	private DanhSachPhieuDat phieuDat;
+	private DanhSachKhachHang list_KhachHang;
 	
+//	Pattern name = Pattern.compile("([A-Z][a-z]+ )+([A-Z][a-z]+)");
+	private Pattern email = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
+	private Pattern phone = Pattern.compile("(84|0[3|5|7|8|9])+([0-9]{8})");
 	
 	String[] cols_name = {"CĂN CƯỚC CÔNG DÂN","SỐ TÀI KHOẢN","HỌ VÀ TÊN","ĐỊA CHỈ","EMAIL","SỐ ĐIỆN THOẠI","LOẠI KHÁCH HÀNG"};
 	private Object[][] data = {
@@ -214,6 +223,116 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 		}
 	}
 
+	private boolean Them_Sua_KhachHang(String type) {
+		// TODO Auto-generated method stub
+		
+
+		
+		if(KH_txt_CCCD.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_KH, "Căn Cước Công Dân Không Được Để Trống !");
+			KH_txt_CCCD.requestFocus();
+			return false;
+		}
+		if(KH_txt_STK.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_KH, "Số Tài Khoản Không Được Để Trống !");
+			KH_txt_STK.requestFocus();
+			return false;
+		}
+		if(KH_txt_Hoten.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_KH, "Họ Tên Không Được Để Trống !");
+			KH_txt_Hoten.requestFocus();
+			return false;
+		}
+		if(KH_txt_DiaChi.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_KH, "Địa Chỉ Không Được Để Trống !");
+			KH_txt_DiaChi.requestFocus();
+			return false;
+		}
+		if(KH_txt_Email.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_KH, "Email Không Được Để Trống !");
+			KH_txt_Email.requestFocus();
+			return false;
+		}
+		if(KH_txt_SĐT.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_KH, "Số Điện Thoại Không Được Để Trống !");
+			KH_txt_SĐT.requestFocus();
+			return false;
+		}
+		
+		if(!KH_txt_CCCD.getText().matches("[0-9]{12}")) {
+			JOptionPane.showMessageDialog(display_KH, "Căn Cước Công Dân Phải Là 1 Dãy Số Gồm 12 Chữ Số !");
+			KH_txt_CCCD.setText("");
+			KH_txt_CCCD.requestFocus();
+			return false;
+		}
+		
+		if(type.equals("Sua")) {
+			
+			if(table.getSelectedRow()==-1) {
+				JOptionPane.showMessageDialog(display_KH, "Không Có Khách Hàng Nào Được Chọn !");
+				return false;
+			}
+			if(!KH_txt_CCCD.getText().equals(model.getValueAt(table.getSelectedRow(), 0).toString())) {
+				JOptionPane.showMessageDialog(display_KH, "Không Được Phép Sửa Căn Cước Công Dân !");
+				KH_txt_CCCD.setText(model.getValueAt(table.getSelectedRow(), 0).toString());
+				return false;
+			}
+		}
+		
+		list_KhachHang = new DanhSachKhachHang();
+		list_KhachHang.docDuLieu();
+		
+		if(type.equals("Them")) {
+			if(list_KhachHang.getKhachHangByMa(KH_txt_CCCD.getText())!= null) {
+				JOptionPane.showMessageDialog(display_KH, "Khách Hàng Này Đã Tồn Tại Trong Danh Sách !");
+				KH_txt_CCCD.requestFocus();
+				return false;
+			}
+		}
+		
+		if(!KH_txt_STK.getText().matches("[0-9]{9,16}")) {
+			JOptionPane.showMessageDialog(display_KH, "Số Tài Khoản Phải Là 1 Dãy Số (Từ 9 Đến 16 Số) !");
+			KH_txt_STK.requestFocus();
+			return false;
+		}
+		
+//		if(!name.matcher(KH_txt_Hoten.getText()).matches()) {
+//			JOptionPane.showMessageDialog(display_KH, "Họ Tên Gồm Từ 2 Từ Trở Lên. Mỗi Từ Có Chữ Cái Đầu Viết Hoa !");
+//			KH_txt_Hoten.requestFocus();
+//			return false;
+//		}
+		if(!email.matcher(KH_txt_Email.getText()).matches()) {
+			JOptionPane.showMessageDialog(display_KH, "Sai Định Dạng Email !");
+			KH_txt_Hoten.requestFocus();
+			return false;
+		}
+		if(!phone.matcher(KH_txt_SĐT.getText()).matches()) {
+			JOptionPane.showMessageDialog(display_KH, "Sai Định Dạng Số Điện Thoại Việt Nam !");
+			KH_txt_Hoten.requestFocus();
+			return false;
+		}
+		
+		if(type.equals("Them")) {
+			KhachHang khachHang = new KhachHang(KH_txt_CCCD.getText(), KH_txt_STK.getText(), KH_txt_Hoten.getText(), KH_txt_SĐT.getText(), KH_txt_DiaChi.getText(), KH_txt_Email.getText(), KH_cb_LoaiKhach.getSelectedItem().toString());
+			list_KhachHang.addKhachHang(khachHang);
+			
+			data = Default_Custom_UI.cast_data("KhachHang");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+		}
+		if(type.equals("Sua")) {
+			KhachHang khachHang = new KhachHang(KH_txt_CCCD.getText(), KH_txt_STK.getText(), KH_txt_Hoten.getText(), KH_txt_SĐT.getText(), KH_txt_DiaChi.getText(), KH_txt_Email.getText(), KH_cb_LoaiKhach.getSelectedItem().toString());
+			list_KhachHang.update(khachHang);
+			
+			data = Default_Custom_UI.cast_data("KhachHang");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+		}
+		
+		return true;
+	}
+
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -251,7 +370,80 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 			KH_txt_SĐT.setText("");
 			KH_cb_LoaiKhach.setSelectedIndex(0);
 			KH_txt_CCCD.requestFocus();
+			
+			data = Default_Custom_UI.cast_data("KhachHang");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
 		}
+		if(e.getSource().equals(Then)) {
+			Them_Sua_KhachHang("Them");
+		}
+		if(e.getSource().equals(Xoa)) {
+			String CCCD = KH_txt_CCCD.getText();
+			list_KhachHang = new DanhSachKhachHang();
+			list_KhachHang.docDuLieu();
+			if(list_KhachHang.getKhachHangByMa(CCCD)!=null) {
+				int choose = JOptionPane.showConfirmDialog(display_KH,"Bạn Có Chắc Muốn Xóa Khách Hàng Này Không ?","Chú Ý",JOptionPane.YES_NO_OPTION);
+				if(choose == JOptionPane.YES_OPTION) {
+					list_KhachHang.delete(CCCD);
+					data = Default_Custom_UI.cast_data("KhachHang");
+					model.setDataVector(data, cols_name);
+					table.setModel(model);
+				}
+			}
+			else {
+				JOptionPane.showMessageDialog(display_KH,"Không Có Khách Hàng Nào Được Chọn");
+			}
+		}
+		if(e.getSource().equals(Sua)) {
+			Them_Sua_KhachHang("Sua");
+		}
+		if(e.getSource().equals(Tim)) {
+			Tim_KhachHang();
+		}
+	}
+
+
+	private boolean Tim_KhachHang() {
+		// TODO Auto-generated method stub
+		list_KhachHang = new DanhSachKhachHang();
+		list_KhachHang.docDuLieu();
+		
+		if(KH_txt_CCCD.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_KH, "Căn Cước Công Dân Không Được Để Trống !");
+			KH_txt_CCCD.requestFocus();
+			return false;
+		}
+		if(!KH_txt_CCCD.getText().matches("[0-9]{12}")) {
+			JOptionPane.showMessageDialog(display_KH, "Căn Cước Công Dân Phải Là 1 Dãy Số Gồm 12 Chữ Số !");
+			KH_txt_CCCD.setText("");
+			KH_txt_CCCD.requestFocus();
+			return false;
+		}
+		if(list_KhachHang.getKhachHangByMa(KH_txt_CCCD.getText())== null) {
+			JOptionPane.showMessageDialog(display_KH, "Khách Hàng Này Không Tồn Tại!");
+			KH_txt_CCCD.requestFocus();
+			return false;
+		}
+		data = new String[1][7];
+		
+		data[0][0] = list_KhachHang.getKhachHangByMa(KH_txt_CCCD.getText()).getCCCD();
+		data[0][1] = list_KhachHang.getKhachHangByMa(KH_txt_CCCD.getText()).getSoTK();
+		data[0][2] = list_KhachHang.getKhachHangByMa(KH_txt_CCCD.getText()).getHoTen();
+		data[0][3] = list_KhachHang.getKhachHangByMa(KH_txt_CCCD.getText()).getDiaChi();
+		data[0][4] = list_KhachHang.getKhachHangByMa(KH_txt_CCCD.getText()).getEmali();
+		data[0][5] = list_KhachHang.getKhachHangByMa(KH_txt_CCCD.getText()).getSoDT();
+		if(list_KhachHang.getKhachHangByMa(KH_txt_CCCD.getText()).getMaLoaiKH().equals("V")) {
+			data[0][6] = "VIP";
+		}
+		else {
+			data[0][6] = "Normal";
+		}
+		
+		model.setDataVector(data, cols_name);
+		table.setModel(model);
+		
+		return true;
 	}
 }
 

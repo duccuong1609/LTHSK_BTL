@@ -157,7 +157,7 @@ public class Default_Custom_UI {
 		}
 		
 		public static JTextField default_textfield() {
-			JTextField txt = new JTextField(17);
+			JTextField txt = new JTextField(21);
 
 //			txt.setMaximumSize(
 //			    new Dimension(Integer.MAX_VALUE,
@@ -281,6 +281,7 @@ public class Default_Custom_UI {
 				return data;
 			}
 			
+			
 			if(type.equals("LayPhieuDatChuaNhan")) {
 				listPhieuDat = new DanhSachPhieuDat();
 				DanhSachPhieuDat a = listPhieuDat.getPhieuDatPhongChuaNhan();
@@ -296,6 +297,7 @@ public class Default_Custom_UI {
 				}
 				return data;
 			}
+			
 			if(type.equals("DichVu")) {
 				listDichVu = new DanhSachDichVu();
 				listDichVu.docDuLieu();
