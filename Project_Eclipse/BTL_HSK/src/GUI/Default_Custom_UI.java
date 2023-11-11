@@ -207,6 +207,14 @@ public class Default_Custom_UI {
 				}
 			}
 			
+			if(type.equals("PhieuDatPhongChuaNhan")) {
+				DanhSachPhieuDat ds = new DanhSachPhieuDat().getPhieuDatPhongChuaNhan();
+				int size = ds.getListPDP().size();
+				for(int i=0;i<size;i++) {
+					cb.addItem(ds.getListPDP().get(i).getMaPD());
+				}
+			}
+			
 			if(type.equals("NV")) {
 				listNhanVien = new DanhSachNhanVien();
 				listNhanVien.docDuLieu();

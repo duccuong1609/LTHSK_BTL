@@ -151,8 +151,6 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
-		
-		
 		JPanel content_panel = new JPanel(new BorderLayout());
 		JPanel button_panel = new JPanel();
 		button_panel.setBorder(new CompoundBorder(new EmptyBorder(10,0,0,0), new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10))));
@@ -267,6 +265,12 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		}
 		if(source.equals(DatPhong_Xoa)) {
 			int row = table.getSelectedRow();
+			
+			if(row == -1) {
+				JOptionPane.showMessageDialog(display_DatPhong, "Không Có Phiếu Đặt Nào Được Chọn !");
+				return;
+			}
+			
 			String sophong = model.getValueAt(row, 3).toString();
 			
 			String ma_PhieuDat = model.getValueAt(row, 0).toString();
@@ -342,7 +346,14 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		DanhSachPhong a = new DanhSachPhong();
 		a.addPhong(phong);
 		list.docDuLieu();
-		PhieuDatPhong pd = new PhieuDatPhong("PD"+(list.getListPDP().size()+100), nv, kh, a, 1, ngayDen, ngayDi);
+		int last_number = 10;
+		if(list.getListPDP().size() >0) {
+			String last_PDP = list.getListPDP().get(list.getListPDP().size()-1).getMaPD();
+			last_number = Integer.parseInt(last_PDP.substring(2, last_PDP.length())) + 1;
+			System.out.println(last_PDP);
+			System.out.println(last_number);
+		}
+		PhieuDatPhong pd = new PhieuDatPhong("PD0"+(last_number), nv, kh, a, 1, ngayDen, ngayDi);
 
 		new DanhSachPhieuDat().insertPhieuDatSQL(pd);
 		
@@ -351,6 +362,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
 		model.setDataVector(data, cols_name);
 		table.setModel(model);
+		
 		return true;
 	}
 }
