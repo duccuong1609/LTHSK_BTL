@@ -9,8 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -38,9 +40,7 @@ import entity.Phong;
 import entity.PhongThuong;
 import entity.PhongVip;
 
-public class UI_QL_DatPhong implements MouseListener,ActionListener{
-	
-	
+public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListener{
 	//--------DatPhong-----------//
 	public JPanel display_DatPhong;
 	private JButton datPhong_Then;
@@ -54,6 +54,8 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 	private JDateChooser DatPhong_NgayDen;
 	private JDateChooser DatPhong_NgayDi;
 	private JTextField DatPhong_GiaPhong;
+	
+	private static SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 	
 //	private DanhSachPhieuDat phieuDat;
 	
@@ -186,6 +188,7 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 		datPhong_cb_SoPhong.addActionListener(this);
 		datPhong_Then.addActionListener(this);
 		DatPhong_Xoa.addActionListener(this);
+		DatPhong_TaoLai.addActionListener(this);
 	}
 	
 
@@ -195,7 +198,15 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 		if(e.getSource().equals(table)) {
 			int row = table.getSelectedRow();
 			String ma_PhieuDat = model.getValueAt(row, 0).toString();
-			
+			DatPhong_cb_MaNV.setSelectedItem(model.getValueAt(row, 1));
+			DatPhong_txt_CCCD.setText(model.getValueAt(row,2).toString());
+			try {
+			DatPhong_NgayDen.getDateEditor().setDate(date.parse(model.getValueAt(row, 4).toString()));
+			DatPhong_NgayDi.getDateEditor().setDate(date.parse(model.getValueAt(row, 5).toString()));
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -244,35 +255,16 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 				
 			}
 		}
+		if(source.equals(DatPhong_TaoLai)) {
+			datPhong_cb_SoPhong.setSelectedIndex(0);
+			DatPhong_cb_MaNV.setSelectedIndex(0);
+			DatPhong_txt_CCCD.setText("");
+			DatPhong_NgayDen.setCalendar(null);
+			DatPhong_NgayDi.setCalendar(null);
+		}
 		
 		if(source.equals(datPhong_Then)){
-			String CCCD = DatPhong_txt_CCCD.getText();
-			Date ngayDen = DatPhong_NgayDen.getDate();
-			Date ngayDi = DatPhong_NgayDi.getDate();
-			String maNV = DatPhong_cb_MaNV.getSelectedItem().toString();
-			int soPhong = Integer.parseInt(datPhong_cb_SoPhong.getSelectedItem().toString());
-			DanhSachPhieuDat list = new DanhSachPhieuDat();
-			NhanVien nv = new DanhSachNhanVien().getNhanVienByMa(maNV);
-			KhachHang kh = new DanhSachKhachHang().getKhachHangByMa(CCCD);
-			DanhSachPhong phongs = new DanhSachPhong();
-			phongs.docDuLieu();
-			if(kh == null) {
-				JOptionPane.showMessageDialog(display_DatPhong,"Khách hàng không tồn tại!");
-			}
-			Phong phong = phongs.getPhongBySoPhong(soPhong);
-			System.out.println(phong.getSoPhong());
-			DanhSachPhong a = new DanhSachPhong();
-			a.addPhong(phong);
-			list.docDuLieu();
-			PhieuDatPhong pd = new PhieuDatPhong("PD"+(list.getListPDP().size()+100), nv, kh, a, 1, ngayDen, ngayDi);
-			
-			
-			new DanhSachPhieuDat().insertPhieuDatSQL(pd);
-			
-			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
-			model.setDataVector(data, cols_name);
-			table.setModel(model);
-			
+			Them_PhieuDatPhong();
 		}
 		if(source.equals(DatPhong_Xoa)) {
 			int row = table.getSelectedRow();
@@ -280,11 +272,77 @@ public class UI_QL_DatPhong implements MouseListener,ActionListener{
 			DanhSachPhieuDat listPD = new DanhSachPhieuDat();
 			listPD.docDuLieu();
 			PhieuDatPhong pd = listPD.getPhieuDatPhongByMa(ma_PhieuDat);
-			
 		}
 	}
 	
-	
+	public boolean Them_PhieuDatPhong() {
+		
+		String CCCD = DatPhong_txt_CCCD.getText();
+		Date ngayDen = DatPhong_NgayDen.getDate();
+		Date ngayDi = DatPhong_NgayDi.getDate();
+		
+		Date today = java.sql.Date.valueOf(LocalDate.now());
+		
+		String maNV = DatPhong_cb_MaNV.getSelectedItem().toString();
+		int soPhong = Integer.parseInt(datPhong_cb_SoPhong.getSelectedItem().toString());
+		
+		if(DatPhong_txt_CCCD.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_DatPhong,"CCCD Không Được Để Trống!");
+			DatPhong_txt_CCCD.requestFocus();
+			return false;
+		}
+		if(DatPhong_NgayDen.getCalendar()==null) {
+			JOptionPane.showMessageDialog(display_DatPhong,"Ngày Đến Không Được Để Trống!");
+			return false;
+		}
+		if(DatPhong_NgayDi.getCalendar()==null) {
+			JOptionPane.showMessageDialog(display_DatPhong,"Ngày Đi Không Được Để Trống!");
+			return false;
+		}
+		
+		if(!CCCD.matches("[0-9]{12}")) {
+			JOptionPane.showMessageDialog(display_DatPhong,"CCCD Phải Là Dãy Số Gồm 12 Chữ Số !");
+			DatPhong_txt_CCCD.setText("");
+			DatPhong_txt_CCCD.requestFocus();
+			return false;
+		}
+		
+		if(ngayDen.compareTo(today)<0) {
+			JOptionPane.showMessageDialog(display_DatPhong,"Ngày Đến Phải Lớn Hơn Hoặc Bằng Ngày Hiện Tại");
+			return false;
+		}
+		if(ngayDi.compareTo(ngayDen)<0) {
+			JOptionPane.showMessageDialog(display_DatPhong,"Ngày Đi Phải Lớn Hơn Hoặc Bằng Ngày Đến");
+			return false;
+		}
+		
+		DanhSachPhieuDat list = new DanhSachPhieuDat();
+		NhanVien nv = new DanhSachNhanVien().getNhanVienByMa(maNV);
+		KhachHang kh = new DanhSachKhachHang().getKhachHangByMa(CCCD);
+		DanhSachPhong phongs = new DanhSachPhong();
+		phongs.docDuLieu();
+		if(kh == null) {
+			JOptionPane.showMessageDialog(display_DatPhong,"Khách hàng không tồn tại!");
+			DatPhong_txt_CCCD.setText("");
+			DatPhong_txt_CCCD.requestFocus();
+			return false;
+		}
+		Phong phong = phongs.getPhongBySoPhong(soPhong);
+		
+		DanhSachPhong a = new DanhSachPhong();
+		a.addPhong(phong);
+		list.docDuLieu();
+		PhieuDatPhong pd = new PhieuDatPhong("PD"+(list.getListPDP().size()+100), nv, kh, a, 1, ngayDen, ngayDi);
+
+		new DanhSachPhieuDat().insertPhieuDatSQL(pd);
+		
+		datPhong_cb_SoPhong.removeItem(Integer.toString(soPhong));
+		
+		data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+		model.setDataVector(data, cols_name);
+		table.setModel(model);
+		return true;
+	}
 }
 
 

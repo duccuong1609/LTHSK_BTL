@@ -4,9 +4,9 @@ GO
 /****** Object:  Database [QLKS]    Script Date: 11/5/2023 2:51:19 PM ******/
 CREATE DATABASE [QLKS]
  ON  PRIMARY 
-( NAME = N'QLKS', FILENAME = N'D:\QuanLyKhachSan\QLKS.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+( NAME = N'QLKS', FILENAME = N'T:\QuanLyKhachSan\QLKS.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
  LOG ON 
-( NAME = N'QLKS_log', FILENAME = N'D:\QuanLyKhachSan\QLKS_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+( NAME = N'QLKS_log', FILENAME = N'T:\QuanLyKhachSan\QLKS_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
  WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
 GO
 
@@ -30,7 +30,7 @@ CREATE TABLE KhachHang(
 	CCCD nvarchar(13) not null PRIMARY KEY,
 	STK nvarchar(20) not null,
 	HoTen nvarchar(30) not null,
-	SĐT nvarchar(20) not null,
+	SDT nvarchar(20) not null,
 	DiaChi nvarchar(50) not null,
 	Email nvarchar(30) not null,
 	MaLoaiKH nvarchar(20) not null FOREIGN KEY REFERENCES LoaiKhach(MaLoai)
@@ -93,10 +93,10 @@ INSERT INTO LoaiKhach(MaLoai,TenLoai,KhauTru)
 VALUES (N'V',N'Khách Quen',0.3),
 		(N'N',N'Khách Thường',0)
 
-INSERT INTO KhachHang(CCCD, HoTen, SĐT, STK, DiaChi, Email, MaLoaiKH)
+INSERT INTO KhachHang(CCCD, HoTen, SDT, STK, DiaChi, Email, MaLoaiKH)
 VALUES	(N'019283940112', N'Nguyễn Đức Cường', N'0384851290', N'500030001203', N'Q.12, Hồ Chí Minh', N'duccuong16092003@gmail.com', 'V'),
         (N'219233940122', N'Đào Huy Hoàng', N'0183451290', N'533020101203', N'Q.Tân Bình, Hồ Chí Minh', N'hoang11@gmail.com', 'V'),
-        (N'362233213322', N'Đặng Nguyễn Minh Thiện', N'0231345129', N'132020101233', N'Q.Gò Vấp, Hồ Chí Minh', N'thien456@gmail.com', 'N'),
+        (N'362233213322', N'Đặng Nguyễn Minh Thiện', N'0231345129', N'132020101233', N'Q.Gò Vấp, Hồ Chí Minh', N'thienlenin12@gmail.com', 'N'),
         (N'419283940111', N'Lê Thị Thảo', N'0384851291', N'500030001204', N'Q.1, Hồ Chí Minh', N'thaole@gmail.com', 'V'),
         (N'319233940126', N'Nguyễn Hữu Phát', N'0183451291', N'533020101204', N'Q.Bình Thạnh, Hồ Chí Minh', N'phat12@gmail.com', 'V'),
         (N'462233213324', N'Trần Thị Hồng', N'0231345128', N'132020101233', N'Q.Tân Phú, Hồ Chí Minh', N'hongtranh@gmail.com', 'N'),
@@ -146,8 +146,8 @@ VALUES	(N'019283940112', N'Nguyễn Đức Cường', N'0384851290', N'500030001
         (N'839283940229', N'Hoàng Thị Ngọc', N'0384851303', N'500030001220', N'Q.3, Hồ Chí Minh', N'ngochuong@gmail.com', 'V');
 
 INSERT INTO NhanVien(MaNV,TenNV,SĐT,DiaChi,Email)
-VALUES	('NV001',N'Nguyễn Văn An',N'0127894391',N'Q.Gò Vấp','vanan1111@gmail.com'),
-		('NV002',N'Nguyễn Văn Linh',N'0235824391',N'Q.Gò Vấp','vanminh1214@gmail.com'),
+VALUES	('NV001', N'Nguyễn Văn An',N'0127894391',N'Q.Gò Vấp','vanan1111@gmail.com'),
+		('NV002', N'Nguyễn Văn Linh',N'0235824391',N'Q.Gò Vấp','vanminh1214@gmail.com'),
 		('NV003', N'Nguyễn Thị Thảo', N'0367843121', N'Q.1', 'thaonguyen@gmail.com'),
 		('NV004', N'Phạm Văn Tú', N'0287645123', N'Q.Tân Bình', 'tupham@gmail.com'),
 		('NV005', N'Trần Thị Hà', N'0341234098', N'Q.10', 'hatran@gmail.com'),
@@ -164,53 +164,54 @@ VALUES (N'STD',N'Phòng Standard',1500000),
 
 INSERT INTO Phong(SoPhong,TenPhong,LoaiPhong,IsEmpty)
 VALUES  (01,'T1.01','STD',1),
-        (02,'T1.02','STD',0),
+        (02,'T1.02','STD',1),
         (03,'T1.03','STD',1),
         (04,'T1.04','STD',1),
         (05,'T1.05','STD',1),
         (06,'T1.06','STD',1),
-        (07,'T1.07','STD',0),
-        (08,'T1.08','STD',0),
+        (07,'T1.07','STD',1),
+        (08,'T1.08','STD',1),
         (09,'T1.09','STD',1),
         (10,'T1.10','STD',1),
-        (11,'T2.11','STD',0),
+        (11,'T2.11','STD',1),
         (12,'T2.12','STD',1),
-        (13,'T2.13','STD',0),
+        (13,'T2.13','STD',1),
         (14,'T2.14','STD',1),
         (15,'T2.15','STD',1),
-        (16,'T2.16','STD',0),
-        (17,'T2.17','STD',0),
-        (18,'T2.18','STD',0),
-        (19,'T2.19','STD',0),
-        (20,'T2.20','STD',0),
+        (16,'T2.16','STD',1),
+        (17,'T2.17','STD',1),
+        (18,'T2.18','STD',1),
+        (19,'T2.19','STD',1),
+        (20,'T2.20','STD',1),
         (21,'T3.21','STD',1),
-        (22,'T3.22','STD',0),
+        (22,'T3.22','STD',1),
         (23,'T3.23','STD',1),
         (24,'T3.24','STD',1),
-        (25,'T3.25','STD',0),
-        (26,'T3.26','STD',0),
-        (27,'T3.27','STD',0),
+        (25,'T3.25','STD',1),
+        (26,'T3.26','STD',1),
+        (27,'T3.27','STD',1),
         (28,'T3.28','STD',1),
         (29,'T3.29','STD',1),
         (30,'T3.30','STD',1),
         (31,'T4.31','SUP',1),
-        (32,'T4.32','SUP',0),
-        (33,'T4.33','SUP',0),
-        (34,'T4.34','SUP',0),
+        (32,'T4.32','SUP',1),
+        (33,'T4.33','SUP',1),
+        (34,'T4.34','SUP',1),
         (35,'T4.35','SUP',1),
         (36,'T4.36','SUP',1),
         (37,'T4.37','SUP',1),
-        (38,'T4.38','SUP',0),
+        (38,'T4.38','SUP',1),
         (39,'T4.39','SUP',1),
-        (40,'T5.40','SUP',0);
+        (40,'T5.40','SUP',1);
+
 INSERT INTO PhieuDatPhong(MaPhieuDat, MaNV, CCCD, NgayDen, NgayDi,soLuong)
 VALUES	
-		('PD0054', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
-		('PD0055', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
-		('PD0056', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
+		('PD054', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
+		('PD055', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
+		('PD056', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
 		('PD053', 'NV008', N'919283940215', '2023-07-20', '2023-07-22',1),
 		('PD052', 'NV008', N'919283940215', '2023-07-20', '2023-07-22',1),
-		('PD0051', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',1),
+		('PD051', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',1),
 		('PD001', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
 		('PD002', 'NV002', N'219233940122', '2023-05-12', '2023-05-14',1),
 		('PD003', 'NV001', N'362233213322', '2023-05-04', '2023-05-09',1),
@@ -431,7 +432,7 @@ VALUES
 
 select MaPhieuNhan, PhieuDatPhong.MaPhieuDat,GioNhan,NgayNhan from PhieuNhanPhong join PhieuDatPhong on PhieuDatPhong.MaPhieuDat = PhieuNhanPhong.MaPhieuDat
 
-select CCCD, STK, HoTen, SĐT, DiaChi, Email, MaLoaiKH from KhachHang
+select CCCD, STK, HoTen, SDT, DiaChi, Email, MaLoaiKH from KhachHang
 
 
 -- Hàm lấy danh sách phiếu phòng bằng mã phiếu
@@ -479,9 +480,7 @@ EXECUTE insertChiTietDatPhong @maPhieuDat = 'PD0058', @soPhong = 04
 select * from PhieuDatPhong
 where MaPhieuDat = 'PD001'
 
-select * from PhieuDatPhong
-
-EXECUTE getListPhongChuaNhan
+select * from Phong 
 
 --Ham insertPhieuNhan
 --EXECUTE insertPhieuNhan @maPhieuNhan nvarchar(20) ,@maPhieuDat nvarchar(20) ,	@gioNhan datetime ,	@ngayNhan datetime 
@@ -489,13 +488,3 @@ EXECUTE getListPhongChuaNhan
 
 --Ham update Phieu Nhan
 --EXECUTE updatePhieuNhan @maPhieuNhan nvarchar(20) ,@maPhieuDat nvarchar(20) ,	@gioNhan datetime ,	@ngayNhan datetime 
-
-SELECT *
-	FROM PhieuDatPhong join ChiTietDatPhong 
-			on PhieuDatPhong.MaPhieuDat = ChiTietDatPhong.MaPhieuDat join Phong 
-				on Phong.SoPhong = ChiTietDatPhong.SoPhong
-	WHERE NOT EXISTS (
-		SELECT 1
-		FROM PhieuNhanPhong
-		WHERE PhieuDatPhong.MaPhieuDat = PhieuNhanPhong.MaPhieuDat
-	)AND Phong.IsEmpty = 0
