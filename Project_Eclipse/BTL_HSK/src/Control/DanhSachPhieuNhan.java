@@ -20,6 +20,7 @@ public class DanhSachPhieuNhan {
 	
 	public DanhSachPhieuNhan() {
 		listPN = new ArrayList<PhieuNhanPhong>();
+		lisDat.docDuLieu();
 	}
 	
 	public ArrayList<PhieuNhanPhong> docDuLieu(){
@@ -71,17 +72,7 @@ public class DanhSachPhieuNhan {
 		return listPN;
 	}
 	
-	public boolean traPhong(String CCCD,int soPhong) {
-		DanhSachPhieuNhan a = new DanhSachPhieuNhan();
-		a = a.getListPhongChuaTra();
-		for(PhieuNhanPhong phieuNhan : a.listPN) {
-			if(phieuNhan.getpDP().getKhachHang().getCCCD().equals(CCCD)) {
-				phieuNhan.getpDP().getPhongs().updateTrangThaiPhong(soPhong, 1);
-				return true;
-			}
-		}
-		return false;
-	}
+
 	
 	public boolean addPhieuNhan(PhieuNhanPhong a) {
 		return listPN.add(a);

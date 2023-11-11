@@ -432,7 +432,7 @@ VALUES
 
 select MaPhieuNhan, PhieuDatPhong.MaPhieuDat,GioNhan,NgayNhan from PhieuNhanPhong join PhieuDatPhong on PhieuDatPhong.MaPhieuDat = PhieuNhanPhong.MaPhieuDat
 
-select CCCD, STK, HoTen, SDT, DiaChi, Email, MaLoaiKH from KhachHang
+
 
 
 -- Hàm lấy danh sách phiếu phòng bằng mã phiếu

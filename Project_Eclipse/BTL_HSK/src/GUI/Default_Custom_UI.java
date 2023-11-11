@@ -39,6 +39,7 @@ import Control.DanhSachDichVu;
 import Control.DanhSachKhachHang;
 import Control.DanhSachNhanVien;
 import Control.DanhSachPhieuDat;
+import Control.DanhSachPhieuNhan;
 import Control.DanhSachPhong;
 
 public class Default_Custom_UI {
@@ -50,6 +51,7 @@ public class Default_Custom_UI {
 	private static DanhSachKhachHang listKhachHang;
 	private static DanhSachDichVu listDichVu;
 	private static DanhSachPhieuDat listPhieuDat;
+	private static DanhSachPhieuNhan listPN;
 	private static SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 //	private static DanhSachPhieuDat list_phieuDat;
 	//-----------------------------------DEFAULT-----------------------------------------//
@@ -265,6 +267,19 @@ public class Default_Custom_UI {
 				return data;
 			}
 			
+			if(type.equals("ChuaTraPhong")) {
+				listPN = new DanhSachPhieuNhan();
+				DanhSachPhieuNhan a = listPN.getListPhongChuaTra();
+				int size = a.getListPN().size();
+				String [][] data = new String[size][4];
+				for(int  i = 0; i < size; i++) {
+					data[i][0] = a.getListPN().get(i).getMaPhieuNhan();
+					data[i][1] = a.getListPN().get(i).getpDP().getKhachHang().getCCCD();
+					data[i][2] = Integer.toString(a.getListPN().get(i).getpDP().getPhongs().getListPhong().get(0).getSoPhong());
+					data[i][3] = date.format(a.getListPN().get(i).getNgayNhan());
+				}
+				return data;
+			}
 			
 			if(type.equals("LayPhieuDatChuaNhan")) {
 				listPhieuDat = new DanhSachPhieuDat();

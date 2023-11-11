@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.EventObject;
@@ -35,7 +37,7 @@ import org.junit.runners.model.FrameworkMethod;
 
 import com.toedter.calendar.JDateChooser;
 
-public class UI_QL_TraPhong implements MouseListener{
+public class UI_QL_TraPhong implements MouseListener,ActionListener{
 	
 	//--------DatPhong-----------//
 	public JPanel display_TraPhong;
@@ -50,17 +52,9 @@ public class UI_QL_TraPhong implements MouseListener{
 	
 	
 	String[] cols_name = {"MÃ PHIẾU NHẬN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","NGÀY NHẬN"};
-	private Object[][] data = {
-            {"1", "Alice"},
-            {"2", "Bob"},
-            {"3", "Charlie"}
-        };
+	private Object[][] data = Default_Custom_UI.cast_data("ChuaTraPhong");
 	String[] cols_dv_name = {"MÃ DỊCH VỤ","TÊN DỊCH VỤ","SỬ DỤNG"};
-	private Object[][] data_dv = {
-            {"1", "Alice"},
-            {"2", "Bob"},
-            {"3", "Charlie"}
-        };
+	private Object[][] data_dv = Default_Custom_UI.cast_data("ChuaTraPhong");
 	@SuppressWarnings("serial")
 	private DefaultTableModel model = new DefaultTableModel(data_dv,cols_name) {
 		public boolean isCellEditable(int row, int column) {
@@ -209,6 +203,7 @@ public class UI_QL_TraPhong implements MouseListener{
 		main_pJPanel.add(center_panel,BorderLayout.CENTER);
 		
 		display_TraPhong.add(main_pJPanel,BorderLayout.CENTER);
+		Them.addActionListener(this);
 		
 	}
 	
@@ -243,6 +238,16 @@ public class UI_QL_TraPhong implements MouseListener{
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object source = e.getSource();
+		if(source.equals(Them)) {
+			
+		}
 	}
 }
 
