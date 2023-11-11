@@ -145,18 +145,27 @@ public class DanhSachPhieuDat {
 		PreparedStatement statement = null;
 		int n = 0;
 		try {
-			statement = con.prepareStatement("delete ChiTietDatPhong where MaPhieuDat = ? AND SoPhong = ?");
+			DanhSachPhong p = a.getPhongs();
+			for(int i = 0; i < p.getListPhong().size();i++) {
+				statement = con.prepareStatement("delete ChiTietDatPhong where MaPhieuDat = ? AND SoPhong = ?");
+				statement.setString(1,a.getMaPD());
+				statement.setInt(2, p.getListPhong().get(i).getSoPhong());
+				
+			}
+			n = statement.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		return false;
+		return n > 0;
 	}
 	
 	public boolean deletePhieuDat(PhieuDatPhong pd) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;
+		System.out.println(pd.getMaPD());
 		int n = 0;
 		try {
+			System.out.println(deleteChiTietPhieuDat(pd));
 			statement = con.prepareStatement("delete from PhieuDatPhong where MaPhieuDat = ?");
 			statement.setString(1, pd.getMaPD());
 			n = statement.executeUpdate();
@@ -165,7 +174,7 @@ public class DanhSachPhieuDat {
 				for(int i = 0; i < phongs.getListPhong().size();i++ ) {
 					phongs.updateTrangThaiPhong(phongs.getListPhong().get(i).getSoPhong(), 1);
 				}
-				
+			
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

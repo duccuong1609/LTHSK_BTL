@@ -37,7 +37,6 @@ import entity.KhachHang;
 import entity.NhanVien;
 import entity.PhieuDatPhong;
 import entity.Phong;
-import entity.PhongThuong;
 import entity.PhongVip;
 
 public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListener{
@@ -268,10 +267,21 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		}
 		if(source.equals(DatPhong_Xoa)) {
 			int row = table.getSelectedRow();
+			String sophong = model.getValueAt(row, 3).toString();
+			
 			String ma_PhieuDat = model.getValueAt(row, 0).toString();
 			DanhSachPhieuDat listPD = new DanhSachPhieuDat();
 			listPD.docDuLieu();
 			PhieuDatPhong pd = listPD.getPhieuDatPhongByMa(ma_PhieuDat);
+			listPD.deletePhieuDat(pd);
+			
+			DanhSachPhong listPhong = new DanhSachPhong();
+			listPhong.docDuLieu();
+			
+			datPhong_cb_SoPhong.addItem(sophong);
+			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
 		}
 	}
 	
