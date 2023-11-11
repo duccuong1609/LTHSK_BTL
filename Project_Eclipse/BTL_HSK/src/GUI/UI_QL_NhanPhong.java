@@ -29,16 +29,19 @@ public class UI_QL_NhanPhong implements MouseListener{
 	private JButton Them;
 	private JButton Xoa;
 	private JButton TaoLai;
+	private JButton Tim;
 	
 	private JComboBox<String> NhanPhong_MaPhieuDat;
-	private JDateChooser NhanPhong_NgayNhan;
-	private JDateChooser NhanPhong_GioNhan;
+	private JTextField CCCD;
+	private JTextField NgayDen;
+	private JTextField NgayDi;
 	
 //	private DanhSachPhieuDat phieuDat;
 	
-	
 	String[] cols_name = {"MÃ PHIẾU THUÊ","MÃ NHÂN VIÊN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","NGÀY ĐẾN","NGÀY ĐI"};
+
 	private Object[][] data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+
 	
 	@SuppressWarnings("serial")
 	private DefaultTableModel model = new DefaultTableModel(data,cols_name) {
@@ -98,19 +101,28 @@ public class UI_QL_NhanPhong implements MouseListener{
 		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
-		NhanPhong_MaPhieuDat = Default_Custom_UI.add_data_ds_combo("MaPhieuChuaNhan");
-		NhanPhong_NgayNhan = Default_Custom_UI.defaultDateChooser();
-		NhanPhong_GioNhan = Default_Custom_UI.defaultDateChooser();
+
+		NhanPhong_MaPhieuDat = Default_Custom_UI.add_data_ds_combo("PhieuDatPhongChuaNhan");
+		CCCD = Default_Custom_UI.default_textfield();
+		NgayDen = Default_Custom_UI.default_textfield();
+		NgayDi = Default_Custom_UI.default_textfield();
+		NgayDen.setEditable(false);
+		NgayDi.setEditable(false);
+
 		
 		left_addfield.setPreferredSize(new Dimension(250,800));
 		
 		left_addfield.add(Default_Custom_UI.default_label("MÃ PHIẾU THUÊ"));
-		left_addfield.add(NhanPhong_MaPhieuDat); 
-		left_addfield.add(Default_Custom_UI.default_label("GIỜ NHẬN"));
-		left_addfield.add(NhanPhong_GioNhan);
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY NHẬN"));
-		left_addfield.add(NhanPhong_NgayNhan);
+		left_addfield.add(NhanPhong_MaPhieuDat);
 		
+		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐẾN"));
+		left_addfield.add(Default_Custom_UI.default_text_panel(NgayDen));
+		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐI"));
+		left_addfield.add(Default_Custom_UI.default_text_panel(NgayDi));
+		
+		left_addfield.add(Default_Custom_UI.default_label("CCCD"));
+		left_addfield.add(Default_Custom_UI.default_text_panel(CCCD));
+
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
 		JPanel content_panel = new JPanel(new BorderLayout());
@@ -125,12 +137,15 @@ public class UI_QL_NhanPhong implements MouseListener{
 		
 		Them = Default_Custom_UI.default_Action_Button("Nhận Phòng", "Media/Icon/them.gif");
 		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
-		TaoLai = Default_Custom_UI.default_Action_Button("Tìm", "Media/Icon/taolai.gif");
+
+		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
+		Tim = Default_Custom_UI.default_Action_Button("Tìm", "Media/Icon/tim.gif");
+
 		
 		button_panel.add(TaoLai);
 		button_panel.add(Them);
 		button_panel.add(Xoa);
-
+		button_panel.add(Tim);
 		
 		content_panel.add(jp,BorderLayout.CENTER);
 		

@@ -179,7 +179,7 @@ BEGIN
 	UPDATE KhachHang
 	SET HoTen = @hoTen,
 		STK = @STK,
-		SĐT = @SĐT,
+		SDT = @SĐT,
 		DiaChi = @diaChi,
 		Email = @email,
 		MaLoaiKH = @maLoaiKH
@@ -198,20 +198,20 @@ CREATE PROCEDURE insertKhachHang @CCCD nvarchar(13) ,
 	@maLoaiKH nvarchar(20) 
 AS
 BEGIN
-	INSERT INTO KhachHang(CCCD,HoTen,SĐT,STK,DiaChi,Email,MaLoaiKH) VALUES (@CCCD,@hoTen,@SĐT,@STK,@diaChi,@email,@maLoaiKH)
+	INSERT INTO KhachHang(CCCD,HoTen,SDT,STK,DiaChi,Email,MaLoaiKH) VALUES (@CCCD,@hoTen,@SĐT,@STK,@diaChi,@email,@maLoaiKH)
 END
 GO
 
 
 CREATE PROCEDURE insertNhanVien @maNV nvarchar(20),
 	@tenNV nvarchar(30),
-	@SĐT nvarchar(20) ,
+	@SDT nvarchar(20) ,
 	@diaChi nvarchar(50),
 	@email nvarchar(30) 
 AS
 BEGIN
 	INSERT INTO NhanVien(MaNV,TenNV,SĐT,DiaChi,Email)
-		VALUES	(@maNV,@tenNV,@SĐT,@diaChi,@email)
+		VALUES	(@maNV,@tenNV,@SDT,@diaChi,@email)
 END
 GO
 
