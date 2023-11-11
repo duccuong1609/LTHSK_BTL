@@ -41,9 +41,9 @@ public class DanhSachDichVu {
 		return listDV;
 	}
 	
-	public boolean insertDichVu() {
-		
-	}
+//	public boolean insertDichVu() {
+//		
+//	}
 
 	public ArrayList<DichVu> getDichVuByMaHD(String maHD){
 		Connection con = Database.getInsConnect().getCon();
