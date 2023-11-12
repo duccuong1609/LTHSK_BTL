@@ -21,24 +21,24 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import com.toedter.calendar.JDateChooser;
+
 public class UI_THONGKE implements MouseListener,ActionListener{
 	
 	//--------DatPhong-----------//
 	public JPanel display_ThongKe;
-	private JButton Then;
-	private JButton Xoa;
-	private JButton Sua;
-	private JButton TaoLai;
-	private JButton Tim;
+	
 
 	private JTextField DV_txt_MADV;
 	private JTextField DV_txt_TENDV;
 	private JTextField DV_txt_GIADV;
+	private JDateChooser DatPhong_NgayDen;
+	private JDateChooser DatPhong_NgayDi;
 	
 //	private DanhSachPhieuDat phieuDat;
 	
 	
-	String[] cols_name = {"MÃ DỊCH VỤ","TÊN DỊCH VỤ","GIÁ DỊCH VỤ"};
+	String[] cols_name = {"MÃ HÓA ĐƠN","MÃ KHÁCH HÀNG","MÃ NHÂN VIÊN","NGÀY TẠO","TỔNG THÀNH TIỀN"};
 	private Object[][] data = {
             {"1", "Alice", "Smith"},
             {"2", "Bob", "Johnson"},
@@ -112,14 +112,10 @@ public class UI_THONGKE implements MouseListener,ActionListener{
 		
 		left_addfield.setPreferredSize(new Dimension(250,800));
 		
-		left_addfield.add(Default_Custom_UI.default_label("MÃ DỊCH VỤ"));
-		left_addfield.add(Default_Custom_UI.default_text_panel(DV_txt_MADV)); 
-		
-		left_addfield.add(Default_Custom_UI.default_label("TÊN DỊCH VỤ"));
-		left_addfield.add(Default_Custom_UI.default_text_panel(DV_txt_TENDV)); 
-		
-		left_addfield.add(Default_Custom_UI.default_label("GIÁ DỊCH VỤ"));
-		left_addfield.add(Default_Custom_UI.default_text_panel(DV_txt_GIADV)); 
+		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐẾN"));
+		left_addfield.add(DatPhong_NgayDen);
+		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐI"));
+		left_addfield.add(DatPhong_NgayDi);
 		
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
@@ -188,12 +184,12 @@ public class UI_THONGKE implements MouseListener,ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource().equals(TaoLai)) {
-			DV_txt_MADV.setText("");
-			DV_txt_TENDV.setText("");
-			DV_txt_GIADV.setText("");
-			DV_txt_MADV.requestFocus();
-		}
+//		if(e.getSource().equals(TaoLai)) {
+//			DV_txt_MADV.setText("");
+//			DV_txt_TENDV.setText("");
+//			DV_txt_GIADV.setText("");
+//			DV_txt_MADV.requestFocus();
+//		}
 	}
 }
 
