@@ -2,7 +2,7 @@ package entity;
 
 import java.util.Objects;
 
-public class KhachHang {
+public class KhachHang  {
 	private String CCCD;;
 	private String soTK;
 	private String hoTen;

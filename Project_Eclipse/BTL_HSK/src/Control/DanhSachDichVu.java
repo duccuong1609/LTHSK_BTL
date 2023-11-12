@@ -42,23 +42,23 @@ public class DanhSachDichVu {
 		return listDV;
 	}
 	
-	public boolean insertDichVu(DichVu a) {
-		Connection con = Database.getInsConnect().getCon();
-		PreparedStatement statement = null;
-		int n = 0;
-		try {
-			statement = con.prepareStatement("INSERT INTO DichVu(MaDV,TenDV,GiaDV)\r\n"
-					+ "VALUES	(?, ? , ?)");
-			statement.setString(1, a.getMaDV());
-			statement.setString(2, a.getTenDV());
-			statement.setFloat(3, a.getGia());
-			n = statement.executeUpdate();
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		return n > 0;
-	}
+//	public boolean insertDichVu(DichVu a) {
+//		Connection con = Database.getInsConnect().getCon();
+//		PreparedStatement statement = null;
+//		int n = 0;
+//		try {
+//			statement = con.prepareStatement("INSERT INTO DichVu(MaDV,TenDV,GiaDV)\r\n"
+//					+ "VALUES	(?, ? , ?)");
+//			statement.setString(1, a.getMaDV());
+//			statement.setString(2, a.getTenDV());
+//			statement.setFloat(3, a.getGia());
+//			n = statement.executeUpdate();
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			e.printStackTrace();
+//		}
+//		return n > 0;
+//	}
 	
 	
 	

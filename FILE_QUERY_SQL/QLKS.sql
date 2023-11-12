@@ -30,7 +30,7 @@ CREATE TABLE KhachHang(
 	CCCD nvarchar(13) not null PRIMARY KEY,
 	STK nvarchar(20) not null,
 	HoTen nvarchar(30) not null,
-	SDT nvarchar(20) not null,
+	SĐT nvarchar(20) not null,
 	DiaChi nvarchar(50) not null,
 	Email nvarchar(30) not null,
 	MaLoaiKH nvarchar(20) not null FOREIGN KEY REFERENCES LoaiKhach(MaLoai)
@@ -435,7 +435,7 @@ VALUES	('HD012', 'DV002'),
 select MaPhieuNhan, PhieuDatPhong.MaPhieuDat,GioNhan,NgayNhan from PhieuNhanPhong join PhieuDatPhong on PhieuDatPhong.MaPhieuDat = PhieuNhanPhong.MaPhieuDat
 
 
-
+select * from HoaDon join ChiTietHoaDon
 
 -- Hàm lấy danh sách phiếu phòng bằng mã phiếu
 select ChiTietDatPhong.SoPhong , TenPhong, LoaiPhong, IsEmpty

@@ -43,16 +43,8 @@ public class UI_TC_HOADON implements MouseListener,ActionListener{
 	
 	String[] cols_name = {"MÃ HÓA ĐƠN","MÃ NHÂN VIÊN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","TỔNG TIỀN"};
 	String[] cols_name_dv = {"MÃ DỊCH VỤ","TÊN DỊCH VỤ","GIÁ DỊCH VỤ"};
-	private Object[][] data = {
-            {"1", "Alice", "Smith"},
-            {"2", "Bob", "Johnson"},
-            {"3", "Charlie", "Williams"}
-        };
-	private Object[][] data_dv = {
-            {"1", "Alice",200},
-            {"2", "Bob",200},
-            {"3", "Charlie",200}
-        };
+	private Object[][] data = Default_Custom_UI.cast_data("ListHoaDon");
+	private Object[][] data_dv = Default_Custom_UI.cast_data("DichVu_FULL");
 	
 	@SuppressWarnings("serial")
 	private DefaultTableModel model = new DefaultTableModel(data,cols_name) {

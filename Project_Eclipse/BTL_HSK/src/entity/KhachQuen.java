@@ -10,7 +10,7 @@ public class KhachQuen extends KhachHang {
 	
 	private static String maLoai = "V";
 	private String tenLoai = "Khách Quen";
-	private float khauTru = 0.3f;
+	private static float khauTru = 0.3f;
 	
 	public KhachQuen(String cCCD, String soTK, String hoTen, String soDT, String diaChi, String emali) {
 		super(cCCD, soTK, hoTen, soDT, diaChi, emali, maLoai);
@@ -40,7 +40,7 @@ public class KhachQuen extends KhachHang {
 		return tenLoai;
 	}
 
-	public float getKhauTru() {
+	public static float getKhauTru() {
 		return khauTru;
 	}
 	
