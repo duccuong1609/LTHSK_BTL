@@ -72,6 +72,10 @@ public class DanhSachDichVu {
 		return listDV.add(a);
 	}
 	
+	public ArrayList<DichVu> getListDV() {
+		return listDV;
+	}
+	
 	public ArrayList<DichVu> getDichVuByMaHD(String maHD){
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;

@@ -89,18 +89,60 @@ public class DanhSachHoaDon {
 		return listHD;
 	}
 	
-	public boolean addChiTietHoaDon(HoaDon a) {
+	public boolean deteleChiTietHoaDon(HoaDon a) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;
 		int n = 0;
 		try {
 			for(int i = 0; i < a.getListDV().size();i++) {
+				statement = con.prepareStatement("delete from ChiTietHoaDon where MaHoaDon = ? AND MaDV = ?");
+				statement.setString(1, a.getMaHD());
+				statement.setString(2, a.getListDV().get(i).getMaDV());
+				n = statement.executeUpdate();
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return n > 0;
+	}
+	
+	public boolean deteleHoaDon(HoaDon a) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+			if(deteleChiTietHoaDon(a)) {
+				statement = con.prepareStatement("delete from HoaDon where MaHoaDon = ?");
+				statement.setString(1, a.getMaHD());
+				n = statement.executeUpdate();
+			}
+			if(n > 0) {
+				boolean b = new DanhSachPhieuNhan().deletePhieuNhan(a.getMaPhieuNhan()) ? new DanhSachPhieuDat().deletePhieuDat(a.getMaPhieuNhan().getpDP()) : false;
+				return b;
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return n > 0;
+	}
+	
+	public boolean addChiTietHoaDon(HoaDon a) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+
+			for(int i = 0; i < a.getListDV().size();i++) {
 				statement = con.prepareStatement("INSERT INTO ChiTietHoaDon (MaHoaDon, MaDV)"
 						+ "VALUES (?, ?)");
 				statement.setString(1, a.getMaHD());
 				statement.setString(2, a.getListDV().get(i).getMaDV());
+				n = statement.executeUpdate();
 			}
-			n = statement.executeUpdate();
+			System.out.println(n);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

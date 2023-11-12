@@ -225,6 +225,7 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 			PhieuDatPhong pd = listPD.getPhieuDatPhongByMa(maPhieu);
 			Date ngayNhan = new Date();
 			Date gioNhan = new Date();
+			
 			int size = listPhieuNhan.getListPN().size();
 			int duoi_PD = Integer.parseInt(pd.getMaPD().substring(2,pd.getMaPD().length())) +1 ;
 			
