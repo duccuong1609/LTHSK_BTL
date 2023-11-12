@@ -1,6 +1,5 @@
 package GUI;
 
-import static org.junit.Assert.isArray;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -275,6 +274,7 @@ public class Default_Custom_UI {
 			if(type.equals("ChuaTraPhong")) {
 				listPN = new DanhSachPhieuNhan();
 				DanhSachPhieuNhan a = listPN.getListPhongChuaTra();
+				System.out.println(a);
 				int size = a.getListPN().size();
 				String [][] data = new String[size][4];
 				for(int  i = 0; i < size; i++) {

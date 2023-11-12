@@ -20,7 +20,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-
 import com.toedter.calendar.JDateChooser;
 
 public class UI_THONGKE implements MouseListener,ActionListener{
@@ -28,17 +27,19 @@ public class UI_THONGKE implements MouseListener,ActionListener{
 	//--------DatPhong-----------//
 	public JPanel display_ThongKe;
 	
-
 	private JTextField DV_txt_MADV;
 	private JTextField DV_txt_TENDV;
 	private JTextField DV_txt_GIADV;
-	private JDateChooser DatPhong_NgayDen;
-	private JDateChooser DatPhong_NgayDi;
-	
+	private JDateChooser ThongKe_TuNgay;
+	private JDateChooser ThongKe_DenNgay;
+	private JButton Tim;
+	private JTextField ThongKe_SoLuong;
+	private JTextField ThongKe_DoanhThu;
+
 //	private DanhSachPhieuDat phieuDat;
 	
 	
-	String[] cols_name = {"MÃ HÓA ĐƠN","MÃ KHÁCH HÀNG","MÃ NHÂN VIÊN","NGÀY TẠO","TỔNG THÀNH TIỀN"};
+	String[] cols_name = {"MÃ HÓA ĐƠN","CCCD","MÃ NHÂN VIÊN","NGÀY TẠO","TỔNG THÀNH TIỀN"};
 	private Object[][] data = {
             {"1", "Alice", "Smith"},
             {"2", "Bob", "Johnson"},
@@ -55,10 +56,11 @@ public class UI_THONGKE implements MouseListener,ActionListener{
 		};
 	};
 	private JTable table = new JTable(model);
+
 	
 	public UI_THONGKE() {
 		//setup data
-		data = Default_Custom_UI.cast_data("DichVu_FULL");
+		data = Default_Custom_UI.cast_data("ListHoaDon");
 		model.setDataVector(data, cols_name);
 		
 //		table
@@ -101,8 +103,36 @@ public class UI_THONGKE implements MouseListener,ActionListener{
 		//center_panel
 		//--------------------------------------------------------------------------pending
 		center_panel.setLayout(new BorderLayout());
+		ThongKe_TuNgay = Default_Custom_UI.defaultDateChooser();
+		ThongKe_DenNgay = Default_Custom_UI.defaultDateChooser();
+		ThongKe_SoLuong = Default_Custom_UI.default_textfield();
+		ThongKe_SoLuong.setEditable(false);
+		ThongKe_DoanhThu = Default_Custom_UI.default_textfield();
+		ThongKe_DoanhThu.setEditable(false);
+		
+		Tim = Default_Custom_UI.default_Action_Button("Tìm", "Media/Icon/tim.gif");
+		
+		Tim.setPreferredSize(new Dimension(220,50));
+		
+		JPanel tim_panel = new JPanel();
+		tim_panel.setBorder(new EmptyBorder(40,0,40,0));
+		tim_panel.add(Tim);
 		
 		JPanel left_addfield = new JPanel();
+		left_addfield.setPreferredSize(new Dimension(250,800));
+		left_addfield.add(Default_Custom_UI.default_label("TỪ NGÀY"));
+		left_addfield.add(ThongKe_TuNgay);
+		left_addfield.add(Default_Custom_UI.default_label("ĐẾN NGÀY"));
+		left_addfield.add(ThongKe_DenNgay);
+		left_addfield.add(tim_panel);
+		JLabel tongdoanhthu = Default_Custom_UI.default_label("TỔNG DOANH THU");
+		tongdoanhthu.setFont(new Font("Arial", Font.BOLD, 25));
+		left_addfield.add(tongdoanhthu);
+		left_addfield.add(Default_Custom_UI.default_label("Số lượng hóa đơn bán được:"));
+		left_addfield.add(Default_Custom_UI.default_text_panel(ThongKe_SoLuong));
+		left_addfield.add(Default_Custom_UI.default_label("Doanh thu:"));
+		left_addfield.add(Default_Custom_UI.default_text_panel(ThongKe_DoanhThu));
+
 		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
@@ -112,10 +142,7 @@ public class UI_THONGKE implements MouseListener,ActionListener{
 		
 		left_addfield.setPreferredSize(new Dimension(250,800));
 		
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐẾN"));
-		left_addfield.add(DatPhong_NgayDen);
-		left_addfield.add(Default_Custom_UI.default_label("NGÀY ĐI"));
-		left_addfield.add(DatPhong_NgayDi);
+		
 		
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
