@@ -295,7 +295,8 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
 			model.setDataVector(data, cols_name);
 			table.setModel(model);
-			
+			JOptionPane.showMessageDialog(display_DatPhong, "Xoá Phiếu Đặt Phòng Thành Công !");
+			return;
 		}
 		if(source.equals(DatPhong_Sua)) {
 			Datphong_Sua();
@@ -304,6 +305,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 	
 	private boolean Datphong_Sua() {
 		// TODO Auto-generated method stub
+		Date today = java.sql.Date.valueOf(LocalDate.now());
 		if(table.getSelectedRow() == -1) {
 			
 			JOptionPane.showMessageDialog(display_DatPhong,"Không Có Khách Hàng Nào Được Chọn!");
@@ -336,22 +338,37 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 			JOptionPane.showMessageDialog(display_DatPhong,"Khách hàng không tồn tại!");
 			return false;
 		}
+		
+		if(ngayDen.compareTo(today)<0) {
+			JOptionPane.showMessageDialog(display_DatPhong,"Ngày Đến Phải Lớn Hơn Hoặc Bằng Ngày Hiện Tại");
+			return false;
+		}
+		if(ngayDi.compareTo(ngayDen)<0) {
+			JOptionPane.showMessageDialog(display_DatPhong,"Ngày Đi Phải Lớn Hơn Hoặc Bằng Ngày Đến");
+			return false;
+		}
+		
 		Phong phong = phongs.getPhongBySoPhong(soPhong);
 		DanhSachPhong a = new DanhSachPhong();
 		a.addPhong(phong);
 		list.docDuLieu();
 		PhieuDatPhong setpd = list.getPhieuDatPhongByMa(maPD);
+		
 		setpd.setKhachHang(kh);
 		setpd.setNhanVien(nv);
 		setpd.setPhongs(a);
 		setpd.setNgayDen(ngayDen);
 		setpd.setNgayDi(ngayDi);
 		
+		list.updatePhieuDat(setpd);
+		
+		
 		data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
 		model.setDataVector(data, cols_name);
 		table.setModel(model);
 		
-		return false;
+		JOptionPane.showMessageDialog(display_DatPhong,"Sửa Đơn Đặt Phòng Thành Công !");
+		return true;
 	}
 
 	public boolean Them_PhieuDatPhong() {
@@ -426,6 +443,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		model.setDataVector(data, cols_name);
 		table.setModel(model);
 		
+		JOptionPane.showMessageDialog(display_DatPhong,"Thêm Đơn Đặt Phòng Thành Công !");
 		return true;
 	}
 	

@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.JobAttributes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -54,7 +55,6 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 	//--------DatPhong-----------//
 	public JPanel display_TraPhong;
 	private JButton Them;
-	private JButton Xoa;
 	private JButton TaoLai;
 	private JButton Tim;
 	
@@ -197,13 +197,11 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 		jp.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
 		
 		Them = Default_Custom_UI.default_Action_Button("TRẢ PHÒNG", "Media/Icon/them.gif");
-		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
 		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
 		Tim = Default_Custom_UI.default_Action_Button("Tìm", "Media/Icon/tim.gif");
 		
 		button_panel.add(TaoLai);
 		button_panel.add(Them);
-		button_panel.add(Xoa);
 		button_panel.add(Tim);
 		
 		data_dv = Default_Custom_UI.cast_data("DichVu");
@@ -303,15 +301,21 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 			int duoi_HD = Integer.parseInt(pn.getMaPhieuNhan().substring(2,pn.getMaPhieuNhan().length())) +1 ;
 
 			HoaDon a = new HoaDon("HD"+(duoi_HD), pn, dvs.getDichVu(), ngayTra, gioTra);
-			if(listHD.addHoaDon(a))
-				listPN.traPhong(soPhong);
 			
-			data = Default_Custom_UI.cast_data("ChuaTraPhong");
-			model.setDataVector(data, cols_name);
-			table.setModel(model);
-			
-			model_dv.setDataVector(data_dv, cols_dv_name);
-			table_dv.setModel(model_dv);
+			int choose = JOptionPane.showConfirmDialog(display_TraPhong, "Bạn Có Chắc Muốn Trả Phòng Không ?","Chú Ý",JOptionPane.YES_OPTION);
+			if(choose == JOptionPane.YES_OPTION) {
+				if(listHD.addHoaDon(a))
+					listPN.traPhong(soPhong);
+				
+				JOptionPane.showMessageDialog(display_TraPhong, "Trả Phòng/ Lập Hoá Đơn Thành Công !");
+				
+				data = Default_Custom_UI.cast_data("ChuaTraPhong");
+				model.setDataVector(data, cols_name);
+				table.setModel(model);
+				
+				model_dv.setDataVector(data_dv, cols_dv_name);
+				table_dv.setModel(model_dv);
+			}
 		}
 		if(source.equals(TaoLai)) {
 			table.clearSelection();

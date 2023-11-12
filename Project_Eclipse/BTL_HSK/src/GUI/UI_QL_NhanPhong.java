@@ -11,11 +11,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import Control.DanhSachPhieuDat;
 import Control.DanhSachPhieuNhan;
+import Control.DanhSachPhong;
 import entity.PhieuDatPhong;
 import entity.PhieuNhanPhong;
 
@@ -171,7 +176,8 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 		
 		Them.addActionListener(this);
 		Tim.addActionListener(this);
-		
+		TaoLai.addActionListener(this);
+		Xoa.addActionListener(this);
 	}
 	
 
@@ -180,8 +186,10 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(table)) {
 			int row = table.getSelectedRow();
-			
-			
+			NgayDen.setText(model.getValueAt(row, 4).toString());
+			NgayDi.setText(model.getValueAt(row, 5).toString());
+			NhanPhong_MaPhieuDat.setSelectedItem(model.getValueAt(row, 0));
+			CCCD.setText(model.getValueAt(row, 2).toString());
 		}
 	}
 
@@ -216,6 +224,29 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 
 		Object source = e.getSource();
 		if(source.equals(Them)) {
+			
+			if(table.getSelectedRow()== -1) {
+				JOptionPane.showMessageDialog(display_NhanPhong, "Không Có Phiếu Đặt Nào Được Chọn !");
+				return;
+			}
+			
+			Date today = java.sql.Date.valueOf(LocalDate.now());
+			try {
+				Date ngayden = date.parse(NgayDen.getText());
+				Date ngaydi = date.parse(NgayDi.getText());
+				if(today.compareTo(ngayden)<0) {
+					JOptionPane.showMessageDialog(display_NhanPhong,"Chưa Đến Ngày Nhận Phòng !");
+					return;
+				}
+				if(today.compareTo(ngaydi)>0) {
+					JOptionPane.showMessageDialog(display_NhanPhong,"Đã Quá Ngày Nhận Phòng, Vui Lòng Loại Bỏ Đơn Đặt Khỏi Danh Sách !");
+					return;
+				}
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 			String maPhieu = NhanPhong_MaPhieuDat.getSelectedItem().toString();
 			DanhSachPhieuDat listPD = new DanhSachPhieuDat();
 			DanhSachPhieuNhan listPhieuNhan = new DanhSachPhieuNhan();
@@ -237,16 +268,81 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 			table.setModel(model);
 		}
 		if(source.equals(Tim)) {
-			String cCCD = CCCD.getText();
-			for(int i = 0; i < data.length;i++) {
-				String temp = table.getValueAt(i, 2).toString();
-				if(temp.equals(cCCD)) {
-					System.out.println(temp.equals(cCCD));
-					table.setRowSelectionInterval(i, i);
-				}
-			}
-			
+			Tim_Phieu();
 		}
+		if(source.equals(TaoLai)) {
+			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+			model.setDataVector(data, cols_name);
+			
+			NgayDen.setText("");
+			NgayDi.setText("");
+			NhanPhong_MaPhieuDat.setSelectedIndex(0);
+			CCCD.setText("");
+		}
+		if(source.equals(Xoa)) {
+			Xoa_PhieuNhan();
+		}
+	}
+
+
+	private boolean Xoa_PhieuNhan() {
+		// TODO Auto-generated method stub
+		int row = table.getSelectedRow();
+		
+		if(row == -1) {
+			JOptionPane.showMessageDialog(display_NhanPhong, "Không Có Phiếu Đặt Nào Được Chọn !");
+			return false;
+		}
+		
+		String sophong = model.getValueAt(row, 3).toString();
+		String ma_PhieuDat = model.getValueAt(row, 0).toString();
+		
+		DanhSachPhieuDat listPD = new DanhSachPhieuDat();
+		listPD.docDuLieu();
+		PhieuDatPhong pd = listPD.getPhieuDatPhongByMa(ma_PhieuDat);
+		listPD.deletePhieuDat(pd);
+		
+		DanhSachPhong listPhong = new DanhSachPhong();
+		listPhong.docDuLieu();
+		
+		data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+		model.setDataVector(data, cols_name);
+		table.setModel(model);
+		
+		JOptionPane.showMessageDialog(display_NhanPhong, "Xoá Phiếu Đặt Phòng Thành Công !");
+		return true;
+	}
+
+
+	private boolean Tim_Phieu() {
+		// TODO Auto-generated method stub
+		String cCCD = CCCD.getText();
+		ArrayList<Integer> row_list = new ArrayList<Integer>();
+		
+		for(int i=0;i<table.getRowCount();i++) {
+			if(cCCD.equals(model.getValueAt(i, 2))) {
+				row_list.add(i);
+			}
+		}
+		
+		if(row_list.size() != 0) {
+			data = new String[row_list.size()][6];
+			for(int i=0;i<row_list.size();i++) {
+				data[i][0] = model.getValueAt(row_list.get(i), 0);
+				data[i][1] = model.getValueAt(row_list.get(i), 1);
+				data[i][2] = model.getValueAt(row_list.get(i), 2);
+				data[i][3] = model.getValueAt(row_list.get(i), 3);
+				data[i][4] = model.getValueAt(row_list.get(i), 4);
+				data[i][5] = model.getValueAt(row_list.get(i), 5);
+			}
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+			JOptionPane.showMessageDialog(display_NhanPhong, "Tìm Phiếu Thành Công !");
+			return true;
+		}
+		
+		JOptionPane.showMessageDialog(display_NhanPhong, "Không Tìm Thấy Phiếu Nhận Phòng !");
+		return false;
 	}
 }
 
