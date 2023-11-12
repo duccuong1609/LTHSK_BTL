@@ -93,7 +93,7 @@ INSERT INTO LoaiKhach(MaLoai,TenLoai,KhauTru)
 VALUES (N'V',N'Khách Quen',0.3),
 		(N'N',N'Khách Thường',0)
 
-INSERT INTO KhachHang(CCCD, HoTen, SDT, STK, DiaChi, Email, MaLoaiKH)
+INSERT INTO KhachHang(CCCD, HoTen, SĐT, STK, DiaChi, Email, MaLoaiKH)
 VALUES	(N'019283940112', N'Nguyễn Đức Cường', N'0384851290', N'500030001203', N'Q.12, Hồ Chí Minh', N'duccuong16092003@gmail.com', 'V'),
         (N'219233940122', N'Đào Huy Hoàng', N'0183451290', N'533020101203', N'Q.Tân Bình, Hồ Chí Minh', N'hoang11@gmail.com', 'V'),
         (N'362233213322', N'Đặng Nguyễn Minh Thiện', N'0231345129', N'132020101233', N'Q.Gò Vấp, Hồ Chí Minh', N'thienlenin12@gmail.com', 'N'),
