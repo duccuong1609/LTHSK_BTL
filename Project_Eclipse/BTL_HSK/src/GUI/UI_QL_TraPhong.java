@@ -43,7 +43,9 @@ import org.junit.runners.model.FrameworkMethod;
 import com.toedter.calendar.JDateChooser;
 
 import Control.DanhSachDichVu;
+import Control.DanhSachHoaDon;
 import Control.DanhSachPhieuNhan;
+import entity.DichVu;
 import entity.HoaDon;
 import entity.PhieuNhanPhong;
 
@@ -229,7 +231,7 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(table)) {
-			
+			selectionData();
 		}
 	}
 
@@ -258,6 +260,12 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 	}
 
 
+	public void selectionData() {
+		int row = table.getSelectedRow();
+		CCCD.setText(table.getValueAt(row, 1).toString());
+		MAPHONG.setText(table.getValueAt(row, 2).toString());
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -266,23 +274,40 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 			int row = table.getSelectedRow();
 			if(row == -1) {
 				JOptionPane.showConfirmDialog(CCCD, this, "Lỗi", row);
+				return;
 			}
 			String maPhieu = table.getValueAt(row, 0).toString();
 			int soPhong = Integer.parseInt(table.getValueAt(row, 2).toString());
 			DanhSachPhieuNhan listPN = new DanhSachPhieuNhan();
 			listPN.docDuLieu();
 			PhieuNhanPhong pn = listPN.getPhieuNhanByMa(maPhieu);
-			listPN.traPhong(soPhong);
 			Date ngayTra = new Date();
 			Date gioTra = new Date();
 			
 			DanhSachDichVu listDV = new DanhSachDichVu();
 			listDV.docDuLieu();
+			DanhSachDichVu dvs = new DanhSachDichVu();
 			for(int i =0 ;i < data_dv.length;i++) {
-				String check = table_dv.getValueAt(i, 2).toString();
+				if(table_dv.getValueAt(i, 2) != null && table_dv.getValueAt(i, 2).toString().equals("true")) {
+					String maDV =  table_dv.getValueAt(i, 0).toString();
+					DichVu dv = listDV.getDichVuByMa(maDV);
+					dvs.addDichVu(dv);
+				}
 			}
 			
+			DanhSachHoaDon listHD = new DanhSachHoaDon();
+			listHD.docDuLieu();
+			int size = listHD.getListHD().size();
+			String maHDlast = listHD.getListHD().get(size-1).getMaHD();
+			int number = Integer.parseInt(maHDlast.substring(2, maHDlast.length()))+1;
+
+			HoaDon a = new HoaDon("HD0"+number, pn, dvs.getDichVu(), ngayTra, gioTra);
+			if(listHD.addHoaDon(a))
+				listPN.traPhong(soPhong);
 			
+			data = Default_Custom_UI.cast_data("ChuaTraPhong");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
 		}
 		if(source.equals(TaoLai)) {
 			table.clearSelection();
@@ -300,6 +325,7 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 					table.setRowSelectionInterval(i, i);
 				}
 			}
+			selectionData();
 		}
 	}
 }

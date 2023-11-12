@@ -394,10 +394,8 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		if(list.getListPDP().size() >0) {
 			String last_PDP = list.getListPDP().get(list.getListPDP().size()-1).getMaPD();
 			last_number = Integer.parseInt(last_PDP.substring(2, last_PDP.length())) + 1;
-			System.out.println(last_PDP);
-			System.out.println(last_number);
 		}
-		PhieuDatPhong pd = new PhieuDatPhong("PD0"+(last_number), nv, kh, a, 1, ngayDen, ngayDi);
+		PhieuDatPhong pd = new PhieuDatPhong("PD"+(last_number), nv, kh, a, 1, ngayDen, ngayDi);
 
 		new DanhSachPhieuDat().insertPhieuDatSQL(pd);
 		

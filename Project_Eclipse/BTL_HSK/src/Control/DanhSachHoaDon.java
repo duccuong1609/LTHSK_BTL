@@ -56,15 +56,16 @@ public class DanhSachHoaDon {
 		try {
 			SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-			statement = con.prepareStatement("INSERT INTO HoaDon(MaHoaDon,MaPhieu,NgayTra,GioTra)"
-					+ "VALUES"
-					+ "(?,?, ?, ?)");
+			statement = con.prepareStatement("INSERT INTO HoaDon(MaHoaDon,MaPhieu,NgayTra,GioTra)\r\n"
+					+ "VALUES	\r\n"
+					+ "		(?,?, ?, ?)");
 			statement.setString(1, a.getMaHD());
 			statement.setString(2, a.getMaPhieuNhan().getMaPhieuNhan());
 			statement.setString(3, dateTime.format(a.getNgayTra()));
 			statement.setString(4, date.format(a.getGioTra()));
-			addChiTietHoaDon(a);
 			n = statement.executeUpdate();
+			if(n > 0 && a.getListDV().size() > 0)
+				addChiTietHoaDon(a);
 			
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -82,7 +83,9 @@ public class DanhSachHoaDon {
 		return listHD.get(index);
 	}
 	
-	
+	public ArrayList<HoaDon> getListHD() {
+		return listHD;
+	}
 	
 	public boolean addChiTietHoaDon(HoaDon a) {
 		Connection con = Database.getInsConnect().getCon();
@@ -94,8 +97,8 @@ public class DanhSachHoaDon {
 						+ "VALUES (?, ?)");
 				statement.setString(1, a.getMaHD());
 				statement.setString(2, a.getListDV().get(i).getMaDV());
-				n = statement.executeUpdate();
 			}
+			n = statement.executeUpdate();
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

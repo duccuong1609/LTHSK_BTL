@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+import Control.DanhSachDichVu;
+
 public class HoaDon {
 	private String maHD;
 	private PhieuNhanPhong maPhieuNhan;

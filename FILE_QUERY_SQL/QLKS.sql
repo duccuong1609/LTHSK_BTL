@@ -408,7 +408,7 @@ VALUES
 
 
 INSERT INTO ChiTietHoaDon (MaHoaDon, MaDV)
-VALUES
+VALUES	('HD012', 'DV002'),
 		('HD001', 'DV002'),
 		('HD001', 'DV003'),
 		('HD001', 'DV004'),
@@ -481,6 +481,13 @@ select * from PhieuDatPhong
 where MaPhieuDat = 'PD001'
 
 select * from Phong 
+
+
+select DichVu.MaDV, TenDV, GiaDV
+					from HoaDon join ChiTietHoaDon
+					on HoaDon.MaHoaDon = ChiTietHoaDon.MaHoaDon join DichVu 
+					on DichVu.MaDV = ChiTietHoaDon.MaDV
+					where HoaDon.MaHoaDon = 'HD012'
 
 --Ham insertPhieuNhan
 --EXECUTE insertPhieuNhan @maPhieuNhan nvarchar(20) ,@maPhieuDat nvarchar(20) ,	@gioNhan datetime ,	@ngayNhan datetime 

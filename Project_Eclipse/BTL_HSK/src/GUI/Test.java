@@ -23,7 +23,7 @@ public class Test {
 //		DanhSachPhieuDat a = new DanhSachPhieuDat();
 //		kh.docDuLieu();
 //		a.docDuLieu();
-//		
+		
 //		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 //		PhieuDatPhong b = a.getPhieuDatByCCCD_NgayDen("019283940112","2023-05-11");
 //		b.setNgayDi(date.parse("2023-06-25"));
