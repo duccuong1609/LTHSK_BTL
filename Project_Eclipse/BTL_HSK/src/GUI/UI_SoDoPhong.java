@@ -43,6 +43,7 @@ public class UI_SoDoPhong implements MouseListener,ActionListener{
 		JPanel titleJPanel = new JPanel();
 		
 		titleJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
+		titleJPanel.setBackground(new Color(255,250,245));
 		
 		JLabel title = new JLabel("SƠ ĐỒ PHÒNG KHÁCH SẠN");
 		center_panel = new JPanel();
@@ -53,8 +54,10 @@ public class UI_SoDoPhong implements MouseListener,ActionListener{
 		
 		JPanel main_pJPanel = new JPanel();
 		main_pJPanel.setLayout(new BorderLayout());
+		main_pJPanel.setBackground(new Color(255,250,245));
 		
 		JScrollPane scrollBar = Default_Custom_UI.default_scrollpane(center_panel);
+		center_panel.setBackground(new Color(255,250,245));
 		
 		main_pJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
@@ -67,6 +70,7 @@ public class UI_SoDoPhong implements MouseListener,ActionListener{
 		JPanel search_Panel = new JPanel();
 		
 		tags_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		tags_Panel.setBackground(new Color(255,250,245));
 		
 		button_TatCaPhong = Default_Custom_UI.default_RoomTag("Tất Cả",listPhong.docDuLieu().size(), new Color(244,244,244),Color.BLACK);
 		tags_Panel.add(button_TatCaPhong);
@@ -82,6 +86,8 @@ public class UI_SoDoPhong implements MouseListener,ActionListener{
 		
 		//search tab
 		search_Panel.add(btn_TimPhong);
+		search_Panel.setBackground(new Color(255,250,245));
+		btn_TimPhong.setFont(Default_Custom_UI.tag_font);
 		
 		btn_TimPhong.setBackground(Color.BLACK);
 		btn_TimPhong.setForeground(Color.WHITE);
@@ -104,6 +110,8 @@ public class UI_SoDoPhong implements MouseListener,ActionListener{
 		
 		main_pJPanel.add(top_panel,BorderLayout.NORTH);
 		main_pJPanel.add(scrollBar,BorderLayout.CENTER);
+		top_panel.setBackground(new Color(255,250,245));
+		scrollBar.setBackground(new Color(255,250,245));
 		
 		display_SoDoPhong.add(main_pJPanel,BorderLayout.CENTER);
 	}

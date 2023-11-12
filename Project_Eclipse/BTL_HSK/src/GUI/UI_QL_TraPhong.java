@@ -8,10 +8,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.JobAttributes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.EventObject;
 import java.util.Iterator;
@@ -54,7 +56,6 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 	//--------DatPhong-----------//
 	public JPanel display_TraPhong;
 	private JButton Them;
-	private JButton Xoa;
 	private JButton TaoLai;
 	private JButton Tim;
 	
@@ -125,20 +126,24 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 		display_TraPhong = new JPanel();
 		display_TraPhong = new JPanel();
 		display_TraPhong.setLayout(new BorderLayout());
+		display_TraPhong.setBackground(new Color(255,250,245));
 		
 		JPanel titleJPanel = new JPanel();
+		titleJPanel.setBackground(new Color(255,250,245));
 		
 		titleJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
 		JLabel title = new JLabel("QUẢN LÍ TRẢ PHÒNG / LẬP HÓA ĐƠN");
 		
 		JPanel center_panel = new JPanel();
+		center_panel.setBackground(new Color(255,250,245));
 		title.setFont(Default_Custom_UI.big_title_font);
 		titleJPanel.add(title);
 		title.setBorder(new EmptyBorder(5,5,5,5));
 		display_TraPhong.add(titleJPanel,BorderLayout.NORTH);
 		
 		JPanel main_pJPanel = new JPanel();
+		main_pJPanel.setBackground(new Color(255,250,245));
 		
 		main_pJPanel.setLayout(new BorderLayout());
 		
@@ -147,8 +152,10 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 		//center_panel
 		//--------------------------------------------------------------------------pending
 		center_panel.setLayout(new BorderLayout());
+		center_panel.setBackground(new Color(255,250,245));
 		
 		JPanel left_addfield = new JPanel();
+		left_addfield.setBackground(new Color(255,250,245));
 		
 		left_addfield.setLayout(new BorderLayout());
 		
@@ -158,23 +165,30 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 		
 		JScrollPane jp_dv = new JScrollPane(table_dv);
 		jp_dv.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
+		jp_dv.getViewport().setBackground(new Color(255,250,245));
 		
 		CCCD = Default_Custom_UI.default_textfield();
 		JPanel cccd_panel = Default_Custom_UI.default_text_panel(CCCD);
 		cccd_panel.setPreferredSize(new Dimension(320,35));
+		cccd_panel.setBackground(new Color(255,250,245));
 		MAPHONG = Default_Custom_UI.default_textfield();
 		JPanel ma_panel = Default_Custom_UI.default_text_panel(MAPHONG);
+		ma_panel.setBackground(new Color(255,250,245));
 		ma_panel.setPreferredSize(new Dimension(320,35));
 		left_addfield.add(jp_dv,BorderLayout.CENTER);
 		
 		JLabel lb1 = Default_Custom_UI.default_label("CĂN CƯỚC CÔNG DÂN");
 		lb1.setPreferredSize(new Dimension(300,25));
+		lb1.setBackground(new Color(255,250,245));
 		JLabel lb2 = Default_Custom_UI.default_label("MÃ SỐ PHÒNG");
 		lb2.setPreferredSize(new Dimension(300,25));
+		lb2.setBackground(new Color(255,250,245));
 		JLabel lb3 = Default_Custom_UI.default_label("DỊCH VỤ ĐÃ SỬ DỤNG");
 		lb3.setPreferredSize(new Dimension(300,25));
+		lb3.setBackground(new Color(255,250,245));
 		
 		JPanel other_field = new JPanel();
+		other_field.setBackground(new Color(255,250,245));
 		other_field.add(lb1);
 		other_field.add(cccd_panel);
 		other_field.add(lb2);
@@ -185,25 +199,26 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 		left_addfield.add(other_field,BorderLayout.NORTH);
 		
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
+		left_addfield.setBackground(new Color(255,250,245));
 		
 		JPanel content_panel = new JPanel(new BorderLayout());
 		JPanel button_panel = new JPanel();
 		button_panel.setBorder(new CompoundBorder(new EmptyBorder(10,0,0,0), new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10))));
 		button_panel.setLayout(new GridLayout(1, 4, 10, 30));
+		button_panel.setBackground(new Color(255,250,245));
 		
 		//table
 		
 		JScrollPane jp = new JScrollPane(table);
 		jp.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
+		jp.getViewport().setBackground(new Color(255,250,245));
 		
 		Them = Default_Custom_UI.default_Action_Button("TRẢ PHÒNG", "Media/Icon/them.gif");
-		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
 		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
 		Tim = Default_Custom_UI.default_Action_Button("Tìm", "Media/Icon/tim.gif");
 		
 		button_panel.add(TaoLai);
 		button_panel.add(Them);
-		button_panel.add(Xoa);
 		button_panel.add(Tim);
 		
 		data_dv = Default_Custom_UI.cast_data("DichVu");
@@ -211,14 +226,16 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 		table_dv.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JCheckBox()));
 		
 		content_panel.add(jp,BorderLayout.CENTER);
+		center_panel.setBackground(new Color(255,250,245));
 		
 		content_panel.add(button_panel,BorderLayout.SOUTH);
 		content_panel.setBorder(new EmptyBorder(0,10,0,0));
 		
+		content_panel.setBackground(new Color(255,250,245));
 		center_panel.add(content_panel,BorderLayout.CENTER);
 		
 		main_pJPanel.add(center_panel,BorderLayout.CENTER);
-		
+		main_pJPanel.setBackground(new Color(255,250,245));
 		display_TraPhong.add(main_pJPanel,BorderLayout.CENTER);
 		Them.addActionListener(this);
 		Tim.addActionListener(this);
@@ -273,7 +290,7 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 		if(source.equals(Them)) {
 			int row = table.getSelectedRow();
 			if(row == -1) {
-				JOptionPane.showConfirmDialog(CCCD, this, "Lỗi", row);
+				JOptionPane.showMessageDialog(display_TraPhong, "Không Có Phiếu Nhận Nào Được Chọn !");
 				return;
 			}
 			String maPhieu = table.getValueAt(row, 0).toString();
@@ -303,32 +320,73 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 			int duoi_HD = Integer.parseInt(pn.getMaPhieuNhan().substring(2,pn.getMaPhieuNhan().length())) +1 ;
 
 			HoaDon a = new HoaDon("HD"+(duoi_HD), pn, dvs.getDichVu(), ngayTra, gioTra);
-			if(listHD.addHoaDon(a))
-				listPN.traPhong(soPhong);
 			
-			data = Default_Custom_UI.cast_data("ChuaTraPhong");
-			model.setDataVector(data, cols_name);
-			table.setModel(model);
-			
-			model_dv.setDataVector(data_dv, cols_dv_name);
-			table_dv.setModel(model_dv);
+			int choose = JOptionPane.showConfirmDialog(display_TraPhong, "Bạn Có Chắc Muốn Trả Phòng Không ?","Chú Ý",JOptionPane.YES_OPTION);
+			if(choose == JOptionPane.YES_OPTION) {
+				if(listHD.addHoaDon(a))
+					listPN.traPhong(soPhong);
+				
+				JOptionPane.showMessageDialog(display_TraPhong, "Trả Phòng/ Lập Hoá Đơn Thành Công !");
+				
+				data = Default_Custom_UI.cast_data("ChuaTraPhong");
+				model.setDataVector(data, cols_name);
+				
+				table.setModel(model);
+				
+				model_dv.setDataVector(data_dv, cols_dv_name);
+				table_dv.setModel(model_dv);
+				table_dv.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JCheckBox()));
+			}
 		}
 		if(source.equals(TaoLai)) {
 			table.clearSelection();
 			CCCD.setText("");
 			MAPHONG.setText("");
+			data = Default_Custom_UI.cast_data("ChuaTraPhong");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
 		}
 		if(source.equals(Tim)) {
+			
+			if(CCCD.getText().equals("")) {
+				JOptionPane.showMessageDialog(display_TraPhong, "CCCD Không Được Để Trống");
+				return;
+			}
+			if(MAPHONG.getText().equals("")) {
+				JOptionPane.showMessageDialog(display_TraPhong, "Mã Số Phòng Không Được Để Trống");
+				return;
+			}
+			
 			String cCCD = CCCD.getText();
 			String soPhong = MAPHONG.getText();
+			
+			ArrayList<Integer> list_temp = new ArrayList<Integer>();
 			
 			for(int i =0 ; i < data.length;i++) {
 				String temp1 = table.getValueAt(i, 1).toString();
 				String temp2 = table.getValueAt(i, 2).toString();
 				if(cCCD.equals(temp1) && soPhong.equals(temp2)) {
-					table.setRowSelectionInterval(i, i);
+					list_temp.add(i);
 				}
 			}
+			
+			if(list_temp.size() == 0) {
+				JOptionPane.showMessageDialog(display_TraPhong, "Không Tìm Thấy Phiếu Nhận !");
+				return;
+			}
+			data = new String[list_temp.size()][4];
+			for(int i=0;i<list_temp.size();i++) {
+				data[i][0] = model.getValueAt(list_temp.get(i), 0).toString();
+				data[i][1] = model.getValueAt(list_temp.get(i), 1).toString();
+				data[i][2] = model.getValueAt(list_temp.get(i), 2).toString();
+				data[i][3] = model.getValueAt(list_temp.get(i), 3).toString();
+			}
+
+			JOptionPane.showMessageDialog(display_TraPhong, "Tìm Phiếu Nhận Thành Công !");
+			selectionData();
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+			table.setRowSelectionInterval(0, 0);
 			selectionData();
 		}
 	}

@@ -99,20 +99,26 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		display_DatPhong = new JPanel();
 		display_DatPhong = new JPanel();
 		display_DatPhong.setLayout(new BorderLayout());
+		display_DatPhong.setBackground(new Color(255,250,245));
 		
 		JPanel titleJPanel = new JPanel();
 		
 		titleJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
+		titleJPanel.setBackground(new Color(255,250,245));
+		
 		
 		JLabel title = new JLabel("QUẢN LÍ ĐẶT PHÒNG");
 		JPanel center_panel = new JPanel();
+		center_panel.setBackground(new Color(255,250,245));
 		title.setFont(Default_Custom_UI.big_title_font);
+		title.setForeground(new Color(0,25,51));
 		titleJPanel.add(title);
 		title.setBorder(new EmptyBorder(5,5,5,5));
 		display_DatPhong.add(titleJPanel,BorderLayout.NORTH);
 		
 		JPanel main_pJPanel = new JPanel();
 		main_pJPanel.setLayout(new BorderLayout());
+		main_pJPanel.setBackground(new Color(255,250,245));
 		
 		main_pJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
@@ -121,6 +127,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		center_panel.setLayout(new BorderLayout());
 		
 		JPanel left_addfield = new JPanel();
+		left_addfield.setBackground(new Color(255,250,245));
 		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
@@ -156,7 +163,9 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
 		JPanel content_panel = new JPanel(new BorderLayout());
+		content_panel.setBackground(new Color(255,250,245));
 		JPanel button_panel = new JPanel();
+		button_panel.setBackground(new Color(255,250,245));
 		button_panel.setBorder(new CompoundBorder(new EmptyBorder(10,0,0,0), new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10))));
 		button_panel.setLayout(new GridLayout(1, 4, 10, 30));
 		
@@ -164,6 +173,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		
 		JScrollPane jp = new JScrollPane(table);
 		jp.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
+		jp.getViewport().setBackground(new Color(255,250,245));
 		
 		datPhong_Then = Default_Custom_UI.default_Action_Button("Đặt Phòng", "Media/Icon/them.gif");
 		DatPhong_Sua = Default_Custom_UI.default_Action_Button("Sửa", "Media/Icon/chinhsua.gif");
@@ -176,6 +186,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		button_panel.add(DatPhong_Sua);
 		
 		content_panel.add(jp,BorderLayout.CENTER);
+		content_panel.setBackground(new Color(255,250,245));
 		
 		content_panel.add(button_panel,BorderLayout.SOUTH);
 		content_panel.setBorder(new EmptyBorder(0,10,0,0));
@@ -295,7 +306,8 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
 			model.setDataVector(data, cols_name);
 			table.setModel(model);
-			
+			JOptionPane.showMessageDialog(display_DatPhong, "Xoá Phiếu Đặt Phòng Thành Công !");
+			return;
 		}
 		if(source.equals(DatPhong_Sua)) {
 			Datphong_Sua();
@@ -304,6 +316,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 	
 	private boolean Datphong_Sua() {
 		// TODO Auto-generated method stub
+		Date today = java.sql.Date.valueOf(LocalDate.now());
 		if(table.getSelectedRow() == -1) {
 			
 			JOptionPane.showMessageDialog(display_DatPhong,"Không Có Khách Hàng Nào Được Chọn!");
@@ -336,22 +349,37 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 			JOptionPane.showMessageDialog(display_DatPhong,"Khách hàng không tồn tại!");
 			return false;
 		}
+		
+		if(ngayDen.compareTo(today)<0) {
+			JOptionPane.showMessageDialog(display_DatPhong,"Ngày Đến Phải Lớn Hơn Hoặc Bằng Ngày Hiện Tại");
+			return false;
+		}
+		if(ngayDi.compareTo(ngayDen)<0) {
+			JOptionPane.showMessageDialog(display_DatPhong,"Ngày Đi Phải Lớn Hơn Hoặc Bằng Ngày Đến");
+			return false;
+		}
+		
 		Phong phong = phongs.getPhongBySoPhong(soPhong);
 		DanhSachPhong a = new DanhSachPhong();
 		a.addPhong(phong);
 		list.docDuLieu();
 		PhieuDatPhong setpd = list.getPhieuDatPhongByMa(maPD);
+		
 		setpd.setKhachHang(kh);
 		setpd.setNhanVien(nv);
 		setpd.setPhongs(a);
 		setpd.setNgayDen(ngayDen);
 		setpd.setNgayDi(ngayDi);
 		
+		list.updatePhieuDat(setpd);
+		
+		
 		data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
 		model.setDataVector(data, cols_name);
 		table.setModel(model);
 		
-		return false;
+		JOptionPane.showMessageDialog(display_DatPhong,"Sửa Đơn Đặt Phòng Thành Công !");
+		return true;
 	}
 
 	public boolean Them_PhieuDatPhong() {
@@ -425,12 +453,8 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
 		model.setDataVector(data, cols_name);
 		table.setModel(model);
-		
+		datPhong_cb_SoPhong.setSelectedIndex(0);
+		JOptionPane.showMessageDialog(display_DatPhong,"Thêm Đơn Đặt Phòng Thành Công !");
 		return true;
 	}
-	
-//	hjdascnbajcbajsbcjkasbckajbc
-	
 }
-
-

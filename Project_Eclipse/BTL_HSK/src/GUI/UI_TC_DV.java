@@ -161,6 +161,15 @@ public class UI_TC_DV implements MouseListener,ActionListener{
 		
 		content_panel.add(jp,BorderLayout.CENTER);
 		
+		left_addfield.setBackground(new Color(255,250,245));
+		button_panel.setBackground(new Color(255,250,245));
+		titleJPanel.setBackground(new Color(255,250,245));
+		content_panel.setBackground(new Color(255,250,245));
+		jp.getViewport().setBackground(new Color(255,250,245));
+		content_panel.setBorder(new EmptyBorder(0,10,0,0));
+		main_pJPanel.setBackground(new Color(255,250,245));
+		center_panel.setBackground(new Color(255,250,245));
+		
 		content_panel.add(button_panel,BorderLayout.SOUTH);
 		content_panel.setBorder(new EmptyBorder(0,10,0,0));
 		

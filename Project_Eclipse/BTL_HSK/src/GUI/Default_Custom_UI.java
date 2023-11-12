@@ -46,9 +46,9 @@ import entity.PhongThuong;
 import entity.PhongVip;
 
 public class Default_Custom_UI {
-	public static Font title_font = new Font("Arial",Font.BOLD, 15);
-	public static Font big_title_font = new Font("Arial",Font.BOLD, 25);
-	public static Font tag_font = new Font("Arial",Font.BOLD, 12);
+	public static Font title_font = new Font("Arial",Font.BOLD, 17);
+	public static Font big_title_font = new Font("Arial",Font.BOLD, 30);
+	public static Font tag_font = new Font("Arial",Font.BOLD, 15);
 	private static DanhSachPhong listPhong ;
 	private static DanhSachNhanVien listNhanVien;
 	private static DanhSachHoaDon listHD;
@@ -274,7 +274,6 @@ public class Default_Custom_UI {
 			if(type.equals("ChuaTraPhong")) {
 				listPN = new DanhSachPhieuNhan();
 				DanhSachPhieuNhan a = listPN.getListPhongChuaTra();
-				System.out.println(a);
 				int size = a.getListPN().size();
 				String [][] data = new String[size][4];
 				for(int  i = 0; i < size; i++) {
@@ -353,7 +352,10 @@ public class Default_Custom_UI {
 				    float gia = (listHD.getListHD().get(i).getMaPhieuNhan().getpDP().getPhongs().getListPhong().get(0) instanceof PhongVip) ? PhongVip.getGia():PhongThuong.getGia();
 				    
 				    long soNgay= (listHD.getListHD().get(i).getNgayTra().getTime() - listHD.getListHD().get(i).getMaPhieuNhan().getNgayNhan().getTime()) / (24 * 60 * 60 * 1000);
-					data[i][4] = Double.toString(((double) gia * (double)soNgay + (double)listHD.getMoneyDV(listHD.getListHD().get(i)))*(1 - khauTru));
+					
+				    double tong = ((double) gia * (double)soNgay + (double)listHD.getMoneyDV(listHD.getListHD().get(i)))*(1 - khauTru);
+				    tong = Math.round(tong);
+				    data[i][4] = Integer.toString((int)tong) + "$";
 				}
 				return data;
 			}

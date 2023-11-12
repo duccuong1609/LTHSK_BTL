@@ -146,6 +146,18 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[updateDichVu] @maDV nvarchar(20),
+	@tenDV nvarchar(30),
+	@giaDV int
+AS
+BEGIN
+	UPDATE DichVu
+	SET TenDV = @tenDV,
+		GiaDV = @giaDV
+	where MaDV = @maDV
+END
+GO
+
 CREATE PROCEDURE [dbo].[updatePhieuDat] @maPhieuDat nvarchar(20), @maNV nvarchar(20) , @CCCD nvarchar(13), @soLuong int, @ngayDen date, @ngayDi date
 AS
 BEGIN

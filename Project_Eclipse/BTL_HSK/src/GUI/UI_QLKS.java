@@ -113,12 +113,12 @@ public class UI_QLKS extends JFrame implements ActionListener,MouseListener{
 		menuJPanel.add(logo_label,BorderLayout.SOUTH);
 		
 		menuJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(20,20,5,20)));
-		
+		menuJPanel.setBackground(new Color(255,250,245));
 	}
 	//--------------------------------DISPLAY--------------------------------//
 	public void Display() {
 		displayPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 1),new EmptyBorder(0,0,0,0)));
-		displayPanel.setBackground(Color.LIGHT_GRAY);
+		displayPanel.setBackground(new Color(255,250,245));
 		displayPanel.add(Default_Custom_UI.default_first_panel());
 	}
 	
