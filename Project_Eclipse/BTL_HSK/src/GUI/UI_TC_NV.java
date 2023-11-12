@@ -9,8 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.regex.Pattern;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -20,6 +23,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import Control.DanhSachNhanVien;
+import Control.DanhSachPhieuDat;
+import entity.NhanVien;
 
 public class UI_TC_NV implements MouseListener,ActionListener{
 	
@@ -38,7 +45,8 @@ public class UI_TC_NV implements MouseListener,ActionListener{
 	private JTextField NV_txt_Email;
 	
 //	private DanhSachPhieuDat phieuDat;
-	
+	private Pattern email = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
+	private Pattern phone = Pattern.compile("(84|0[3|5|7|8|9])+([0-9]{8})");
 	
 	String[] cols_name = {"MÃ NHÂN VIÊN","TÊN NHÂN VIÊN","ĐỊA CHỈ","EMAIL","SỐ ĐIỆN THOẠI"};
 	private Object[][] data = {
@@ -228,7 +236,180 @@ public class UI_TC_NV implements MouseListener,ActionListener{
 			NV_txt_TenNV.setText("");
 			NV_txt_Email.setText("");
 			NV_txt_MaNV.requestFocus();
+			data = Default_Custom_UI.cast_data("NhanVien");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);		
 		}
+		if(e.getSource().equals(Then)) {
+			Them_Sua_NhanVien("Them");
+		}
+		if(e.getSource().equals(Xoa)) {
+			Xoa_NhanVien();
+		}
+		if(e.getSource().equals(Sua)) {
+			Them_Sua_NhanVien("Sua");
+		}
+		if(e.getSource().equals(Tim)) {
+			Tim_NhanVien();
+		}
+		
+	}
+	private boolean Tim_NhanVien() {
+		// TODO Auto-generated method stub
+		if(NV_txt_MaNV.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_NV, "Mã Nhân Viên Không Được Để Trống !");
+			NV_txt_MaNV.requestFocus();
+			return false;
+		}
+		if(!NV_txt_MaNV.getText().matches("NV[0-9]+")) {
+			JOptionPane.showMessageDialog(display_NV, "Mã Nhân Viên Phải Bắt Đầu Từ NV Theo Sau Là Các Kí Số !");
+			NV_txt_MaNV.setText("");
+			NV_txt_MaNV.requestFocus();
+			return false;
+		}
+		DanhSachNhanVien ds = new DanhSachNhanVien();
+		
+		if(ds.getNhanVienByMa(NV_txt_MaNV.getText())== null) {
+			JOptionPane.showMessageDialog(display_NV, "Mã Nhân Viên Không Tồn Tại !");
+			NV_txt_MaNV.setText("");
+			NV_txt_MaNV.requestFocus();
+			return false;
+		}
+		
+		NhanVien a =  ds.getNhanVienByMa(NV_txt_MaNV.getText());
+		
+		data = new String[1][5];
+		
+		data[0][0] = a.getMaNV();
+		data[0][1] = a.getTenNV();
+		data[0][2] = a.getDiaChi();
+		data[0][3] = a.getEmail(); 
+		data[0][4] = a.getSoDT();
+		
+		model.setDataVector(data, cols_name);
+		table.setModel(model);
+		
+		return true;
+	}
+
+
+	private boolean Xoa_NhanVien() {
+		if(table.getSelectedRow() == -1) {
+			JOptionPane.showMessageDialog(display_NV, "Không có Nhân Viên Nào Được Chọn !");
+			return false;
+		}
+		
+		int choose = JOptionPane.showConfirmDialog(display_NV, "Bạn Có Chắc Muốn Xóa Nhân Viên Này Không ?","Chú Ý",JOptionPane.YES_NO_OPTION);
+		if(choose == JOptionPane.YES_OPTION) {
+			
+			DanhSachNhanVien ds = new DanhSachNhanVien();
+			DanhSachPhieuDat dSachPhieuDat = new DanhSachPhieuDat();
+			dSachPhieuDat.docDuLieu();
+			String[] data_mnv = new String[dSachPhieuDat.getListPDP().size()];
+			for(int i=0;i<dSachPhieuDat.getListPDP().size();i++) {
+				data_mnv[i] = dSachPhieuDat.getListPDP().get(i).getNhanVien().getMaNV();
+			}
+			for(int i=0;i<data_mnv.length;i++) {
+				if(NV_txt_MaNV.getText().equals(data_mnv[i])) {
+					JOptionPane.showMessageDialog(display_NV, "Bạn Không Thể Xóa Nhân Viên Có Tham Gia Quản Lí Đặt/Nhận/Trả Phòng !");
+					return false;
+				}
+			}
+			
+			ds.removeNV(model.getValueAt(table.getSelectedRow(), 0).toString());
+			data = Default_Custom_UI.cast_data("NhanVien");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+			
+		}
+		
+		return true;
+	}
+
+	private boolean Them_Sua_NhanVien(String type) {
+		// TODO Auto-generated method stub
+		if(NV_txt_TenNV.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_NV, "Tên Nhân Viên Không Được Để Trống !");
+			NV_txt_TenNV.requestFocus();
+			return false;
+		}
+		
+		if(NV_txt_DiaChi.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_NV, "Địa Chỉ Nhân Viên Không Được Để Trống !");
+			NV_txt_DiaChi.requestFocus();
+			return false;
+		}
+		
+		if(NV_txt_SĐT.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_NV, "Số Điện Thoại Nhân Viên Không Được Để Trống !");
+			NV_txt_SĐT.requestFocus();
+			return false;
+		}
+		
+		if(NV_txt_Email.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_NV, "Email Nhân Viên Không Được Để Trống !");
+			NV_txt_Email.requestFocus();
+			return false;
+		}
+		
+		if(!email.matcher(NV_txt_Email.getText()).matches()) {
+			JOptionPane.showMessageDialog(display_NV, "Sai Định Dạng Email !");
+			NV_txt_Email.setText("");;
+			NV_txt_Email.requestFocus();
+			return false;
+		}
+		if(!phone.matcher(NV_txt_SĐT.getText()).matches()) {
+			JOptionPane.showMessageDialog(display_NV, "Sai Định Dạng Số Điện Thoại Việt Nam !");
+			NV_txt_SĐT.setText("");
+			NV_txt_SĐT.requestFocus();
+			return false;
+		}
+		
+		if(type.equals("Them")) {
+			DanhSachNhanVien ds = new DanhSachNhanVien();
+			ds.docDuLieu();
+			
+			String last_maNV = ds.get_listNV().get(ds.get_listNV().size()-1).getMaNV();
+			int last_number = Integer.parseInt(last_maNV.substring(3, last_maNV.length())) + 1;
+			
+			NhanVien nv = new NhanVien("NV0"+(last_number), NV_txt_TenNV.getText(), NV_txt_SĐT.getText(), NV_txt_DiaChi.getText(), NV_txt_Email.getText());
+			
+			ds.insertNhanVien(nv);
+			
+			data = Default_Custom_UI.cast_data("NhanVien");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+		}
+		
+		if(type.equals("Sua")) {
+			if(NV_txt_MaNV.getText().equals("")) {
+				JOptionPane.showMessageDialog(display_NV, "Mã Nhân Viên Không Được Để Trống !");
+				NV_txt_MaNV.requestFocus();
+				return false;
+			}
+			if(!NV_txt_MaNV.getText().matches("NV[0-9]+")) {
+				JOptionPane.showMessageDialog(display_NV, "Mã Nhân Viên Phải Bắt Đầu Từ NV Theo Sau Là Các Kí Số !");
+				NV_txt_MaNV.setText("");
+				NV_txt_MaNV.requestFocus();
+				return false;
+			}
+			DanhSachNhanVien ds = new DanhSachNhanVien();
+			ds.docDuLieu();
+			if(ds.getNhanVienByMa(NV_txt_MaNV.getText())==null) {
+				JOptionPane.showMessageDialog(display_NV, "Nhân Viên Không Tồn Tại !");
+				NV_txt_MaNV.setText("");
+				NV_txt_MaNV.requestFocus();
+				return false;
+			}
+			NhanVien nv = new NhanVien(NV_txt_MaNV.getText(), NV_txt_TenNV.getText(), NV_txt_SĐT.getText(),NV_txt_DiaChi.getText(), NV_txt_Email.getText());
+			ds.updateNV(nv);
+			
+			data = Default_Custom_UI.cast_data("NhanVien");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+		}
+		
+		return true;
 	}
 }
 

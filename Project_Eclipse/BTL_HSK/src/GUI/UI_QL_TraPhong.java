@@ -308,6 +308,9 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 			data = Default_Custom_UI.cast_data("ChuaTraPhong");
 			model.setDataVector(data, cols_name);
 			table.setModel(model);
+			
+			model_dv.setDataVector(data_dv, cols_dv_name);
+			table_dv.setModel(model_dv);
 		}
 		if(source.equals(TaoLai)) {
 			table.clearSelection();

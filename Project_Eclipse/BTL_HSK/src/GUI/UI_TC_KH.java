@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import Control.DanhSachKhachHang;
+import Control.DanhSachPhieuDat;
 import entity.KhachHang;
 
 public class UI_TC_KH implements MouseListener,ActionListener{
@@ -285,6 +286,7 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 		if(type.equals("Them")) {
 			if(list_KhachHang.getKhachHangByMa(KH_txt_CCCD.getText())!= null) {
 				JOptionPane.showMessageDialog(display_KH, "Khách Hàng Này Đã Tồn Tại Trong Danh Sách !");
+				KH_txt_CCCD.setText("");;
 				KH_txt_CCCD.requestFocus();
 				return false;
 			}
@@ -292,6 +294,7 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 		
 		if(!KH_txt_STK.getText().matches("[0-9]{9,16}")) {
 			JOptionPane.showMessageDialog(display_KH, "Số Tài Khoản Phải Là 1 Dãy Số (Từ 9 Đến 16 Số) !");
+			KH_txt_STK.setText("");;
 			KH_txt_STK.requestFocus();
 			return false;
 		}
@@ -303,12 +306,14 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 //		}
 		if(!email.matcher(KH_txt_Email.getText()).matches()) {
 			JOptionPane.showMessageDialog(display_KH, "Sai Định Dạng Email !");
-			KH_txt_Hoten.requestFocus();
+			KH_txt_Email.setText("");
+			KH_txt_Email.requestFocus();
 			return false;
 		}
 		if(!phone.matcher(KH_txt_SĐT.getText()).matches()) {
 			JOptionPane.showMessageDialog(display_KH, "Sai Định Dạng Số Điện Thoại Việt Nam !");
-			KH_txt_Hoten.requestFocus();
+			KH_txt_SĐT.setText("");
+			KH_txt_SĐT.requestFocus();
 			return false;
 		}
 		
@@ -381,10 +386,25 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 		if(e.getSource().equals(Xoa)) {
 			String CCCD = KH_txt_CCCD.getText();
 			list_KhachHang = new DanhSachKhachHang();
+			DanhSachPhieuDat ds = new DanhSachPhieuDat();
+			ds.docDuLieu();
+			
 			list_KhachHang.docDuLieu();
 			if(list_KhachHang.getKhachHangByMa(CCCD)!=null) {
 				int choose = JOptionPane.showConfirmDialog(display_KH,"Bạn Có Chắc Muốn Xóa Khách Hàng Này Không ?","Chú Ý",JOptionPane.YES_NO_OPTION);
 				if(choose == JOptionPane.YES_OPTION) {
+					
+					String[] data_kh = new String[ds.getPhieuDatByCCCD(CCCD).getListPDP().size()];
+					
+					for(int i=0;i<ds.getPhieuDatByCCCD(CCCD).getListPDP().size();i++) {
+						data_kh[i] = ds.getPhieuDatByCCCD(CCCD).getListPDP().get(i).getKhachHang().getCCCD();
+					}
+					for(int i=0;i<data_kh.length;i++) {
+						if(CCCD.equals(data_kh[i])) {
+							JOptionPane.showMessageDialog(display_KH,"Không Thể Xóa Khách Hàng Đã Và Đang Tham Gia Vào ĐẶT/NHẬN/TRẢ Phòng !");
+							return;
+						}
+					}
 					list_KhachHang.delete(CCCD);
 					data = Default_Custom_UI.cast_data("KhachHang");
 					model.setDataVector(data, cols_name);
