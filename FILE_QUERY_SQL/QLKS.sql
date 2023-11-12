@@ -494,6 +494,8 @@ select DichVu.MaDV, TenDV, GiaDV
 --Ham insertPhieuNhan
 --EXECUTE insertPhieuNhan @maPhieuNhan nvarchar(20) ,@maPhieuDat nvarchar(20) ,	@gioNhan datetime ,	@ngayNhan datetime 
 
+delete from PhieuNhanPhong where MaPhieuNhan = ?
+delete from ChiTietHoaDon where MaHoaDon = ? AND MaDV = ?
 
 --Ham update Phieu Nhan
 --EXECUTE updatePhieuNhan @maPhieuNhan nvarchar(20) ,@maPhieuDat nvarchar(20) ,	@gioNhan datetime ,	@ngayNhan datetime 

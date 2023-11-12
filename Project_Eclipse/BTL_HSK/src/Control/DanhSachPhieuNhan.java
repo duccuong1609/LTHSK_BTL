@@ -82,6 +82,20 @@ public class DanhSachPhieuNhan {
 		return listPN.add(a);
 	}
 	
+	public boolean deletePhieuNhan(PhieuNhanPhong a) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+			statement = con.prepareStatement("delete from PhieuNhanPhong where MaPhieuNhan = ?");
+			statement.setString(1, a.getMaPhieuNhan());
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return n > 0;
+	}
+	
 	public boolean updatePhieuNhan(PhieuNhanPhong a) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;

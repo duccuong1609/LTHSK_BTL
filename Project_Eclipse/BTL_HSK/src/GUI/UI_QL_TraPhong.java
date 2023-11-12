@@ -295,13 +295,14 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 				}
 			}
 			
+			
 			DanhSachHoaDon listHD = new DanhSachHoaDon();
 			listHD.docDuLieu();
 			int size = listHD.getListHD().size();
-			String maHDlast = listHD.getListHD().get(size-1).getMaHD();
-			int number = Integer.parseInt(maHDlast.substring(2, maHDlast.length()))+1;
+			
+			int duoi_HD = Integer.parseInt(pn.getMaPhieuNhan().substring(2,pn.getMaPhieuNhan().length())) +1 ;
 
-			HoaDon a = new HoaDon("HD0"+number, pn, dvs.getDichVu(), ngayTra, gioTra);
+			HoaDon a = new HoaDon("HD"+(duoi_HD), pn, dvs.getDichVu(), ngayTra, gioTra);
 			if(listHD.addHoaDon(a))
 				listPN.traPhong(soPhong);
 			

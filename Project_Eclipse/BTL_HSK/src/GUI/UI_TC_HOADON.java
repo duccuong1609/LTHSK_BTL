@@ -219,7 +219,7 @@ public class UI_TC_HOADON implements MouseListener,ActionListener{
 		center_panel.add(content_panel,BorderLayout.CENTER);
 		
 		main_pJPanel.add(center_panel,BorderLayout.CENTER);
-		
+		Xoa.addActionListener(this);
 		display_HoaDon.add(main_pJPanel,BorderLayout.CENTER);
 		
 	}
@@ -244,9 +244,11 @@ public class UI_TC_HOADON implements MouseListener,ActionListener{
 				datadv[i][0] = Float.toString(hd.getListDV().get(i).getGia());
 			}
 			model_dv.setDataVector(datadv, cols_name_dv);
+			System.out.println();
 			table_dv.setModel(model_dv);
 			
 		}
+		
 	}
 
 	@Override
@@ -277,7 +279,23 @@ public class UI_TC_HOADON implements MouseListener,ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		Object source = e.getSource();
 		
+		if(source.equals(Xoa)) {
+			String maHD = HoaDon_txt_MaHoaDon.getText();
+			DanhSachHoaDon listHD = new DanhSachHoaDon();
+			listHD.docDuLieu();
+			HoaDon hd = listHD.getHoaDonByMa(maHD);
+			listHD.deteleHoaDon(hd);
+			
+			data = Default_Custom_UI.cast_data("ListHoaDon");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+			
+			model_dv.setDataVector(data_dv, cols_name_dv);
+			table_dv.setModel(model_dv);
+			
+		}
 	}
 }
 
