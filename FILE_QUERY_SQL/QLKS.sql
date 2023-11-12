@@ -380,12 +380,12 @@ VALUES  (01,'T1.01','STD',1),
 
 
 INSERT INTO DichVu(MaDV,TenDV,GiaDV)
-VALUES	('DV001', N'Dịch vụ Karaoke'  , 300000),
-		('DV002', N'Dịch vụ Trông Trẻ', 150000),
-		('DV003', N'Dịch vụ Thuê Xe'  , 400000),
-		('DV004', N'Dịch vụ Massage'  , 250000),
-		('DV005', N'Dịch vụ Làm Đẹp'  , 350000),
-		('DV006', N'Dịch vụ Phòng Họp', 500000);
+VALUES	('DV101', N'Dịch vụ Karaoke'  , 300000),
+		('DV102', N'Dịch vụ Trông Trẻ', 150000),
+		('DV103', N'Dịch vụ Thuê Xe'  , 400000),
+		('DV104', N'Dịch vụ Massage'  , 250000),
+		('DV105', N'Dịch vụ Làm Đẹp'  , 350000),
+		('DV106', N'Dịch vụ Phòng Họp', 500000);
 
 --INSERT INTO HoaDon(MaHoaDon,MaPhieu,NgayTra,GioTra)
 --VALUES	
