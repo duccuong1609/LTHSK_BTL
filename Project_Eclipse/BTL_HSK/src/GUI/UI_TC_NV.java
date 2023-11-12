@@ -292,7 +292,6 @@ public class UI_TC_NV implements MouseListener,ActionListener{
 		return true;
 	}
 
-
 	private boolean Xoa_NhanVien() {
 		if(table.getSelectedRow() == -1) {
 			JOptionPane.showMessageDialog(display_NV, "Không có Nhân Viên Nào Được Chọn !");

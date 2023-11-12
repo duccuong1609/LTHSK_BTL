@@ -315,7 +315,7 @@ public class Default_Custom_UI {
 				for(int i=0;i<listDichVu.getDichVu().size();i++) {
 					data[i][0] = listDichVu.getDichVu().get(i).getMaDV();
 					data[i][1] = listDichVu.getDichVu().get(i).getTenDV();
-					data[i][2] = Float.toString(listDichVu.getDichVu().get(i).getGia());
+					data[i][2] = Float.toString(listDichVu.getDichVu().get(i).getGia()).substring(0, Float.toString(listDichVu.getDichVu().get(i).getGia()).length()-2);
 				}
 				return data;
 			}

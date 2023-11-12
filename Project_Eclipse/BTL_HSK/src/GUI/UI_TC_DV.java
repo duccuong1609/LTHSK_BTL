@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -20,6 +21,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import Control.DanhSachDichVu;
+import entity.DichVu;
+import entity.NhanVien;
 
 public class UI_TC_DV implements MouseListener,ActionListener{
 	
@@ -212,7 +217,138 @@ public class UI_TC_DV implements MouseListener,ActionListener{
 			DV_txt_TENDV.setText("");
 			DV_txt_GIADV.setText("");
 			DV_txt_MADV.requestFocus();
+			data = Default_Custom_UI.cast_data("DichVu_FULL");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);		
 		}
+		if(e.getSource().equals(Then)) {
+			Them_Sua_DichVu("Them");
+		}
+		if(e.getSource().equals(Xoa)) {
+			if(table.getSelectedRow()==-1) {
+				JOptionPane.showMessageDialog(display_DV, "Không Có Dịch Vụ Nào Được Chọn !");
+				return;
+			}
+			else {
+				//pending dich_vu_co_dinh_toi_hoa_don
+				
+				DanhSachDichVu ds = new DanhSachDichVu();
+				
+				int choose = JOptionPane.showConfirmDialog(display_DV, "Bạn Có Chắc Muốn Xóa Dịch Vụ Này Chứ ?","Chú Ý",JOptionPane.YES_NO_OPTION);
+				if(choose == JOptionPane.YES_OPTION) {
+					ds.removeDV(model.getValueAt(table.getSelectedRow(), 0).toString());
+					data = Default_Custom_UI.cast_data("DichVu_FULL");
+					model.setDataVector(data, cols_name);
+					table.setModel(model);
+				}
+			}
+		}
+		if(e.getSource().equals(Sua)) {
+			Them_Sua_DichVu("Sua");
+		}
+		if(e.getSource().equals(Tim)) {
+			Tim_DichVu();
+		}
+	 }
+
+
+	private boolean Tim_DichVu() {
+		// TODO Auto-generated method stub
+		if(DV_txt_MADV.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_DV, "Mã Dịch Vụ Không Được Để Trống !");
+			DV_txt_MADV.requestFocus();
+			return false;
+		}
+		if(!DV_txt_MADV.getText().matches("DV[0-9]+")) {
+			JOptionPane.showMessageDialog(display_DV, "Mã Dịch Vụ Phải Bắt Đầu Từ DV Theo Sau Là Các Kí Số !");
+			DV_txt_MADV.setText("");
+			DV_txt_MADV.requestFocus();
+			return false;
+		}
+		DanhSachDichVu ds = new DanhSachDichVu();
+		ds.docDuLieu();
+		
+		if(ds.getDichVuByMa(DV_txt_MADV.getText())==null) {
+			JOptionPane.showMessageDialog(display_DV, "Không Tìm Thấy Dịch Vụ !");
+			DV_txt_MADV.setText("");
+			DV_txt_MADV.requestFocus();
+			return false;
+		}
+		
+		DichVu dichVu = ds.getDichVuByMa(DV_txt_MADV.getText());
+		
+		data = new String[1][3];
+		data[0][0] = dichVu.getMaDV();
+		data[0][1] = dichVu.getTenDV();
+		data[0][2] = Float.toString(dichVu.getGia()).substring(0, Float.toString(dichVu.getGia()).length()-2);
+		
+		model.setDataVector(data, cols_name);
+		table.setModel(model);
+		
+		return true;
+	}
+
+
+	private boolean Them_Sua_DichVu(String type) {
+		// TODO Auto-generated method stub
+		if(DV_txt_TENDV.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_DV, "Tên Dịch Vụ Không Được Trống !");
+			DV_txt_TENDV.setText("");
+			DV_txt_TENDV.requestFocus();
+			return false;
+		}
+		
+		if(DV_txt_GIADV.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_DV, "Giá Dịch Vụ Không Được Trống !");
+			DV_txt_GIADV.setText("");
+			DV_txt_GIADV.requestFocus();
+			return false;
+		}
+		
+		try {
+			int gia = Integer.parseInt(DV_txt_GIADV.getText());
+			DanhSachDichVu ds = new DanhSachDichVu();
+			ds.docDuLieu();
+			if(type.equals("Them")) {
+				String last_maNV = ds.getDichVu().get(ds.getDichVu().size()-1).getMaDV();
+				int last_number = Integer.parseInt(last_maNV.substring(2, last_maNV.length())) + 1;
+				
+				DichVu dv = new DichVu("DV"+(last_number), DV_txt_TENDV.getText(),gia);
+				ds.insertDichVu(dv);
+				data = Default_Custom_UI.cast_data("DichVu_FULL");
+				model.setDataVector(data, cols_name);
+				table.setModel(model);
+				return true;
+			}
+			if(type.equals("Sua")) {
+				
+				if(table.getSelectedRow() == -1) {
+					JOptionPane.showMessageDialog(display_DV, "Không Có Dịch Vụ Nào Được Chọn !");
+					DV_txt_GIADV.setText("");
+					DV_txt_GIADV.requestFocus();
+					return false;
+				}
+				if(ds.getDichVuByMa(DV_txt_MADV.getText())==null) {
+					JOptionPane.showMessageDialog(display_DV, "Mã Dịch Vụ Không Được Sửa !");
+					DV_txt_GIADV.setText(model.getValueAt(table.getSelectedRow(), 0).toString());
+					DV_txt_GIADV.requestFocus();
+					return false;
+				}
+				DichVu dv = new DichVu(DV_txt_MADV.getText(), DV_txt_TENDV.getText(), gia);
+				ds.updateDV(dv);
+				data = Default_Custom_UI.cast_data("DichVu_FULL");
+				model.setDataVector(data, cols_name);
+				table.setModel(model);
+				return true;
+			}
+		} catch (Exception e2) {
+			// TODO: handle exception
+			JOptionPane.showMessageDialog(display_DV, "Giá Dịch Vụ Phải Là Số !");
+			DV_txt_GIADV.setText("");
+			DV_txt_GIADV.requestFocus();
+			return false;
+		}
+		return true;
 	}
 }
 

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import ConnectDB.Database;
 import entity.DichVu;
+import entity.NhanVien;
 
 public class DanhSachDichVu {
 	private ArrayList<DichVu> listDV;
@@ -61,10 +62,13 @@ public class DanhSachDichVu {
 	
 	
 	
+
 	public DichVu getDichVuByMa(String maDV) {
 		DichVu a  = new DichVu(maDV, maDV, 0);
-		int n = listDV.indexOf(a);
-		return a;
+		if(listDV.contains(a)) {
+			return listDV.get(listDV.indexOf(a));
+		}
+		return null;
 	}
 	
 	public boolean addDichVu(DichVu a) {
@@ -95,6 +99,52 @@ public class DanhSachDichVu {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	public boolean insertDichVu(DichVu a) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+			statement = con.prepareStatement("{call insertDichVu(?,?,?)}");
+			statement.setString(1, a.getMaDV());
+			statement.setString(2, a.getTenDV());
+			statement.setFloat(3, a.getGia());
+			n = statement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return n > 0;
+	}
+	public boolean updateDV(DichVu a) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+			statement = con.prepareStatement("{call updateDichVu(?,?,?)}");
+			statement.setString(1, a.getMaDV());
+			statement.setString(2, a.getTenDV());
+			statement.setFloat(3, a.getGia());
+			n =statement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return n > 0;
+	}
+	
+	public boolean removeDV(String ma) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n= 0;
+		try {
+			statement = con.prepareStatement("delete from DichVu where MaDV = ?");
+			statement.setString(1, ma);
+			n = statement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return n > 0;
 	}
 	
 	@Override

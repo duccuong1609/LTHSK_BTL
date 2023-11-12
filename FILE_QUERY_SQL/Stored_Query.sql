@@ -230,3 +230,24 @@ BEGIN
 	where MaNV = @maNV
 END
 GO
+------------------------------------------DichVu---------------------------------------------
+CREATE PROCEDURE [dbo].[insertDichVu] @maDV nvarchar(20),
+	@tenDV nvarchar(30),
+	@giaDV float
+AS
+BEGIN
+	INSERT INTO DichVu(MaDV,TenDV,GiaDV)
+		VALUES	(@maDV,@tenDV,@giaDV)
+END
+GO
+CREATE PROCEDURE [dbo].[updateDichVu] @maDV nvarchar(20),
+	@tenDV nvarchar(30),
+	@giaDV float
+AS
+BEGIN
+	UPDATE DichVu
+	SET TenDV = @tenDV,
+		GiaDV = @giaDV
+	where MaDV = @maDV
+END
+GO
