@@ -164,6 +164,7 @@ public class DanhSachPhieuDat {
 		PreparedStatement statement = null;
 		int n = 0;
 		try {
+			deleteChiTietPhieuDat(pd);
 			statement = con.prepareStatement("delete from PhieuDatPhong where MaPhieuDat = ?");
 			statement.setString(1, pd.getMaPD());
 			n = statement.executeUpdate();

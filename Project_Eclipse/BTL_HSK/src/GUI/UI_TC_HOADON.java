@@ -1,5 +1,7 @@
 package GUI;
 
+import static org.junit.Assert.isArray;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Iterator;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -23,6 +27,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import com.toedter.calendar.JDateChooser;
+
+import Control.DanhSachHoaDon;
+import entity.HoaDon;
 
 public class UI_TC_HOADON implements MouseListener,ActionListener{
 	
@@ -222,6 +229,22 @@ public class UI_TC_HOADON implements MouseListener,ActionListener{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(table)) {
+			int row = table.getSelectedRow();
+			HoaDon_txt_MaHoaDon.setText(table.getValueAt(row, 0).toString());
+			HoaDon_txt_MaNhanVien.setText(table.getValueAt(row, 1).toString());
+			HoaDon_txt_CCCD.setText(table.getValueAt(row, 2).toString());
+			HoaDon_txt_MaSoPhong.setText(table.getValueAt(row, 3).toString());
+			DanhSachHoaDon a = new DanhSachHoaDon();
+			a.docDuLieu();
+			HoaDon hd = a.getHoaDonByMa(table.getValueAt(row, 0).toString());
+			String[][] datadv = new String[hd.getListDV().size()][3];
+			for(int i = 0; i < hd.getListDV().size();i++) {
+				datadv[i][0] = hd.getListDV().get(i).getMaDV();
+				datadv[i][1] = hd.getListDV().get(i).getTenDV();
+				datadv[i][0] = Float.toString(hd.getListDV().get(i).getGia());
+			}
+			model_dv.setDataVector(datadv, cols_name_dv);
+			table_dv.setModel(model_dv);
 			
 		}
 	}

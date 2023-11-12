@@ -283,7 +283,6 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 			}
 			
 			String sophong = model.getValueAt(row, 3).toString();
-			
 			String ma_PhieuDat = model.getValueAt(row, 0).toString();
 			DanhSachPhieuDat listPD = new DanhSachPhieuDat();
 			listPD.docDuLieu();

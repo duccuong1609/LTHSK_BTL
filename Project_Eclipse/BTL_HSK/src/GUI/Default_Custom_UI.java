@@ -43,6 +43,8 @@ import Control.DanhSachPhieuDat;
 import Control.DanhSachPhieuNhan;
 import Control.DanhSachPhong;
 import entity.KhachQuen;
+import entity.PhongThuong;
+import entity.PhongVip;
 
 public class Default_Custom_UI {
 	public static Font title_font = new Font("Arial",Font.BOLD, 15);
@@ -349,10 +351,12 @@ public class Default_Custom_UI {
 					float khauTru = 0;
 					if(listHD.getListHD().get(i).getMaPhieuNhan().getpDP().getKhachHang() instanceof KhachQuen)
 						khauTru = KhachQuen.getKhauTru();
-//					float tongTien = 
-//					data[i][4] = 
+				    float gia = (listHD.getListHD().get(i).getMaPhieuNhan().getpDP().getPhongs().getListPhong().get(0) instanceof PhongVip) ? PhongVip.getGia():PhongThuong.getGia();
+				    
+				    long soNgay= (listHD.getListHD().get(i).getNgayTra().getTime() - listHD.getListHD().get(i).getMaPhieuNhan().getNgayNhan().getTime()) / (24 * 60 * 60 * 1000);
+					data[i][4] = Double.toString(((double) gia * (double)soNgay + (double)listHD.getMoneyDV(listHD.getListHD().get(i)))*(1 - khauTru));
 				}
-//				return data;
+				return data;
 			}
 			
 			return null;
