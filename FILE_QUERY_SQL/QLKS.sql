@@ -435,7 +435,7 @@ VALUES	('HD012', 'DV002'),
 select MaPhieuNhan, PhieuDatPhong.MaPhieuDat,GioNhan,NgayNhan from PhieuNhanPhong join PhieuDatPhong on PhieuDatPhong.MaPhieuDat = PhieuNhanPhong.MaPhieuDat
 
 
-
+select * from HoaDon join ChiTietHoaDon
 
 -- Hàm lấy danh sách phiếu phòng bằng mã phiếu
 select ChiTietDatPhong.SoPhong , TenPhong, LoaiPhong, IsEmpty

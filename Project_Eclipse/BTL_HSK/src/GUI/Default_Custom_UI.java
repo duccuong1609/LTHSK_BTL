@@ -36,11 +36,15 @@ import javax.swing.table.DefaultTableCellRenderer;
 import com.toedter.calendar.JDateChooser;
 
 import Control.DanhSachDichVu;
+import Control.DanhSachHoaDon;
 import Control.DanhSachKhachHang;
 import Control.DanhSachNhanVien;
 import Control.DanhSachPhieuDat;
 import Control.DanhSachPhieuNhan;
 import Control.DanhSachPhong;
+import entity.KhachQuen;
+import entity.PhongThuong;
+import entity.PhongVip;
 
 public class Default_Custom_UI {
 	public static Font title_font = new Font("Arial",Font.BOLD, 15);
@@ -48,6 +52,7 @@ public class Default_Custom_UI {
 	public static Font tag_font = new Font("Arial",Font.BOLD, 12);
 	private static DanhSachPhong listPhong ;
 	private static DanhSachNhanVien listNhanVien;
+	private static DanhSachHoaDon listHD;
 	private static DanhSachKhachHang listKhachHang;
 	private static DanhSachDichVu listDichVu;
 	private static DanhSachPhieuDat listPhieuDat;
@@ -281,7 +286,6 @@ public class Default_Custom_UI {
 				return data;
 			}
 			
-			
 			if(type.equals("LayPhieuDatChuaNhan")) {
 				listPhieuDat = new DanhSachPhieuDat();
 				DanhSachPhieuDat a = listPhieuDat.getPhieuDatPhongChuaNhan();
@@ -333,6 +337,26 @@ public class Default_Custom_UI {
 				return data;
 			}
 			
+			if(type.equals("ListHoaDon")) {
+				listHD = new DanhSachHoaDon();
+				listHD.docDuLieu();
+				int size = listHD.getListHD().size();
+				String[][] data = new String[size][5];
+				for(int i=0;i<size;i++) {
+					data[i][0] = listHD.getListHD().get(i).getMaHD();
+					data[i][1] = listHD.getListHD().get(i).getMaPhieuNhan().getpDP().getNhanVien().getMaNV();
+					data[i][2] = listHD.getListHD().get(i).getMaPhieuNhan().getpDP().getKhachHang().getCCCD();
+					data[i][3] = Integer.toString(listHD.getListHD().get(i).getMaPhieuNhan().getpDP().getPhongs().getListPhong().get(0).getSoPhong());
+					float khauTru = 0;
+					if(listHD.getListHD().get(i).getMaPhieuNhan().getpDP().getKhachHang() instanceof KhachQuen)
+						khauTru = KhachQuen.getKhauTru();
+				    float gia = (listHD.getListHD().get(i).getMaPhieuNhan().getpDP().getPhongs().getListPhong().get(0) instanceof PhongVip) ? PhongVip.getGia():PhongThuong.getGia();
+				    
+				    long soNgay= (listHD.getListHD().get(i).getNgayTra().getTime() - listHD.getListHD().get(i).getMaPhieuNhan().getNgayNhan().getTime()) / (24 * 60 * 60 * 1000);
+					data[i][4] = Double.toString(((double) gia * (double)soNgay + (double)listHD.getMoneyDV(listHD.getListHD().get(i)))*(1 - khauTru));
+				}
+				return data;
+			}
 			
 			return null;
 		}

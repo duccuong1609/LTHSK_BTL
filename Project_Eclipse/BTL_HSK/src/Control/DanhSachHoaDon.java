@@ -1,5 +1,7 @@
 package Control;
 
+import static org.junit.Assert.isArray;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -75,12 +77,12 @@ public class DanhSachHoaDon {
 	}
 	
 	public HoaDon getHoaDonByMa(String maHoaDon) {
-		HoaDon a = new HoaDon(maHoaDon, null, null, null, null);
-		int index = listHD.indexOf(a);
-		if(index == -1) {
-			return null;
+		for(int i = 0; i < listHD.size();i++) {
+			if(listHD.get(i).getMaHD().equalsIgnoreCase(maHoaDon)) {
+				return listHD.get(i);
+			}
 		}
-		return listHD.get(index);
+		return null;
 	}
 	
 	public ArrayList<HoaDon> getListHD() {
@@ -111,5 +113,12 @@ public class DanhSachHoaDon {
 		return "DanhSachHoaDon [listHD=" + listHD + "]";
 	}
 	
+	public double getMoneyDV(HoaDon a) {
+		double total = 0;
+		for(int i = 0; i< a.getListDV().size();i++) {
+			total += a.getListDV().get(i).getGia();
+		}
+		return total;
+	}
 	
 }
