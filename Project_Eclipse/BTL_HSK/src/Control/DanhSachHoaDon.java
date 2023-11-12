@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import ConnectDB.Database;
 import entity.DichVu;
@@ -51,6 +52,18 @@ public class DanhSachHoaDon {
 		return listHD;
 	}
 
+	public DanhSachHoaDon getListFromDateToDate(Date tuNgay, Date denNgay) {
+		DanhSachHoaDon danhSachHoaDon = new DanhSachHoaDon();
+		for(int i=0; i < listHD.size();i++) {
+			if(listHD.get(i).getNgayTra().compareTo(tuNgay)>=0 && denNgay.compareTo(listHD.get(i).getNgayTra() ) >=0) {
+				danhSachHoaDon.add(listHD.get(i));
+			}
+		}
+		return danhSachHoaDon;
+	}
+	
+	
+	
 	public boolean addHoaDon(HoaDon a) {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;
@@ -87,6 +100,10 @@ public class DanhSachHoaDon {
 	
 	public ArrayList<HoaDon> getListHD() {
 		return listHD;
+	}
+	
+	public boolean add(HoaDon a) {
+		return listHD.add(a);
 	}
 	
 	public boolean deteleChiTietHoaDon(HoaDon a) {

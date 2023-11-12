@@ -9,8 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,19 +24,27 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import com.toedter.calendar.JDateChooser;
 
+import Control.DanhSachHoaDon;
+import entity.KhachQuen;
+import entity.PhongThuong;
+import entity.PhongVip;
+
 public class UI_THONGKE implements MouseListener,ActionListener{
 	
 	//--------DatPhong-----------//
 	public JPanel display_ThongKe;
 	
-	private JTextField DV_txt_MADV;
-	private JTextField DV_txt_TENDV;
-	private JTextField DV_txt_GIADV;
+	private JTextField TK_txt_MaHD;
+	private JTextField TK_txt_CCCD;
+	private JTextField TK_txt_MaNV;
+	private JTextField TK_txt_NgayTao;
+	private JTextField TK_txt_Tong;
 	private JDateChooser ThongKe_TuNgay;
 	private JDateChooser ThongKe_DenNgay;
-	private JButton Tim;
 	private JTextField ThongKe_SoLuong;
 	private JTextField ThongKe_DoanhThu;
+	private JButton Tim;
+	
 
 //	private DanhSachPhieuDat phieuDat;
 	
@@ -136,9 +146,11 @@ public class UI_THONGKE implements MouseListener,ActionListener{
 		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
-		DV_txt_MADV = Default_Custom_UI.default_textfield();
-		DV_txt_TENDV = Default_Custom_UI.default_textfield();
-		DV_txt_GIADV = Default_Custom_UI.default_textfield();
+		TK_txt_MaHD = Default_Custom_UI.default_textfield();
+		TK_txt_CCCD = Default_Custom_UI.default_textfield();
+		TK_txt_MaNV = Default_Custom_UI.default_textfield();
+		TK_txt_NgayTao = Default_Custom_UI.default_textfield();
+		TK_txt_Tong = Default_Custom_UI.default_textfield();
 		
 		left_addfield.setPreferredSize(new Dimension(250,800));
 		
@@ -169,17 +181,75 @@ public class UI_THONGKE implements MouseListener,ActionListener{
 		
 		display_ThongKe.add(main_pJPanel,BorderLayout.CENTER);
 		
+		Tim.addActionListener(this);
 	}
-	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource().equals(Tim)) {
+			if (checkDay()) {
+				DanhSachHoaDon listHD = new DanhSachHoaDon();
+				listHD.docDuLieu();
+				DanhSachHoaDon listTK = listHD.getListFromDateToDate(ThongKe_TuNgay.getDate(), ThongKe_DenNgay.getDate());
+				int size = listTK.getListHD().size();
+				String[][] data_temp = new String[size][5];
+				for(int i=0;i<size;i++) {
+					data_temp[i][0] = listTK.getListHD().get(i).getMaHD();
+					data_temp[i][1] = listTK.getListHD().get(i).getMaPhieuNhan().getpDP().getNhanVien().getMaNV();
+					data_temp[i][2] = listTK.getListHD().get(i).getMaPhieuNhan().getpDP().getKhachHang().getCCCD();
+					data_temp[i][3] = Integer.toString(listTK.getListHD().get(i).getMaPhieuNhan().getpDP().getPhongs().getListPhong().get(0).getSoPhong());
+					float khauTru = 0;
+					if(listTK.getListHD().get(i).getMaPhieuNhan().getpDP().getKhachHang() instanceof KhachQuen)
+						khauTru = KhachQuen.getKhauTru();
+				    float gia = (listTK.getListHD().get(i).getMaPhieuNhan().getpDP().getPhongs().getListPhong().get(0) instanceof PhongVip) ? PhongVip.getGia():PhongThuong.getGia();
+				    
+				    long soNgay= (listTK.getListHD().get(i).getNgayTra().getTime() - listTK.getListHD().get(i).getMaPhieuNhan().getNgayNhan().getTime()) / (24 * 60 * 60 * 1000);
+					data_temp[i][4] = Double.toString(((double) gia * (double)soNgay + (double)listTK.getMoneyDV(listTK.getListHD().get(i)))*(1 - khauTru));
+					
+				}
+				double total = 0;
+				int soLuong = 0;
+				for(int i=0; i< listTK.getListHD().size();i++) {
+					soLuong +=1;
+					total += Double.parseDouble(table.getValueAt(i, 4).toString());
+				}
+				ThongKe_SoLuong.setText(soLuong+"");
+				ThongKe_DoanhThu.setText(total+"");
+				model.setDataVector(data_temp, cols_name);
+				table.setModel(model);
+				if (listTK.getListHD().size()==0) {
+					JOptionPane.showMessageDialog(table, "Không có hóa đơn được tạo vào thời gian ");
+				}
+			}	
+		}
+	}
 
+	private boolean checkDay() {
+		// TODO Auto-generated method stub
+		if(ThongKe_TuNgay.getCalendar()==null) {
+			JOptionPane.showMessageDialog(ThongKe_TuNgay,"Không Được Để Trống Từ Ngày!");
+			return false;
+		}
+		if(ThongKe_DenNgay.getCalendar()==null) {
+			JOptionPane.showMessageDialog(ThongKe_DenNgay,"Không Được Để Trống Đến Ngày!");
+			return false;
+		}
+		if(ThongKe_TuNgay.getDate().compareTo(ThongKe_DenNgay.getDate())>0) {
+			JOptionPane.showMessageDialog(ThongKe_DenNgay,"Từ Ngày Phải Lớn Hơn Hoặc Bằng Đến Ngày");
+			return false;
+		}
+		return true;
+	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(table)) {
 			int row = table.getSelectedRow();
-			DV_txt_MADV.setText(model.getValueAt(row, 0).toString());
-			DV_txt_TENDV.setText(model.getValueAt(row, 1).toString());
-			DV_txt_GIADV.setText(model.getValueAt(row, 2).toString());
+			TK_txt_MaHD.setText(model.getValueAt(row, 0).toString());
+			TK_txt_CCCD.setText(model.getValueAt(row, 1).toString());
+			TK_txt_MaNV.setText(model.getValueAt(row, 2).toString());
+			TK_txt_NgayTao.setText(model.getValueAt(row, 3).toString());
+			TK_txt_Tong.setText(model.getValueAt(row, 4).toString());
 		}
 	}
 
@@ -205,18 +275,6 @@ public class UI_THONGKE implements MouseListener,ActionListener{
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
-	}
-
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-//		if(e.getSource().equals(TaoLai)) {
-//			DV_txt_MADV.setText("");
-//			DV_txt_TENDV.setText("");
-//			DV_txt_GIADV.setText("");
-//			DV_txt_MADV.requestFocus();
-//		}
 	}
 }
 
