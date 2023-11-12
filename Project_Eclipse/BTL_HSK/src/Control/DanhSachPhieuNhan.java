@@ -72,7 +72,11 @@ public class DanhSachPhieuNhan {
 		return listPN;
 	}
 	
-
+	public boolean traPhong(int soPhong) {
+		DanhSachPhong a = new DanhSachPhong();
+		boolean n = a.updateTrangThaiPhong(soPhong, 1);
+		return n;
+	}
 	
 	public boolean addPhieuNhan(PhieuNhanPhong a) {
 		return listPN.add(a);

@@ -1,5 +1,7 @@
 package GUI;
 
+import static org.junit.Assert.isArray;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -10,7 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Date;
 import java.util.EventObject;
+import java.util.Iterator;
 
 import javax.swing.BoxLayout;
 import javax.swing.CellEditor;
@@ -19,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -36,6 +41,11 @@ import javax.swing.table.TableCellEditor;
 import org.junit.runners.model.FrameworkMethod;
 
 import com.toedter.calendar.JDateChooser;
+
+import Control.DanhSachDichVu;
+import Control.DanhSachPhieuNhan;
+import entity.HoaDon;
+import entity.PhieuNhanPhong;
 
 public class UI_QL_TraPhong implements MouseListener,ActionListener{
 	
@@ -55,9 +65,9 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 	String[] cols_name = {"MÃ PHIẾU NHẬN","CĂN CƯỚC CÔNG DÂN","MÃ SỐ PHÒNG","NGÀY NHẬN"};
 	private Object[][] data = Default_Custom_UI.cast_data("ChuaTraPhong");
 	String[] cols_dv_name = {"MÃ DỊCH VỤ","TÊN DỊCH VỤ","SỬ DỤNG"};
-	private Object[][] data_dv = Default_Custom_UI.cast_data("ChuaTraPhong");
+	private Object[][] data_dv = Default_Custom_UI.cast_data("DichVu_FULL");
 	@SuppressWarnings("serial")
-	private DefaultTableModel model = new DefaultTableModel(data_dv,cols_name) {
+	private DefaultTableModel model = new DefaultTableModel(data,cols_name) {
 		public boolean isCellEditable(int row, int column) {
 			if(column==0) {
 				return false;
@@ -66,7 +76,7 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 		};
 	};
 	@SuppressWarnings("serial")
-	private DefaultTableModel model_dv = new DefaultTableModel(data,cols_dv_name) {
+	private DefaultTableModel model_dv = new DefaultTableModel(data_dv,cols_dv_name) {
 		public boolean isCellEditable(int row, int column) {
 			if(column==0) {
 				return false;
@@ -187,7 +197,7 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 		Them = Default_Custom_UI.default_Action_Button("TRẢ PHÒNG", "Media/Icon/them.gif");
 		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
 		TaoLai = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/taolai.gif");
-		Tim = Default_Custom_UI.default_Action_Button("Tạo Lại", "Media/Icon/tim.gif");
+		Tim = Default_Custom_UI.default_Action_Button("Tìm", "Media/Icon/tim.gif");
 		
 		button_panel.add(TaoLai);
 		button_panel.add(Them);
@@ -209,6 +219,8 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 		
 		display_TraPhong.add(main_pJPanel,BorderLayout.CENTER);
 		Them.addActionListener(this);
+		Tim.addActionListener(this);
+		TaoLai.addActionListener(this);
 		
 	}
 	
@@ -251,7 +263,43 @@ public class UI_QL_TraPhong implements MouseListener,ActionListener{
 		// TODO Auto-generated method stub
 		Object source = e.getSource();
 		if(source.equals(Them)) {
+			int row = table.getSelectedRow();
+			if(row == -1) {
+				JOptionPane.showConfirmDialog(CCCD, this, "Lỗi", row);
+			}
+			String maPhieu = table.getValueAt(row, 0).toString();
+			int soPhong = Integer.parseInt(table.getValueAt(row, 2).toString());
+			DanhSachPhieuNhan listPN = new DanhSachPhieuNhan();
+			listPN.docDuLieu();
+			PhieuNhanPhong pn = listPN.getPhieuNhanByMa(maPhieu);
+			listPN.traPhong(soPhong);
+			Date ngayTra = new Date();
+			Date gioTra = new Date();
 			
+			DanhSachDichVu listDV = new DanhSachDichVu();
+			listDV.docDuLieu();
+			for(int i =0 ;i < data_dv.length;i++) {
+				String check = table_dv.getValueAt(i, 2).toString();
+			}
+			
+			
+		}
+		if(source.equals(TaoLai)) {
+			table.clearSelection();
+			CCCD.setText("");
+			MAPHONG.setText("");
+		}
+		if(source.equals(Tim)) {
+			String cCCD = CCCD.getText();
+			String soPhong = MAPHONG.getText();
+			
+			for(int i =0 ; i < data.length;i++) {
+				String temp1 = table.getValueAt(i, 1).toString();
+				String temp2 = table.getValueAt(i, 2).toString();
+				if(cCCD.equals(temp1) && soPhong.equals(temp2)) {
+					table.setRowSelectionInterval(i, i);
+				}
+			}
 		}
 	}
 }

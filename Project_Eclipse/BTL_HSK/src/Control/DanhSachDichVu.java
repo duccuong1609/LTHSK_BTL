@@ -45,6 +45,13 @@ public class DanhSachDichVu {
 //		
 //	}
 
+	
+	public DichVu getDichVuByMa(String maDV) {
+		DichVu a  = new DichVu(maDV, maDV, 0);
+		int n = listDV.indexOf(a);
+		return a;
+	}
+	
 	public ArrayList<DichVu> getDichVuByMaHD(String maHD){
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;

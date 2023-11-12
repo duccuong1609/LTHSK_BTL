@@ -95,7 +95,7 @@ public class DanhSachKhachHang {
 		Connection con = Database.getInsConnect().getCon();
 		PreparedStatement statement = null;
 		try {
-			statement = con.prepareStatement("select CCCD, STK, HoTen, SDT, DiaChi, Email, MaLoaiKH from KhachHang where CCCD = ?");
+			statement = con.prepareStatement("select CCCD, STK, HoTen, SĐT, DiaChi, Email, MaLoaiKH from KhachHang where CCCD = ?");
 			statement.setString(1, CCCD);
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
