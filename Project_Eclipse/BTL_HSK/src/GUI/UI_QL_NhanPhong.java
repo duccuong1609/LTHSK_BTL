@@ -226,10 +226,9 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 			Date ngayNhan = new Date();
 			Date gioNhan = new Date();
 			int size = listPhieuNhan.getListPN().size();
-			String maPN = listPhieuNhan.getListPN().get(size-1).getMaPhieuNhan();
-			int number = Integer.parseInt(maPN.substring(2, maPN.length()))+1;
-			System.out.println(number);
-			PhieuNhanPhong pn = new PhieuNhanPhong("PN0"+number, pd, gioNhan, ngayNhan);
+			int duoi_PD = Integer.parseInt(pd.getMaPD().substring(2,pd.getMaPD().length())) +1 ;
+			
+			PhieuNhanPhong pn = new PhieuNhanPhong("PN"+(duoi_PD), pd, gioNhan, ngayNhan);
 			listPhieuNhan.insertPhieuNhan(pn);
 			
 			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");

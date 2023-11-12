@@ -204,9 +204,9 @@ VALUES  (01,'T1.01','STD',1),
         (39,'T4.39','SUP',1),
         (40,'T5.40','SUP',1);
 
---INSERT INTO PhieuDatPhong(MaPhieuDat, MaNV, CCCD, NgayDen, NgayDi,soLuong)
---VALUES	
---		('PD054', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
+INSERT INTO PhieuDatPhong(MaPhieuDat, MaNV, CCCD, NgayDen, NgayDi,soLuong)
+VALUES	
+		--('PD101', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4)
 --		('PD055', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
 --		('PD056', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4),
 --		('PD053', 'NV008', N'919283940215', '2023-07-20', '2023-07-22',1),
@@ -325,9 +325,9 @@ VALUES  (01,'T1.01','STD',1),
 --		('PD049', 09),
 --		('PD050', 10);
 
---INSERT INTO PhieuNhanPhong (MaPhieuNhan, MaPhieuDat, GioNhan, NgayNhan)
---VALUES
---		('PN001', 'PD001', '2023-05-12 10:34:09 AM', '2023-05-12'),
+INSERT INTO PhieuNhanPhong (MaPhieuNhan, MaPhieuDat, GioNhan, NgayNhan)
+VALUES
+		--('PN101', 'PD101', '2023-05-12 10:34:09 AM', '2023-05-12')
 --		('PN002', 'PD002', '2023-05-13 05:34:19 AM', '2023-05-13'),
 --		('PN003', 'PD003', '2023-05-05 09:44:19 PM', '2023-05-05'),
 --		('PN004', 'PD004', '2023-06-01 10:34:09 AM', '2023-06-01'),

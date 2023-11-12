@@ -16,7 +16,6 @@ import java.time.LocalDate;
 
 import java.util.Date;
 import javax.swing.BoxLayout;
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -299,39 +298,62 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 			
 		}
 		if(source.equals(DatPhong_Sua)) {
-			int row = table.getSelectedRow();
-			String maPD = table.getValueAt(row, 0).toString();
-			String CCCD = DatPhong_txt_CCCD.getText();
-			Date ngayDen = DatPhong_NgayDen.getDate();
-			Date ngayDi = DatPhong_NgayDi.getDate();
-			String maNV = DatPhong_cb_MaNV.getSelectedItem().toString();
-			int soPhong = Integer.parseInt(datPhong_cb_SoPhong.getSelectedItem().toString());
-			DanhSachPhieuDat list = new DanhSachPhieuDat();
-			NhanVien nv = new DanhSachNhanVien().getNhanVienByMa(maNV);
-			KhachHang kh = new DanhSachKhachHang().getKhachHangByMa(CCCD);
-			DanhSachPhong phongs = new DanhSachPhong();
-			phongs.docDuLieu();
-			if(kh == null) {
-				JOptionPane.showMessageDialog(display_DatPhong,"Khách hàng không tồn tại!");
-			}
-			Phong phong = phongs.getPhongBySoPhong(soPhong);
-			DanhSachPhong a = new DanhSachPhong();
-			a.addPhong(phong);
-			list.docDuLieu();
-			PhieuDatPhong setpd = list.getPhieuDatPhongByMa(maPD);
-			setpd.setKhachHang(kh);
-			setpd.setNhanVien(nv);
-			setpd.setPhongs(a);
-			setpd.setNgayDen(ngayDen);
-			setpd.setNgayDi(ngayDi);
-			System.out.println(list.updatePhieuDat(setpd));
-
-			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
-			model.setDataVector(data, cols_name);
-			table.setModel(model);
+			Datphong_Sua();
 		}
 	}
 	
+	private boolean Datphong_Sua() {
+		// TODO Auto-generated method stub
+		if(table.getSelectedRow() == -1) {
+			
+			JOptionPane.showMessageDialog(display_DatPhong,"Không Có Khách Hàng Nào Được Chọn!");
+			return false;
+		}
+		
+		
+		if(!DatPhong_txt_CCCD.getText().equals(model.getValueAt(table.getSelectedRow(),2).toString())) {
+			JOptionPane.showMessageDialog(display_DatPhong,"Không Được Phép Sửa CCCD Của Khách Hàng!");
+			return false;
+		}
+		
+		
+		int row = table.getSelectedRow();
+		String maPD = table.getValueAt(row, 0).toString();
+		String CCCD = DatPhong_txt_CCCD.getText();
+		Date ngayDen = DatPhong_NgayDen.getDate();
+		Date ngayDi = DatPhong_NgayDi.getDate();
+		String maNV = DatPhong_cb_MaNV.getSelectedItem().toString();
+		
+		int soPhong = Integer.parseInt(model.getValueAt(table.getSelectedRow(), 3).toString());
+		
+		DanhSachPhieuDat list = new DanhSachPhieuDat();
+		NhanVien nv = new DanhSachNhanVien().getNhanVienByMa(maNV);
+		KhachHang kh = new DanhSachKhachHang().getKhachHangByMa(CCCD);
+		DanhSachPhong phongs = new DanhSachPhong();
+		phongs.docDuLieu();
+		
+		if(kh == null) {
+			JOptionPane.showMessageDialog(display_DatPhong,"Khách hàng không tồn tại!");
+			return false;
+		}
+		Phong phong = phongs.getPhongBySoPhong(soPhong);
+		DanhSachPhong a = new DanhSachPhong();
+		a.addPhong(phong);
+		list.docDuLieu();
+		PhieuDatPhong setpd = list.getPhieuDatPhongByMa(maPD);
+		setpd.setKhachHang(kh);
+		setpd.setNhanVien(nv);
+		setpd.setPhongs(a);
+		setpd.setNgayDen(ngayDen);
+		setpd.setNgayDi(ngayDi);
+		
+		data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+		model.setDataVector(data, cols_name);
+		table.setModel(model);
+		
+		return false;
+	}
+
 	public boolean Them_PhieuDatPhong() {
 		
 		String CCCD = DatPhong_txt_CCCD.getText();
@@ -389,7 +411,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		DanhSachPhong a = new DanhSachPhong();
 		a.addPhong(phong);
 		list.docDuLieu();
-		int last_number = 10;
+		int last_number = 100;
 		if(list.getListPDP().size() >0) {
 			String last_PDP = list.getListPDP().get(list.getListPDP().size()-1).getMaPD();
 			last_number = Integer.parseInt(last_PDP.substring(2, last_PDP.length())) + 1;

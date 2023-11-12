@@ -42,27 +42,24 @@ public class DanhSachDichVu {
 		return listDV;
 	}
 	
-//	public boolean insertDichVu(DichVu a) {
-//		Connection con = Database.getInsConnect().getCon();
-//		PreparedStatement statement = null;
-//		int n = 0;
-//		try {
-//			statement = con.prepareStatement("INSERT INTO DichVu(MaDV,TenDV,GiaDV)\r\n"
-//					+ "VALUES	(?, ? , ?)");
-//			statement.setString(1, a.getMaDV());
-//			statement.setString(2, a.getTenDV());
-//			statement.setFloat(3, a.getGia());
-//			n = statement.executeUpdate();
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//		}
-//		return n > 0;
-//	}
+	public boolean insertDichVu(DichVu a) {
+		Connection con = Database.getInsConnect().getCon();
+		PreparedStatement statement = null;
+		int n = 0;
+		try {
+			statement = con.prepareStatement("INSERT INTO DichVu(MaDV,TenDV,GiaDV)\r\n"
+					+ "VALUES	(?, ? , ?)");
+			statement.setString(1, a.getMaDV());
+			statement.setString(2, a.getTenDV());
+			statement.setFloat(3, a.getGia());
+			n = statement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return n > 0;
+	}
 	
-	
-	
-
 	public DichVu getDichVuByMa(String maDV) {
 		DichVu a  = new DichVu(maDV, maDV, 0);
 		if(listDV.contains(a)) {
@@ -99,21 +96,6 @@ public class DanhSachDichVu {
 			e.printStackTrace();
 		}
 		return list;
-	}
-	public boolean insertDichVu(DichVu a) {
-		Connection con = Database.getInsConnect().getCon();
-		PreparedStatement statement = null;
-		int n = 0;
-		try {
-			statement = con.prepareStatement("{call insertDichVu(?,?,?)}");
-			statement.setString(1, a.getMaDV());
-			statement.setString(2, a.getTenDV());
-			statement.setFloat(3, a.getGia());
-			n = statement.executeUpdate();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return n > 0;
 	}
 	public boolean updateDV(DichVu a) {
 		Connection con = Database.getInsConnect().getCon();

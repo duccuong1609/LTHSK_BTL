@@ -131,9 +131,13 @@ GO
 CREATE PROCEDURE [dbo].[updateNgayDi] @maPhieuDat nvarchar(20), @ngayDi date
 AS
 BEGIN
+<<<<<<< HEAD
+	INSERT INTO KhachHang(CCCD,HoTen,SĐT,STK,DiaChi,Email,MaLoaiKH) VALUES (@CCCD,@hoTen,@SĐT,@STK,@diaChi,@email,@maLoaiKH)
+=======
 	UPDATE PhieuDatPhong 
 	SET NgayDi = @ngayDi
 	where MaPhieuDat = @maPhieuDat
+>>>>>>> f7b11d71bf9d621df4817966c17c288de9940520
 END
 GO
 

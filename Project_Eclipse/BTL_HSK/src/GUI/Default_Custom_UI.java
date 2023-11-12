@@ -286,7 +286,6 @@ public class Default_Custom_UI {
 				return data;
 			}
 			
-			
 			if(type.equals("LayPhieuDatChuaNhan")) {
 				listPhieuDat = new DanhSachPhieuDat();
 				DanhSachPhieuDat a = listPhieuDat.getPhieuDatPhongChuaNhan();
