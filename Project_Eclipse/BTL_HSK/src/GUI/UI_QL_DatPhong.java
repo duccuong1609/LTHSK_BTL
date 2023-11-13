@@ -51,7 +51,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 	private JButton DatPhong_Sua;
 	private JButton DatPhong_TaoLai;
 	
-	private JComboBox<String> datPhong_cb_SoPhong;
+	private JComboBox<String> DatPhong_cb_SoPhong;
 	private JComboBox<String> DatPhong_cb_MaNV;
 	private JTextField DatPhong_txt_CCCD;
 	private JDateChooser DatPhong_NgayDen;
@@ -124,7 +124,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
-		datPhong_cb_SoPhong = Default_Custom_UI.add_data_ds_combo("Phong");
+		DatPhong_cb_SoPhong = Default_Custom_UI.add_data_ds_combo("Phong");
 		DatPhong_cb_MaNV = Default_Custom_UI.add_data_ds_combo("NV");
 		DatPhong_txt_CCCD = Default_Custom_UI.default_textfield();
 		DatPhong_NgayDen = Default_Custom_UI.defaultDateChooser();
@@ -141,7 +141,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		left_addfield.setPreferredSize(new Dimension(250,800));
 		
 		left_addfield.add(Default_Custom_UI.default_label("MÃ PHÒNG"));
-		left_addfield.add(datPhong_cb_SoPhong); 
+		left_addfield.add(DatPhong_cb_SoPhong); 
 		left_addfield.add(Default_Custom_UI.default_label("MÃ NHÂN VIÊN"));
 		left_addfield.add(DatPhong_cb_MaNV);
 		left_addfield.add(Default_Custom_UI.default_label("CCCD"));
@@ -186,7 +186,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		
 		display_DatPhong.add(main_pJPanel,BorderLayout.CENTER);
 		
-		datPhong_cb_SoPhong.addActionListener(this);
+		DatPhong_cb_SoPhong.addActionListener(this);
 		datPhong_Then.addActionListener(this);
 		DatPhong_Xoa.addActionListener(this);
 
@@ -202,7 +202,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		// TODO Auto-generated method stub
 		if(e.getSource().equals(table)) {
 			int row = table.getSelectedRow();
-			String ma_PhieuDat = model.getValueAt(row, 0).toString();
+//			String ma_PhieuDat = model.getValueAt(row, 0).toString();
 			DatPhong_cb_MaNV.setSelectedItem(model.getValueAt(row, 1));
 			DatPhong_txt_CCCD.setText(model.getValueAt(row,2).toString());
 			try {
@@ -247,10 +247,10 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		// TODO Auto-generated method stub
 		Object source = e.getSource();
 		
-		if(source.equals(datPhong_cb_SoPhong)) {
+		if(source.equals(DatPhong_cb_SoPhong)) {
 			DanhSachPhong ds = new DanhSachPhong();
 			ds.docDuLieu();
-			int sophong = Integer.parseInt(datPhong_cb_SoPhong.getSelectedItem().toString());
+			int sophong = Integer.parseInt(DatPhong_cb_SoPhong.getSelectedItem().toString());
 			if(ds.getListPhong().get(sophong-1)!= null) {
 				
 				if(ds.getListPhong().get(sophong-1) instanceof PhongVip) {
@@ -263,7 +263,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 			}
 		}
 		if(source.equals(DatPhong_TaoLai)) {
-			datPhong_cb_SoPhong.setSelectedIndex(0);
+			DatPhong_cb_SoPhong.setSelectedIndex(0);
 			DatPhong_cb_MaNV.setSelectedIndex(0);
 			DatPhong_txt_CCCD.setText("");
 			DatPhong_NgayDen.setCalendar(null);
@@ -291,7 +291,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 			DanhSachPhong listPhong = new DanhSachPhong();
 			listPhong.docDuLieu();
 			
-			datPhong_cb_SoPhong.addItem(sophong);
+			DatPhong_cb_SoPhong.addItem(sophong);
 			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
 			model.setDataVector(data, cols_name);
 			table.setModel(model);
@@ -380,7 +380,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 		Date today = java.sql.Date.valueOf(LocalDate.now());
 		
 		String maNV = DatPhong_cb_MaNV.getSelectedItem().toString();
-		int soPhong = Integer.parseInt(datPhong_cb_SoPhong.getSelectedItem().toString());
+		int soPhong = Integer.parseInt(DatPhong_cb_SoPhong.getSelectedItem().toString());
 		
 		if(DatPhong_txt_CCCD.getText().equals("")) {
 			JOptionPane.showMessageDialog(display_DatPhong,"CCCD Không Được Để Trống!");
@@ -437,7 +437,7 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 
 		new DanhSachPhieuDat().insertPhieuDatSQL(pd);
 		
-		datPhong_cb_SoPhong.removeItem(Integer.toString(soPhong));
+		DatPhong_cb_SoPhong.removeItem(Integer.toString(soPhong));
 		
 		data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
 		model.setDataVector(data, cols_name);

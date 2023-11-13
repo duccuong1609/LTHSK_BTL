@@ -112,11 +112,10 @@ public class DanhSachHoaDon {
 		PreparedStatement statement = null;
 		int n = 0;
 		try {
-			if(deteleChiTietHoaDon(a)) {
-				statement = con.prepareStatement("delete from HoaDon where MaHoaDon = ?");
-				statement.setString(1, a.getMaHD());
-				n = statement.executeUpdate();
-			}
+			deteleChiTietHoaDon(a);
+			statement = con.prepareStatement("delete from HoaDon where MaHoaDon = ?");
+			statement.setString(1, a.getMaHD());
+			n = statement.executeUpdate();
 			if(n > 0) {
 				boolean b = new DanhSachPhieuNhan().deletePhieuNhan(a.getMaPhieuNhan()) ? new DanhSachPhieuDat().deletePhieuDat(a.getMaPhieuNhan().getpDP()) : false;
 				return b;
