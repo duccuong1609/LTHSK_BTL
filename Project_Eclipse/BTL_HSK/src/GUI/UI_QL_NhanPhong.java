@@ -93,6 +93,7 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 		display_NhanPhong.setLayout(new BorderLayout());
 		
 		JPanel titleJPanel = new JPanel();
+		titleJPanel.setBackground(new Color(255,250,245));
 		
 		titleJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
@@ -106,14 +107,17 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 		
 		JPanel main_pJPanel = new JPanel();
 		main_pJPanel.setLayout(new BorderLayout());
+		main_pJPanel.setBackground(new Color(255,250,245));
 		
 		main_pJPanel.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
 		//center_panel
 		//--------------------------------------------------------------------------pending
 		center_panel.setLayout(new BorderLayout());
+		center_panel.setBackground(new Color(255,250,245));
 		
 		JPanel left_addfield = new JPanel();
+		left_addfield.setBackground(new Color(255,250,245));
 		
 		center_panel.add(left_addfield,BorderLayout.WEST);
 		
@@ -142,14 +146,18 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 		left_addfield.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10)));
 		
 		JPanel content_panel = new JPanel(new BorderLayout());
+		content_panel.setBackground(new Color(255,250,245));
 		JPanel button_panel = new JPanel();
 		button_panel.setBorder(new CompoundBorder(new EmptyBorder(10,0,0,0), new CompoundBorder(new LineBorder(Color.LIGHT_GRAY, 3),new EmptyBorder(10,10,10,10))));
 		button_panel.setLayout(new GridLayout(1, 4, 10, 30));
+		button_panel.setBackground(new Color(255,250,245));
 		
 		//table
 		
 		JScrollPane jp = new JScrollPane(table);
 		jp.setBorder(new LineBorder(Color.LIGHT_GRAY, 3));
+		jp.getViewport().setBackground(new Color(255,250,245));
+		jp.setBackground(new Color(255,250,245));
 		
 		Them = Default_Custom_UI.default_Action_Button("Nhận Phòng", "Media/Icon/them.gif");
 		Xoa = Default_Custom_UI.default_Action_Button("Xoá", "Media/Icon/xoa.gif");
@@ -229,14 +237,16 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 				JOptionPane.showMessageDialog(display_NhanPhong, "Không Có Phiếu Đặt Nào Được Chọn !");
 				return;
 			}
-			
 			Date today = java.sql.Date.valueOf(LocalDate.now());
 			try {
 				Date ngayden = date.parse(NgayDen.getText());
 				Date ngaydi = date.parse(NgayDi.getText());
 				if(today.compareTo(ngayden)<0) {
-					JOptionPane.showMessageDialog(display_NhanPhong,"Chưa Đến Ngày Nhận Phòng !");
-					return;
+					DanhSachPhieuDat a = new DanhSachPhieuDat();
+					a.docDuLieu();
+					PhieuDatPhong b = a.getPhieuDatPhongByMa(model.getValueAt(table.getSelectedRow(), 0).toString());
+					b.setNgayDen(today);
+					a.updatePhieuDat(b);
 				}
 				if(today.compareTo(ngaydi)>0) {
 					JOptionPane.showMessageDialog(display_NhanPhong,"Đã Quá Ngày Nhận Phòng, Vui Lòng Loại Bỏ Đơn Đặt Khỏi Danh Sách !");
@@ -262,6 +272,8 @@ public class UI_QL_NhanPhong implements MouseListener,ActionListener{
 			
 			PhieuNhanPhong pn = new PhieuNhanPhong("PN"+(duoi_PD), pd, gioNhan, ngayNhan);
 			listPhieuNhan.insertPhieuNhan(pn);
+			
+			JOptionPane.showMessageDialog(display_NhanPhong, "Nhận Phòng Thành Công !");
 			
 			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
 			model.setDataVector(data, cols_name);

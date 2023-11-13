@@ -213,6 +213,18 @@ public class UI_TC_HOADON implements MouseListener,ActionListener{
 		
 		content_panel.add(jp,BorderLayout.CENTER);
 		
+		left_addfield.setBackground(new Color(255,250,245));
+		button_panel.setBackground(new Color(255,250,245));
+		titleJPanel.setBackground(new Color(255,250,245));
+		content_panel.setBackground(new Color(255,250,245));
+		jp.getViewport().setBackground(new Color(255,250,245));
+		content_panel.setBorder(new EmptyBorder(0,10,0,0));
+		main_pJPanel.setBackground(new Color(255,250,245));
+		center_panel.setBackground(new Color(255,250,245));
+		jp_dv.getViewport().setBackground(new Color(255,250,245));
+		other_field.setBackground(new Color(255,250,245));
+		
+		
 		content_panel.add(button_panel,BorderLayout.SOUTH);
 		content_panel.setBorder(new EmptyBorder(0,10,0,0));
 		
@@ -241,10 +253,9 @@ public class UI_TC_HOADON implements MouseListener,ActionListener{
 			for(int i = 0; i < hd.getListDV().size();i++) {
 				datadv[i][0] = hd.getListDV().get(i).getMaDV();
 				datadv[i][1] = hd.getListDV().get(i).getTenDV();
-				datadv[i][0] = Float.toString(hd.getListDV().get(i).getGia());
+				datadv[i][2] = Float.toString(hd.getListDV().get(i).getGia());
 			}
 			model_dv.setDataVector(datadv, cols_name_dv);
-			System.out.println();
 			table_dv.setModel(model_dv);
 			
 		}
