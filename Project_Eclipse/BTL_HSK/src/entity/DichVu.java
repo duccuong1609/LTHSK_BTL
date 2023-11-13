@@ -7,8 +7,6 @@ public class DichVu {
 	private String tenDV;
 	private float gia;
 	
-	
-	
 	public DichVu(String maDV, String tenDV, float gia) {
 		super();
 		this.maDV = maDV;

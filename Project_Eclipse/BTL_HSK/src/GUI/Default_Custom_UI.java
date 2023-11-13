@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
@@ -351,11 +352,19 @@ public class Default_Custom_UI {
 						khauTru = KhachQuen.getKhauTru();
 				    float gia = (listHD.getListHD().get(i).getMaPhieuNhan().getpDP().getPhongs().getListPhong().get(0) instanceof PhongVip) ? PhongVip.getGia():PhongThuong.getGia();
 				    
-				    long soNgay= (listHD.getListHD().get(i).getNgayTra().getTime() - listHD.getListHD().get(i).getMaPhieuNhan().getNgayNhan().getTime()) / (24 * 60 * 60 * 1000);
+				    long soNgay= (listHD.getListHD().get(i).getNgayTra().getTime() - listHD.getListHD().get(i).getMaPhieuNhan().getNgayNhan().getTime());
+				    
+				    if(soNgay ==0) {
+				    	soNgay = 1;
+				    }
 					
-				    double tong = ((double) gia * (double)soNgay + (double)listHD.getMoneyDV(listHD.getListHD().get(i)))*(1 - khauTru);
+				    double tong = ((double) gia * (double)(soNgay) + (double)listHD.getMoneyDV(listHD.getListHD().get(i)))*(1 - khauTru);
+				    
 				    tong = Math.round(tong);
-				    data[i][4] = Integer.toString((int)tong) + "$";
+				    
+				    DecimalFormat format = new DecimalFormat("#,### VND");
+				    
+				    data[i][4] = format.format(tong);
 				}
 				return data;
 			}

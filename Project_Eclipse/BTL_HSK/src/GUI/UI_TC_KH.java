@@ -49,7 +49,7 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 	
 	private DanhSachKhachHang list_KhachHang;
 	
-	Pattern name = Pattern.compile("([A-Z][a-z]+ )+([A-Z][a-z]+)");
+//	Pattern name = Pattern.compile("([A-Z][a-z]+ )+([A-Z][a-z]+)");
 	private Pattern email = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
 	private Pattern phone = Pattern.compile("(84|0[3|5|7|8|9])+([0-9]{8})");
 	
@@ -231,8 +231,6 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 	private boolean Them_Sua_KhachHang(String type) {
 		// TODO Auto-generated method stub
 		
-
-		
 		if(KH_txt_CCCD.getText().equals("")) {
 			JOptionPane.showMessageDialog(display_KH, "Căn Cước Công Dân Không Được Để Trống !");
 			KH_txt_CCCD.requestFocus();
@@ -303,12 +301,12 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 			return false;
 		}
 		
-		if(!name.matcher(KH_txt_Hoten.getText()).matches()) {
-			JOptionPane.showMessageDialog(display_KH, "Họ Tên Gồm Từ 2 Từ Trở Lên. Mỗi Từ Có Chữ Cái Đầu Viết Hoa !");
-			KH_txt_Hoten.setText("");
-			KH_txt_Hoten.requestFocus();
-			return false;
-		}
+//		if(!name.matcher(KH_txt_Hoten.getText()).matches()) {
+//			JOptionPane.showMessageDialog(display_KH, "Họ Tên Gồm Từ 2 Từ Trở Lên. Mỗi Từ Có Chữ Cái Đầu Viết Hoa !");
+//			KH_txt_Hoten.setText("");
+//			KH_txt_Hoten.requestFocus();
+//			return false;
+//		}
 		
 		if(!email.matcher(KH_txt_Email.getText()).matches()) {
 			JOptionPane.showMessageDialog(display_KH, "Sai Định Dạng Email !");

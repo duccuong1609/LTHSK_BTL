@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.JobAttributes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -292,22 +293,25 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 				return;
 			}
 			
-			String sophong = model.getValueAt(row, 3).toString();
-			String ma_PhieuDat = model.getValueAt(row, 0).toString();
-			DanhSachPhieuDat listPD = new DanhSachPhieuDat();
-			listPD.docDuLieu();
-			PhieuDatPhong pd = listPD.getPhieuDatPhongByMa(ma_PhieuDat);
-			listPD.deletePhieuDat(pd);
-			
-			DanhSachPhong listPhong = new DanhSachPhong();
-			listPhong.docDuLieu();
-			
-			DatPhong_cb_SoPhong.addItem(sophong);
-			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
-			model.setDataVector(data, cols_name);
-			table.setModel(model);
-			JOptionPane.showMessageDialog(display_DatPhong, "Xoá Phiếu Đặt Phòng Thành Công !");
-			return;
+			int choose = JOptionPane.showConfirmDialog(display_DatPhong, "Bạn Có Muốn Xóa Phiếu Đặt Này Không ?","Chú Ý",JOptionPane.YES_OPTION);
+			if(choose == JOptionPane.YES_OPTION) {
+				String sophong = model.getValueAt(row, 3).toString();
+				String ma_PhieuDat = model.getValueAt(row, 0).toString();
+				DanhSachPhieuDat listPD = new DanhSachPhieuDat();
+				listPD.docDuLieu();
+				PhieuDatPhong pd = listPD.getPhieuDatPhongByMa(ma_PhieuDat);
+				listPD.deletePhieuDat(pd);
+				
+				DanhSachPhong listPhong = new DanhSachPhong();
+				listPhong.docDuLieu();
+				
+				DatPhong_cb_SoPhong.addItem(sophong);
+				data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+				model.setDataVector(data, cols_name);
+				table.setModel(model);
+				JOptionPane.showMessageDialog(display_DatPhong, "Xoá Phiếu Đặt Phòng Thành Công !");
+				return;
+			}
 		}
 		if(source.equals(DatPhong_Sua)) {
 			Datphong_Sua();
@@ -434,27 +438,31 @@ public class UI_QL_DatPhong extends JPanel implements MouseListener,ActionListen
 			DatPhong_txt_CCCD.requestFocus();
 			return false;
 		}
-		Phong phong = phongs.getPhongBySoPhong(soPhong);
 		
-		DanhSachPhong a = new DanhSachPhong();
-		a.addPhong(phong);
-		list.docDuLieu();
-		int last_number = 100;
-		if(list.getListPDP().size() >0) {
-			String last_PDP = list.getListPDP().get(list.getListPDP().size()-1).getMaPD();
-			last_number = Integer.parseInt(last_PDP.substring(2, last_PDP.length())) + 1;
-		}
-		PhieuDatPhong pd = new PhieuDatPhong("PD"+(last_number), nv, kh, a, 1, ngayDen, ngayDi);
+		int choose = JOptionPane.showConfirmDialog(display_DatPhong, "Bạn Chắc Chắn Đặt Phòng Không ?","Chú Ý",JOptionPane.YES_OPTION);
+		if(choose == JOptionPane.YES_OPTION) {
+			Phong phong = phongs.getPhongBySoPhong(soPhong);
+			
+			DanhSachPhong a = new DanhSachPhong();
+			a.addPhong(phong);
+			list.docDuLieu();
+			int last_number = 100;
+			if(list.getListPDP().size() >0) {
+				String last_PDP = list.getListPDP().get(list.getListPDP().size()-1).getMaPD();
+				last_number = Integer.parseInt(last_PDP.substring(2, last_PDP.length())) + 1;
+			}
+			PhieuDatPhong pd = new PhieuDatPhong("PD"+(last_number), nv, kh, a, 1, ngayDen, ngayDi);
 
-		new DanhSachPhieuDat().insertPhieuDatSQL(pd);
-		
-		DatPhong_cb_SoPhong.removeItem(Integer.toString(soPhong));
-		
-		data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
-		model.setDataVector(data, cols_name);
-		table.setModel(model);
-		datPhong_cb_SoPhong.setSelectedIndex(0);
-		JOptionPane.showMessageDialog(display_DatPhong,"Thêm Đơn Đặt Phòng Thành Công !");
+			new DanhSachPhieuDat().insertPhieuDatSQL(pd);
+			
+			DatPhong_cb_SoPhong.removeItem(Integer.toString(soPhong));
+			
+			data = Default_Custom_UI.cast_data("LayPhieuDatChuaNhan");
+			model.setDataVector(data, cols_name);
+			table.setModel(model);
+			DatPhong_cb_SoPhong.setSelectedIndex(0);
+			JOptionPane.showMessageDialog(display_DatPhong,"Thêm Đơn Đặt Phòng Thành Công !");
+		}
 		return true;
 	}
 }

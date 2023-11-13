@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -221,9 +222,14 @@ public class UI_THONGKE implements MouseListener,ActionListener{
 				    
 				    long soNgay= (listTK.getListHD().get(i).getNgayTra().getTime() - listTK.getListHD().get(i).getMaPhieuNhan().getNgayNhan().getTime()) / (24 * 60 * 60 * 1000);
 				    
-				    double tong = ((double) gia * (double)soNgay + (double)listHD.getMoneyDV(listHD.getListHD().get(i)))*(1 - khauTru);
+				    if(soNgay ==0) {
+				    	soNgay = 1;
+				    }
+				    
+				    double tong = ((double) gia * ((double)soNgay) + (double)listHD.getMoneyDV(listHD.getListHD().get(i)))*(1 - khauTru);
 				    tong = Math.round(tong);
-				    data_temp[i][4] = Integer.toString((int)tong) + "$";
+				    DecimalFormat format = new DecimalFormat("#,### VND");
+				    data_temp[i][4] =  format.format(tong);
 					
 				}
 				double total = 0;
@@ -231,11 +237,15 @@ public class UI_THONGKE implements MouseListener,ActionListener{
 				for(int i=0; i< listTK.getListHD().size();i++) {
 					soLuong +=1;
 					String temp_cost = table.getValueAt(i, 4).toString();
-					temp_cost = temp_cost.substring(0, temp_cost.length()-1);
+					
+					temp_cost = temp_cost.substring(0, temp_cost.length()-4);
+					temp_cost = temp_cost.replace(",", "");
+					
 					total += Double.parseDouble(temp_cost);
 				}
 				ThongKe_SoLuong.setText(soLuong+"");
-				ThongKe_DoanhThu.setText(total+"");
+				DecimalFormat format = new DecimalFormat("#,### VND");
+				ThongKe_DoanhThu.setText(format.format(total));
 				model.setDataVector(data_temp, cols_name);
 				table.setModel(model);
 				if (listTK.getListHD().size()==0) {

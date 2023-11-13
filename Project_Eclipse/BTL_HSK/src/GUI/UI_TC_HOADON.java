@@ -11,12 +11,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -231,7 +233,11 @@ public class UI_TC_HOADON implements MouseListener,ActionListener{
 		center_panel.add(content_panel,BorderLayout.CENTER);
 		
 		main_pJPanel.add(center_panel,BorderLayout.CENTER);
+		
 		Xoa.addActionListener(this);
+		TaoLai.addActionListener(this);
+		Tim.addActionListener(this);
+		
 		display_HoaDon.add(main_pJPanel,BorderLayout.CENTER);
 		
 	}
@@ -293,20 +299,89 @@ public class UI_TC_HOADON implements MouseListener,ActionListener{
 		Object source = e.getSource();
 		
 		if(source.equals(Xoa)) {
-			String maHD = HoaDon_txt_MaHoaDon.getText();
-			DanhSachHoaDon listHD = new DanhSachHoaDon();
-			listHD.docDuLieu();
-			HoaDon hd = listHD.getHoaDonByMa(maHD);
-			listHD.deteleHoaDon(hd);
 			
+			if(table.getSelectedRow()==-1) {
+				JOptionPane.showMessageDialog(display_HoaDon, "Không Có Hóa Đơn Nào Được Chọn !");
+				return;
+			}
+			
+			int choose = JOptionPane.showConfirmDialog(display_HoaDon, "Bạn Có Muốn Xóa Hóa Đơn Này Không ?","Chú ý",JOptionPane.YES_OPTION);
+			
+			if(choose == JOptionPane.YES_OPTION) {
+				String maHD = HoaDon_txt_MaHoaDon.getText();
+				DanhSachHoaDon listHD = new DanhSachHoaDon();
+				listHD.docDuLieu();
+				HoaDon hd = listHD.getHoaDonByMa(maHD);
+				listHD.deteleHoaDon(hd);
+				
+				data = Default_Custom_UI.cast_data("ListHoaDon");
+				model.setDataVector(data, cols_name);
+				table.setModel(model);
+				
+				model_dv.setDataVector(data_dv, cols_name_dv);
+				table_dv.setModel(model_dv);
+			}
+		}
+		if(source.equals(TaoLai)) {
+			HoaDon_txt_CCCD.setText("");
+			HoaDon_txt_MaHoaDon.setText("");
+			HoaDon_txt_MaNhanVien.setText("");
+			HoaDon_txt_MaSoPhong.setText("");
+			data_dv = Default_Custom_UI.cast_data("");
 			data = Default_Custom_UI.cast_data("ListHoaDon");
 			model.setDataVector(data, cols_name);
-			table.setModel(model);
-			
 			model_dv.setDataVector(data_dv, cols_name_dv);
+			table.setModel(model);
 			table_dv.setModel(model_dv);
-			
 		}
+		if(source.equals(Tim)) {
+			Tim_HoaDon();
+		}
+	}
+
+
+	private boolean Tim_HoaDon() {
+		// TODO Auto-generated method stub
+		//setup
+		data = Default_Custom_UI.cast_data("ListHoaDon");
+		model.setDataVector(data, cols_name);
+		table_dv.setModel(model_dv);
+		
+		if(HoaDon_txt_CCCD.getText().equals("")) {
+			JOptionPane.showMessageDialog(display_HoaDon, "Vui Lòng Nhập CCCD Để Tìm Kiếm Hóa Đơn");
+			HoaDon_txt_CCCD.requestFocus();
+			return false;
+		}
+		
+		ArrayList<Integer> list_index = new ArrayList<Integer>();
+		
+		for(int i=0;i<model.getRowCount();i++) {
+			if(HoaDon_txt_CCCD.getText().equals(model.getValueAt(i, 2))) {
+				list_index.add(i);
+			}
+		}
+		
+		if(list_index.size()==0) {
+			JOptionPane.showMessageDialog(display_HoaDon, "Không Tìm Thấy Hóa Đơn !");
+			HoaDon_txt_CCCD.requestFocus();
+			return false;
+		}
+		
+		String[][] temp_data = new String[list_index.size()][5];
+		for(int i=0;i<list_index.size();i++) {
+			temp_data[i][0] = model.getValueAt(list_index.get(i), 0).toString();
+			temp_data[i][1] = model.getValueAt(list_index.get(i), 1).toString();
+			temp_data[i][2] = model.getValueAt(list_index.get(i), 2).toString();
+			temp_data[i][3] = model.getValueAt(list_index.get(i), 3).toString();
+			temp_data[i][4] = model.getValueAt(list_index.get(i), 4).toString();
+		}
+		
+		model.setDataVector(temp_data, cols_name);
+		table.setModel(model);
+		table.setRowSelectionInterval(0, 0);
+		
+		JOptionPane.showMessageDialog(display_HoaDon, "Tìm Thấy Hóa Đơn Thành Công !");
+		return true;
 	}
 }
 
