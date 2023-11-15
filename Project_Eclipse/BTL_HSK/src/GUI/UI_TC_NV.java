@@ -388,6 +388,8 @@ public class UI_TC_NV implements MouseListener,ActionListener{
 			
 			NhanVien nv = new NhanVien("NV0"+(last_number), NV_txt_TenNV.getText(), NV_txt_SĐT.getText(), NV_txt_DiaChi.getText(), NV_txt_Email.getText());
 			
+			JOptionPane.showMessageDialog(display_NV, "Thêm Nhân Viên Thành Công !");
+			
 			ds.insertNhanVien(nv);
 			
 			data = Default_Custom_UI.cast_data("NhanVien");

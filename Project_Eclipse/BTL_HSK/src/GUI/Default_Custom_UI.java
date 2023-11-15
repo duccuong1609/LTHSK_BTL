@@ -47,9 +47,9 @@ import entity.PhongThuong;
 import entity.PhongVip;
 
 public class Default_Custom_UI {
-	public static Font title_font = new Font("Arial",Font.BOLD, 17);
+	public static Font title_font = new Font("Arial",Font.BOLD, 18);
 	public static Font big_title_font = new Font("Arial",Font.BOLD, 30);
-	public static Font tag_font = new Font("Arial",Font.BOLD, 15);
+	public static Font tag_font = new Font("Arial",Font.BOLD, 16);
 	private static DanhSachPhong listPhong ;
 	private static DanhSachNhanVien listNhanVien;
 	private static DanhSachHoaDon listHD;
@@ -80,7 +80,7 @@ public class Default_Custom_UI {
 		
 		public static ImagePanel default_first_panel() {
 			ImagePanel panel = new ImagePanel(
-		    new ImageIcon("Media/Icon/background.png").getImage());
+		    new ImageIcon("Media/Icon/GOLDEN HOUR.png").getImage());
 			
 			return panel;
 		}
@@ -124,7 +124,7 @@ public class Default_Custom_UI {
 		
 		public static JButton default_Action_Button(String txt,String path) {
 			ImageIcon icon = createImageIcon(path);
-			icon = scaleImage(icon, 40, 40);
+			icon = scaleImage(icon, 50, 50);
 			
 			JButton btn = new JButton(txt, icon);
 			btn.setBackground(new Color(0,25,51));
@@ -158,6 +158,7 @@ public class Default_Custom_UI {
 		public static JPanel default_child_panel(String path,String title) {
 			JPanel child = default_panel(path,title);
 			child.setBorder(new CompoundBorder(new LineBorder(new Color(244,255,255),2), new EmptyBorder(5,5,5,10)));
+			child.setPreferredSize(new Dimension(250,60));
 			return child;
 		}
 		

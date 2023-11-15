@@ -204,6 +204,18 @@ VALUES  (01,'T1.01','STD',1),
         (39,'T4.39','SUP',1),
         (40,'T5.40','SUP',1);
 
+INSERT INTO Phong(SoPhong,TenPhong,LoaiPhong,IsEmpty)
+VALUES  (41,'T5.41','STD',1),
+		(42,'T5.42','SUP',1),
+		(43,'T5.43','STD',1),
+		(44,'T5.44','STD',1),
+		(45,'T5.45','STD',1),
+		(46,'T5.46','SUP',1),
+		(47,'T5.47','STD',1),
+		(48,'T5.48','STD',1),
+		(49,'T5.49','SUP',1),
+		(50,'T5.50','STD',1);
+
 --INSERT INTO PhieuDatPhong(MaPhieuDat, MaNV, CCCD, NgayDen, NgayDi,soLuong)
 --VALUES	
 		--('PD101', 'NV001', N'019283940112', '2023-05-11', '2023-05-15',4)

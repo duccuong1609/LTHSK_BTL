@@ -122,8 +122,8 @@ public class UI_THONGKE implements MouseListener,ActionListener{
 		TaiLai = Default_Custom_UI.default_Action_Button("Tải Lại", "Media/Icon/taolai.gif");
 		
 		
-		Tim.setPreferredSize(new Dimension(220,50));
-		TaiLai.setPreferredSize(new Dimension(220,50));
+		Tim.setPreferredSize(new Dimension(220,60));
+		TaiLai.setPreferredSize(new Dimension(220,60));
 		
 		JPanel tim_panel = new JPanel();
 		tim_panel.setBorder(new EmptyBorder(20,0,20,0));

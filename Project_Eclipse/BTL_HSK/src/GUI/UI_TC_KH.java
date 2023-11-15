@@ -325,6 +325,7 @@ public class UI_TC_KH implements MouseListener,ActionListener{
 			KhachHang khachHang = new KhachHang(KH_txt_CCCD.getText(), KH_txt_STK.getText(), KH_txt_Hoten.getText(), KH_txt_SĐT.getText(), KH_txt_DiaChi.getText(), KH_txt_Email.getText(), KH_cb_LoaiKhach.getSelectedItem().toString());
 			list_KhachHang.addKhachHang(khachHang);
 			
+			JOptionPane.showMessageDialog(display_KH, "Thêm Khách Hàng Thành Công !");
 			data = Default_Custom_UI.cast_data("KhachHang");
 			model.setDataVector(data, cols_name);
 			table.setModel(model);
